@@ -40,13 +40,15 @@ export function useScramble() {
   }
 
   function generateScramble() {
-    // add current scramble to the history
-    scramblesHistory.value.unshift(currentScramble.value);
-
     const scramble: Scramble = [];
     let currentSubMoveSetIndex = 0;
     let previousSubMoveSetIndex = 0;
     let currentSubMoveSet = null;
+
+    if (currentScramble.value.length > 0) {
+      // add current scramble to the history
+      scramblesHistory.value.push(currentScramble.value);
+    }
 
     // iterate user requested "numberOfMove" times
     for (let i = 0; i < numberOfMoves.value; i++) {
@@ -90,6 +92,11 @@ export function useScramble() {
     return scramble.join(" ");
   }
 
+  function lastNScrambles(n: number) {
+    const nScrambles = scramblesHistory.value.slice(-n);
+    return nScrambles.reverse();
+  }
+
   return {
     numberOfMoves,
     initScrambleValues,
@@ -99,5 +106,6 @@ export function useScramble() {
     currentScrambleIndex,
     goToNextScramble,
     scramblesHistory,
+    lastNScrambles,
   };
 }

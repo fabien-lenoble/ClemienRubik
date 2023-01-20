@@ -12,11 +12,13 @@ const {
   currentScrambleIndex,
   goToNextScramble,
   currentScramble,
-  scramblesHistory,
+  lastNScrambles,
 } = useScramble();
 
 initSeedValues();
 initScrambleValues();
+
+const numberOfScrambles = 10;
 
 const solvedImageArray: Ref<string[][][]> = ref([
   [
@@ -130,10 +132,14 @@ const solvedImageArray: Ref<string[][][]> = ref([
         </div>
       </div>
       <div class="column">
-        <div>previous mélanges</div>
-        <div v-for="(scramble, index) in scramblesHistory" :key="index">
+        <div>previous {{ numberOfScrambles }} mélanges</div>
+        <p
+          v-for="(scramble, index) in lastNScrambles(numberOfScrambles)"
+          :key="index"
+        >
+          #{{ currentScrambleIndex - 1 - index }}:
           {{ stringifiedScramble(scramble) }}
-        </div>
+        </p>
       </div>
     </div>
   </main>
