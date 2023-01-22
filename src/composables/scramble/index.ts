@@ -4,7 +4,12 @@ import type { MoveSet, Scramble, SubMoveSet } from "./types";
 import { useRoute } from "vue-router";
 import { useSeed } from "@/composables/seed";
 
-const { baseSessionSeed, lastGeneratedSeed, generateNewSeed } = useSeed();
+const {
+  baseSessionSeed,
+  currentScrambleSeed,
+  lastGeneratedSeed,
+  generateNewSeed,
+} = useSeed();
 
 const currentScrambleIndex: Ref<number> = ref(0);
 const numberOfMoves: Ref<number> = ref(20);
@@ -35,6 +40,11 @@ export function useScramble() {
   }
 
   function goToNextScramble() {
+    if (currentScramble.value.length > 0) {
+      // add current scramble to the history
+      scramblesHistory.value.push(currentScramble.value);
+    }
+    currentScrambleSeed.value = lastGeneratedSeed.value;
     currentScramble.value = generateScramble();
     currentScrambleIndex.value++;
   }
@@ -44,11 +54,6 @@ export function useScramble() {
     let currentSubMoveSetIndex = 0;
     let previousSubMoveSetIndex = 0;
     let currentSubMoveSet = null;
-
-    if (currentScramble.value.length > 0) {
-      // add current scramble to the history
-      scramblesHistory.value.push(currentScramble.value);
-    }
 
     // iterate user requested "numberOfMove" times
     for (let i = 0; i < numberOfMoves.value; i++) {
@@ -85,7 +90,9 @@ export function useScramble() {
     // once we have chosen a different sub move set than the previous one,
     // we want to pick a random move in this set to add it to the scramble
     generateNewSeed();
-    return currentSubMoveSet[lastGeneratedSeed.value % currentSubMoveSet.length];
+    return currentSubMoveSet[
+      lastGeneratedSeed.value % currentSubMoveSet.length
+    ];
   }
 
   function stringifiedScramble(scramble: Scramble): string {
