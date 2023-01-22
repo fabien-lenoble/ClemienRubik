@@ -2,7 +2,13 @@
 import { useTimer } from "@/composables/timer";
 import { computed } from "vue";
 
-const { isTimerStarted, startTimer, stopTimer, timerDisplayValue } = useTimer();
+const {
+  isTimerStarted,
+  timerValue,
+  startTimer,
+  stopTimer,
+  getTimerDisplayValue,
+} = useTimer();
 
 function handleTimer() {
   if (isTimerStarted.value) {
@@ -20,6 +26,6 @@ const buttonText = computed(() =>
 <template>
   <div>
     <button @click="handleTimer()">{{ buttonText }}</button>
-    {{ timerDisplayValue() }}
+    {{ getTimerDisplayValue(timerValue) }}
   </div>
 </template>
