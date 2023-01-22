@@ -4,14 +4,14 @@ import type { Seed } from "./types";
 import { useRoute } from "vue-router";
 
 const baseSessionSeed: Ref<Seed> = ref(0);
+const currentScrambleSeed: Ref<Seed> = ref(0);
 const lastGeneratedSeed: Ref<Seed> = ref(0);
 
 export function useSeed() {
-
   function initSeedValues() {
     const route = useRoute();
     baseSessionSeed.value = Number(route.params.seed);
-    lastGeneratedSeed.value = baseSessionSeed.value
+    lastGeneratedSeed.value = baseSessionSeed.value;
   }
 
   // from https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
@@ -26,6 +26,7 @@ export function useSeed() {
 
   return {
     baseSessionSeed,
+    currentScrambleSeed,
     lastGeneratedSeed,
     initSeedValues,
     generateNewSeed,
