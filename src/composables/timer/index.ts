@@ -14,7 +14,7 @@ export function useTimer() {
   function startTimer() {
     timerValue.value = 0;
     isTimerStarted.value = true;
-    timerInterval.value = setInterval(incrementTimer, 1);
+    timerInterval.value = setInterval(incrementTimer, 10);
   }
 
   function stopTimer() {
@@ -23,13 +23,14 @@ export function useTimer() {
   }
 
   function timerDisplayValue() {
-    // pour l'instant ça marche pas j'arrive pas à réfléchir
-    const minutes = timerValue.value % 60000;
-    const seconds = timerValue.value % 1000;
-    const milliSeconds = timerValue.value - minutes * 60000 - seconds * 1000;
-    let displayValue = `${seconds}.${String(milliSeconds).padStart(3, "0")}`;
+    const minutes = Math.floor(timerValue.value / 6000);
+    const seconds = Math.floor(timerValue.value / 100) % 60;
+    const tenthSeconds = timerValue.value % 100;
+    // pad start with a 0 for the tenth of seconds so that it doesn't show 5.2s when it should show 5.02s for example
+    let displayValue = `${seconds}.${String(tenthSeconds).padStart(2, "0")}`;
     if (minutes) {
-      displayValue = `${minutes}:${displayValue}`;
+      // pad start with a 0 for the seconds so that it doesn't show 1:5.02s when it should show 1:05.02s for example
+      displayValue = `${minutes}:${displayValue.padStart(5, "0")}`;
     }
     return displayValue;
   }

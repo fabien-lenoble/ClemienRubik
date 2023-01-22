@@ -23,16 +23,3 @@ const buttonText = computed(() =>
     {{ timerDisplayValue() }}
   </div>
 </template>
-
-<style lang="scss">
-.container {
-  display: flex;
-  justify-content: space-around;
-}
-.columns {
-  flex-direction: column;
-}
-.column {
-  flex: 50%;
-}
-</style>
