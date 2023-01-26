@@ -24,3 +24,5 @@ export type SubMoveSet = Move[];
 export type MoveSet = SubMoveSet[];
 
 export type Scramble = Move[];
+
+export type DisplayScramble = string;

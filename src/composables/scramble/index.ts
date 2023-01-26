@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import type { Ref } from "vue";
-import type { MoveSet, Scramble, SubMoveSet } from "./types";
+import type { DisplayScramble, MoveSet, Scramble, SubMoveSet } from "./types";
 import { useRoute } from "vue-router";
 import { useSeed } from "@/composables/seed";
 
@@ -95,7 +95,7 @@ export function useScramble() {
     ];
   }
 
-  function stringifiedScramble(scramble: Scramble): string {
+  function stringifiedScramble(scramble: Scramble): DisplayScramble {
     return scramble.join(" ");
   }
 

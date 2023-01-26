@@ -5,7 +5,14 @@ import type { Seed } from "@/composables/seed/types";
 export type Solve = {
   scramble: Scramble;
   time: Time;
-  displayTime: DisplayTime;
   seed: Seed;
-  state: State;
 };
+
+export type SavedSolve = Solve & {
+  displayTime: DisplayTime;
+  displayScramble: string;
+  state: State;
+  note?: Note;
+};
+
+export type Note = string;
