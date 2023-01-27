@@ -4,11 +4,12 @@ import type { Seed } from "@/composables/seed/types";
 
 export type Solve = {
   scramble: Scramble;
-  time: Time;
+  baseTime: Time;
   seed: Seed;
 };
 
 export type SavedSolve = Solve & {
+  finalTime: Time;
   displayTime: DisplayTime;
   displayScramble: string;
   state: State;

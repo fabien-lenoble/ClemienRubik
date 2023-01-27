@@ -2,7 +2,7 @@ import { computed, reactive } from "vue";
 import type { Note, SavedSolve, Solve } from "./types";
 import { useTimer } from "@/composables/timer";
 import { useScramble } from "@/composables/scramble";
-import type { State } from "../timer/types";
+import type { State, Time } from "../timer/types";
 
 const { getTimerDisplayValue } = useTimer();
 const { stringifiedScramble } = useScramble();
@@ -31,35 +31,50 @@ export function useSession() {
 
   const getPersonalBest = computed(() => {
     return countingSessionSolves.value.sort((solveA, solveB) => {
-      // TODO: add checks on +2 and DNF, since we don't overwrite the time in these states
-      return solveA.time < solveB.time ? -1 : 1;
+      return solveA.finalTime < solveB.finalTime ? -1 : 1;
     })[0];
   });
 
   function addSolveToSessionSolves(solve: Solve) {
     const savedSolve: SavedSolve = {
       ...solve,
+      finalTime: solve.baseTime,
       displayScramble: stringifiedScramble(solve.scramble),
-      displayTime: getTimerDisplayValue(solve.time),
+      displayTime: getTimerDisplayValue(solve.baseTime),
       state: "solved",
     };
     sessionSolves.push(savedSolve);
     localStorage.setItem("sessionSolves", JSON.stringify(sessionSolves));
   }
 
-  // updating a state should not overwrite time, at least in the DNF case we want
-  // to have a way to go back to original time. Or maybe we want to have an "originalTime" value for that.
-  // we will need a computed time with state taken into account to calculate PB and averages properly
   function updateSolveState(index: number, newState: State) {
-    const previousTime = sessionSolves[index].time;
-    sessionSolves[index].state = newState;
-    sessionSolves[index].displayTime = getTimerDisplayValue(
-      previousTime,
+    const newFinalTime = computeFinalTime(
+      sessionSolves[index].baseTime,
       newState
     );
+    sessionSolves[index].state = newState;
+    sessionSolves[index].displayTime = getTimerDisplayValue(
+      newFinalTime,
+      newState
+    );
+    sessionSolves[index].finalTime = newFinalTime;
   }
+
   function updateSolveNote(index: number, newNote: Note) {
     sessionSolves[index].note = newNote;
+  }
+
+  function computeFinalTime(baseTime: Time, state: State): Time {
+    switch (state) {
+      case "solved":
+        return baseTime;
+      case "+2":
+        return (baseTime += 200);
+      case "DNF":
+      case "deleted":
+      case "rerolled":
+        return +Infinity;
+    }
   }
 
   return {

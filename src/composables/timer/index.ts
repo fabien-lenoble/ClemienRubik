@@ -32,7 +32,7 @@ export function useTimer() {
     addSolveToSessionSolves({
       scramble: currentScramble.value,
       seed: currentScrambleSeed.value,
-      time: timerValue.value,
+      baseTime: timerValue.value,
     });
     goToNextScramble();
   }
@@ -56,7 +56,7 @@ export function useTimer() {
     }
 
     if (state === "+2") {
-      displayValue += " +2";
+      displayValue += " (+2)";
     }
 
     return displayValue;
