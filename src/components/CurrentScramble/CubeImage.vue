@@ -116,7 +116,7 @@ const solvedImageArray: Ref<string[][][]> = ref([
   width: 32px;
   margin: 4px;
   &.U {
-    background-color: white;
+    background-color: rgb(225, 216, 216);
   }
   &.L {
     background-color: orange;

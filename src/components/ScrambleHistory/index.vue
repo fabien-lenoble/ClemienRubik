@@ -12,8 +12,14 @@ const numberOfScrambles = 10;
 
 <template>
   <div>
-    <div>solves: {{ sessionSolves }}</div>
-    <div>personal best: {{ getPersonalBest }}</div>
+    <div>solves:</div>
+    <p v-for="(solve, index) in sessionSolves" :key="index">
+      {{ solve.displayTime }} - {{ solve.displayScramble }}
+    </p>
+    <div v-if="getPersonalBest">
+      personal best: {{ getPersonalBest.displayTime }} -
+      {{ getPersonalBest.displayScramble }}
+    </div>
     <div>previous {{ numberOfScrambles }} mélanges</div>
     <p
       v-for="(scramble, index) in lastNScrambles(numberOfScrambles)"
