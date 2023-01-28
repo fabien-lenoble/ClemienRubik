@@ -3,18 +3,18 @@ import type { Ref } from "vue";
 import { useScramble } from "@/composables/scramble";
 import { useSession } from "@/composables/session";
 import { useSeed } from "@/composables/seed";
-import type { DisplayTime, Time } from "./types";
+import type { DisplayTime, State, Time } from "./types";
 
-const timerValue: Ref<Time> = ref(0);
 const timerInterval: Ref<number> = ref(0);
-
-const isTimerStarted: Ref<Boolean> = ref(false);
 
 const { currentScramble, goToNextScramble } = useScramble();
 const { currentScrambleSeed } = useSeed();
 const { addSolveToSessionSolves } = useSession();
 
 export function useTimer() {
+  const isTimerStarted: Ref<Boolean> = ref(false);
+  const timerValue: Ref<Time> = ref(0);
+
   function incrementTimer() {
     timerValue.value++;
   }
@@ -32,14 +32,19 @@ export function useTimer() {
     addSolveToSessionSolves({
       scramble: currentScramble.value,
       seed: currentScrambleSeed.value,
-      time: timerValue.value,
-      displayTime: getTimerDisplayValue(timerValue.value),
-      state: "solved",
+      baseTime: timerValue.value,
     });
     goToNextScramble();
   }
 
-  function getTimerDisplayValue(timeInTenthOfSeconds: Time): DisplayTime {
+  function getTimerDisplayValue(
+    timeInTenthOfSeconds: Time,
+    state?: State
+  ): DisplayTime {
+    if (state === "DNF") {
+      return "DNF";
+    }
+
     const minutes = Math.floor(timeInTenthOfSeconds / 6000);
     const seconds = Math.floor(timeInTenthOfSeconds / 100) % 60;
     const tenthOfSeconds = timeInTenthOfSeconds % 100;
@@ -49,6 +54,11 @@ export function useTimer() {
       // pad start with a 0 for the seconds so that it doesn't show 1:5.02s when it should show 1:05.02s for example
       displayValue = `${minutes}:${displayValue.padStart(5, "0")}`;
     }
+
+    if (state === "+2") {
+      displayValue += " (+2)";
+    }
+
     return displayValue;
   }
 
