@@ -5,9 +5,6 @@ import { useTimer } from "@/composables/timer";
 import { useScramble } from "@/composables/scramble";
 import type { State, Time } from "@/composables/timer/types";
 
-const { getTimerDisplayValue } = useTimer();
-const { stringifiedScramble } = useScramble();
-
 const sessionSolves: Ref<SavedSolve[]> = ref(
   JSON.parse(localStorage.getItem("sessionSolves") || "[]") as SavedSolve[]
 );
@@ -33,6 +30,8 @@ const getPersonalBest = computed(() => {
 });
 
 function addSolveToSessionSolves(solve: Solve) {
+  const { getTimerDisplayValue } = useTimer();
+  const { stringifiedScramble } = useScramble();
   const savedSolve: SavedSolve = {
     ...solve,
     finalTime: solve.baseTime,
@@ -45,6 +44,7 @@ function addSolveToSessionSolves(solve: Solve) {
 }
 
 function updateSolveState(index: number, newState: State) {
+  const { getTimerDisplayValue } = useTimer();
   const newFinalTime = computeFinalTime(
     sessionSolves.value[index].baseTime,
     newState
