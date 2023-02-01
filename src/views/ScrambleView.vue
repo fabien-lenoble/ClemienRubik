@@ -6,13 +6,14 @@ import ScrambleHistory from "@/components/ScrambleHistory/index.vue";
 
 const { initSeedValues } = useSeed();
 const { initScrambleValues } = useScramble();
-
+const a = process.env.NODE_ENV;
 initSeedValues();
 initScrambleValues();
 </script>
 
 <template>
   <main>
+    env: {{ a }}
     <div class="container">
       <div class="column columns">
         <current-scramble />

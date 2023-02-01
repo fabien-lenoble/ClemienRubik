@@ -1,0 +1,1 @@
+.face-slot{flex:25%}.sticker{height:32px;width:32px;margin:4px}.sticker.U{background-color:#e1d8d8}.sticker.L{background-color:orange}.sticker.F{background-color:green}.sticker.R{background-color:red}.sticker.B{background-color:#00f}.sticker.D{background-color:#ff0}.container{display:flex;justify-content:space-around}.columns{flex-direction:column}.column{flex:50%}
