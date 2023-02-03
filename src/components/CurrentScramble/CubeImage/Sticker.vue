@@ -14,7 +14,7 @@ defineProps<{
 .sticker {
   height: 32px;
   width: 32px;
-  margin: 4px;
+  margin: 1px;
   &.U {
     background-color: rgb(225, 216, 216);
   }

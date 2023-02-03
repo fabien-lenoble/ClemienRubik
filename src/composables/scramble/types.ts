@@ -26,3 +26,6 @@ export type MoveSet = SubMoveSet[];
 export type Scramble = Move[];
 
 export type DisplayScramble = string;
+
+export type CubeImage = CubeFace[];
+export type CubeFace = FaceInitial[][];
