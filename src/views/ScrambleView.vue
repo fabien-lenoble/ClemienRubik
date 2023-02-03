@@ -17,22 +17,9 @@ initScrambleValues();
       <div class="column columns">
         <current-scramble />
       </div>
-      <div class="column">
+      <div class="column flex-6">
         <scramble-history />
       </div>
     </div>
   </main>
 </template>
-
-<style lang="scss">
-.container {
-  display: flex;
-  justify-content: space-around;
-}
-.columns {
-  flex-direction: column;
-}
-.column {
-  flex: 50%;
-}
-</style>
