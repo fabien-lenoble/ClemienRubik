@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { FaceInitial } from "@/composables/scramble/types";
+import type { CubeFace } from "@/composables/scramble/types";
 import Sticker from "./Sticker.vue";
 
 defineProps<{
-  face: FaceInitial[][];
+  face: CubeFace;
   faceIndex: number;
 }>();
 </script>
