@@ -13,24 +13,27 @@ const timerInterval: Ref<number> = ref(0);
 const isTimerStarted: Ref<Boolean> = ref(false);
 const isTimerOnHold: Ref<Boolean> = ref(false);
 const timerValue: Ref<Time> = ref(0);
+const timerStartedAt: Ref<Time> = ref(0);
 const holdTimeBeforeStart: Ref<Time> = ref(30);
 const holdTime = ref(0);
 const holdTimeInterval = ref(0);
 
-function incrementTimer() {
-  timerValue.value++;
+function updateTimerValue() {
+  timerValue.value = Math.floor(performance.now() - timerStartedAt.value);
 }
 
 function startTimer() {
-  timerValue.value = 0;
+  timerStartedAt.value = performance.now();
   isTimerStarted.value = true;
-  timerInterval.value = setInterval(incrementTimer, 10);
+  timerInterval.value = setInterval(updateTimerValue, 10);
 }
 
 function stopTimer() {
-  isTimerStarted.value = false;
+  // stop updating timer value
   clearInterval(timerInterval.value);
-
+  // update timer value one last time (in case we stopped the timer before a new 10ms window (yes we are that precise it's important))
+  updateTimerValue();
+  isTimerStarted.value = false;
   addSolveToSessionSolves({
     scramble: currentScramble.value,
     seed: currentScrambleSeed.value,
@@ -40,21 +43,21 @@ function stopTimer() {
 }
 
 function getTimerDisplayValue(
-  timeInTenthOfSeconds: Time,
+  timeInMilliseconds: Time,
   state?: State
 ): DisplayTime {
   if (state === "DNF") {
     return "DNF";
   }
 
-  const minutes = Math.floor(timeInTenthOfSeconds / 6000);
-  const seconds = Math.floor(timeInTenthOfSeconds / 100) % 60;
-  const tenthOfSeconds = timeInTenthOfSeconds % 100;
-  // pad start with a 0 for the tenth of seconds so that it doesn't show 5.2s when it should show 5.02s for example
-  let displayValue = `${seconds}.${String(tenthOfSeconds).padStart(2, "0")}`;
+  const minutes = Math.floor(timeInMilliseconds / 60000);
+  const seconds = Math.floor(timeInMilliseconds / 1000) % 60;
+  const milliseconds = timeInMilliseconds % 1000;
+  // pad start with a 0 for the milliseconds so that it doesn't show 5.2s when it should show 5.002s for example
+  let displayValue = `${seconds}.${String(milliseconds).padStart(3, "0")}`;
   if (minutes) {
-    // pad start with a 0 for the seconds so that it doesn't show 1:5.02s when it should show 1:05.02s for example
-    displayValue = `${minutes}:${displayValue.padStart(5, "0")}`;
+    // pad start with a 0 for the seconds so that it doesn't show 1:5.002s when it should show 1:05.002s for example
+    displayValue = `${minutes}:${displayValue.padStart(6, "0")}`;
   }
 
   if (state === "+2") {
