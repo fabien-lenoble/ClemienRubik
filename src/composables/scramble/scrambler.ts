@@ -50,9 +50,9 @@ function goToNextScramble() {
 
 function generateScramble() {
   const scramble: Scramble = [];
-  let currentSubMoveSetIndex = 0;
-  let lastSubMoveSetIndex = 0;
-  let secondToLastSubMoveSetIndex = 0;
+  let currentSubMoveSetIndex = -1;
+  let lastSubMoveSetIndex = -1;
+  let secondToLastSubMoveSetIndex = -1;
   let currentSubMoveSet = null;
 
   // iterate user requested "numberOfMove" times
