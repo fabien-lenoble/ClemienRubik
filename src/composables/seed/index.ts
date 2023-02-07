@@ -13,14 +13,8 @@ function initSeedValues() {
   lastGeneratedSeed.value = baseSessionSeed.value;
 }
 
-// from https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
-// (based on the Mulberry32 algorithm)
 function generateNewSeed() {
-  let t = (lastGeneratedSeed.value += 0x6d2b79f5);
-  t = Math.imul(t ^ (t >>> 15), t | 1);
-  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-  const random = Math.floor((t ^ (t >>> 14)) >>> 0);
-  lastGeneratedSeed.value = random;
+  lastGeneratedSeed.value = (lastGeneratedSeed.value * 16807) % 2147483647;
 }
 
 export function useSeed() {
