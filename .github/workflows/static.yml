@@ -36,6 +36,7 @@ jobs:
           node-version: '16.x'
       - run: npm ci
       - run: npm run build
+      - run: cp dist/index.html dist/404.html
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
