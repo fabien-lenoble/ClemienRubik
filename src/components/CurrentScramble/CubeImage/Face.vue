@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div v-for="(line, lineIndex) in face" :key="lineIndex" class="container">
+  <div v-for="(line, lineIndex) in face" :key="lineIndex" class="flex">
     <sticker
       v-for="(sticker, stickerIndex) in line"
       :key="stickerIndex"

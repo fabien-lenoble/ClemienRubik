@@ -7,14 +7,14 @@ defineProps<{
 </script>
 
 <template>
-  <div :class="`sticker ${sticker}`"></div>
+  <div
+    :class="`sticker ${sticker}`"
+    class="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 m-px"
+  ></div>
 </template>
 
 <style lang="scss">
 .sticker {
-  height: 32px;
-  width: 32px;
-  margin: 1px;
   &.U {
     background-color: rgb(225, 216, 216);
   }

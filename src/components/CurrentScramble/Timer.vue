@@ -3,17 +3,10 @@ import { useTimer } from "@/composables/timer";
 import { onMounted, onUnmounted } from "vue";
 
 const {
-  isTimerStarted,
-  isTimerOnHold,
   timerValue,
-  startTimer,
-  stopTimer,
   getTimerDisplayValue,
-  holdTimeBeforeStart,
-  holdTime,
-  startHoldTime,
-  stopHoldTime,
-  isSpaceHeldLongEnough,
+  handleTimerTriggerHeld,
+  handleTimerTriggerReleased,
 } = useTimer();
 
 function handleSpaceDown(event: KeyboardEvent) {
@@ -21,23 +14,12 @@ function handleSpaceDown(event: KeyboardEvent) {
     return;
   }
   if (event.code === "Space") {
-    if (!isTimerStarted.value) {
-      startHoldTime();
-    } else {
-      stopTimer();
-    }
+    handleTimerTriggerHeld();
   }
 }
 function handleSpaceUp(event: KeyboardEvent) {
   if (event.code === "Space") {
-    if (
-      !isTimerStarted.value &&
-      isTimerOnHold.value &&
-      isSpaceHeldLongEnough.value
-    ) {
-      startTimer();
-    }
-    stopHoldTime();
+    handleTimerTriggerReleased();
   }
 }
 onMounted(() => {
@@ -52,12 +34,8 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div>
-    <div>
-      hold time (ms) <input type="number" v-model="holdTimeBeforeStart" />
-      {{ holdTime }} vs {{ holdTimeBeforeStart }}
-    </div>
-    <div class="timer">{{ getTimerDisplayValue(timerValue) }}</div>
+  <div class="timer w-fit m-auto">
+    {{ getTimerDisplayValue(timerValue) }}
   </div>
 </template>
 
