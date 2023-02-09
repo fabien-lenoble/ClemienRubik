@@ -14,12 +14,12 @@ const {
 </script>
 
 <template>
-  <div>
-    <div>number of moves <input type="number" v-model="numberOfMoves" /></div>
+  <div class="text-center px-3">
+    <!-- <div>number of moves <input type="number" v-model="numberOfMoves" /></div>
     <div>my seed : {{ baseSessionSeed }}</div>
     <div>current seed : {{ currentScrambleSeed }}</div>
-    <div>mélange # : {{ currentScrambleIndex }}</div>
-    <div>my mélange : {{ stringifiedScramble(currentScramble) }}</div>
+    <div>mélange # : {{ currentScrambleIndex }}</div> -->
+    <div>{{ stringifiedScramble(currentScramble) }}</div>
     <button @click="goToNextScramble">scramble</button>
   </div>
 </template>

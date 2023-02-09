@@ -28,7 +28,16 @@ const timerClass = computed(() => {
 </template>
 
 <style lang="scss">
+body,
+html {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
 .app {
+  height: 100vh;
   &.timer-stopped {
     background-color: #e0e2db50;
   }

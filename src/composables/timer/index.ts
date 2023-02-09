@@ -85,6 +85,25 @@ const isSpaceHeldLongEnough = computed(() => {
   return holdTime.value > holdTimeBeforeStart.value;
 });
 
+function handleTimerTriggerHeld() {
+  if (!isTimerStarted.value) {
+    startHoldTime();
+  } else {
+    stopTimer();
+  }
+}
+
+function handleTimerTriggerReleased() {
+  if (
+    !isTimerStarted.value &&
+    isTimerOnHold.value &&
+    isSpaceHeldLongEnough.value
+  ) {
+    startTimer();
+  }
+  stopHoldTime();
+}
+
 export function useTimer() {
   return {
     startTimer,
@@ -92,6 +111,8 @@ export function useTimer() {
     getTimerDisplayValue,
     startHoldTime,
     stopHoldTime,
+    handleTimerTriggerHeld,
+    handleTimerTriggerReleased,
     isTimerStarted,
     isTimerOnHold,
     timerValue,
