@@ -9,12 +9,10 @@ const cube = computed(() => getScrambledImage(currentScramble.value));
 </script>
 
 <template>
-  <div id="cube-image" class="w-fit m-auto">
+  <div id="cube-image">
     <div id="line1" class="flex">
       <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
-      <div
-        class="basis-1/4 border border-solid border-black border-2 m-px m-0.5 lg:m-1"
-      >
+      <div class="basis-1/4 border-solid border-black border-2 m-px lg:m-1">
         <face :face="cube[0]" :face-index="0" />
       </div>
       <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
@@ -25,7 +23,7 @@ const cube = computed(() => getScrambledImage(currentScramble.value));
       <div
         v-for="n in 4"
         :key="n"
-        class="basis-1/4 border border-solid border-black border-2 m-px m-0.5 lg:m-1"
+        class="basis-1/4 border-solid border-black border-2 m-px lg:m-1"
       >
         <face :face="cube[n]" :face-index="n" />
       </div>
@@ -33,9 +31,7 @@ const cube = computed(() => getScrambledImage(currentScramble.value));
 
     <div id="line3" class="flex">
       <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
-      <div
-        class="basis-1/4 border border-solid border-black border-2 m-px m-0.5 lg:m-1"
-      >
+      <div class="basis-1/4 border-solid border-black border-2 m-px lg:m-1">
         <face :face="cube[5]" :face-index="5" />
       </div>
       <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
