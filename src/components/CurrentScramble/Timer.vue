@@ -34,13 +34,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="timer w-fit m-auto">
+  <div class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-mono">
     {{ getTimerDisplayValue(timerValue) }}
   </div>
 </template>
-
-<style lang="scss">
-.timer {
-  font-size: 120px;
-}
-</style>
