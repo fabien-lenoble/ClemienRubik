@@ -9,34 +9,37 @@ const cube = computed(() => getScrambledImage(currentScramble.value));
 </script>
 
 <template>
-  <div id="cube-image" class="justify-center w-fit m-auto">
+  <div id="cube-image" class="w-fit m-auto">
     <div id="line1" class="flex">
-      <div class="basis-1/4"></div>
-      <div class="basis-1/4 face">
+      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
+      <div
+        class="basis-1/4 border border-solid border-black border-2 m-px m-0.5 lg:m-1"
+      >
         <face :face="cube[0]" :face-index="0" />
       </div>
-      <div class="basis-1/4"></div>
-      <div class="basis-1/4"></div>
+      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
+      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
     </div>
 
     <div id="line2" class="flex">
-      <div v-for="n in 4" :key="n" class="basis-1/4 face">
+      <div
+        v-for="n in 4"
+        :key="n"
+        class="basis-1/4 border border-solid border-black border-2 m-px m-0.5 lg:m-1"
+      >
         <face :face="cube[n]" :face-index="n" />
       </div>
     </div>
 
     <div id="line3" class="flex">
-      <div class="basis-1/4"></div>
-      <div class="basis-1/4 face">
+      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
+      <div
+        class="basis-1/4 border border-solid border-black border-2 m-px m-0.5 lg:m-1"
+      >
         <face :face="cube[5]" :face-index="5" />
       </div>
-      <div class="basis-1/4"></div>
-      <div class="basis-1/4"></div>
+      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
+      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
     </div>
   </div>
 </template>
-<style lang="scss">
-.face {
-  padding: 2px;
-}
-</style>

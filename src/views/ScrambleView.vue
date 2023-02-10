@@ -7,20 +7,14 @@ import { useTimer } from "@/composables/timer";
 
 const { initSeedValues } = useSeed();
 const { initScrambleValues } = useScramble();
-const { isTimerStarted, handleTimerTriggerHeld, handleTimerTriggerReleased } =
-  useTimer();
-
 initSeedValues();
 initScrambleValues();
 </script>
 
 <template>
-  <main class="container mx-auto h-full">
-    <div class="flex justify-center h-full">
-      <current-scramble
-        @touchstart="handleTimerTriggerHeld()"
-        @touchend="handleTimerTriggerReleased()"
-      />
+  <main class="container mx-auto">
+    <div class="flex justify-center h-screen">
+      <current-scramble />
       <!-- <div class="columns-6">
         <scramble-history v-if="!isTimerStarted" />
       </div> -->

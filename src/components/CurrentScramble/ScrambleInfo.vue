@@ -19,7 +19,9 @@ const {
     <div>my seed : {{ baseSessionSeed }}</div>
     <div>current seed : {{ currentScrambleSeed }}</div>
     <div>mélange # : {{ currentScrambleIndex }}</div> -->
-    <div>{{ stringifiedScramble(currentScramble) }}</div>
+    <div class="text-xl md:text-2xl lg:text-3xl xl:text-4xl">
+      {{ stringifiedScramble(currentScramble) }}
+    </div>
     <button @click="goToNextScramble">scramble</button>
   </div>
 </template>
