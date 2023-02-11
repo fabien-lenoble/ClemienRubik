@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTimer } from "@/composables/timer";
 import CubeImage from "./CubeImage/index.vue";
-import BestAverages from "./BestAverages/index.vue";
+import LastAverages from "./LastAverages/index.vue";
 import ScrambleInfo from "./ScrambleInfo.vue";
 import Timer from "./Timer.vue";
 const { isTimerStarted, handleTimerTriggerHeld, handleTimerTriggerReleased } =
@@ -18,8 +18,8 @@ const { isTimerStarted, handleTimerTriggerHeld, handleTimerTriggerReleased } =
     />
     <div class="flex gap-x-3 px-2 md:px-5" v-if="!isTimerStarted">
       <cube-image />
-      <div class="border border-black rounded-md flex-grow">
-        <best-averages />
+      <div class="border-2 border-black rounded-md flex-grow">
+        <last-averages />
       </div>
     </div>
   </div>
