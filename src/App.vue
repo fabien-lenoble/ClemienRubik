@@ -40,6 +40,11 @@ window.addEventListener("resize", () => {
 </template>
 
 <style lang="scss">
+body {
+  height: 100vh; /* Use vh as a fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
+}
+
 body,
 html {
   padding: 0;
@@ -48,8 +53,7 @@ html {
   overflow: hidden;
 }
 .app {
-  height: 100vh; /* Use vh as a fallback for browsers that do not support Custom Properties */
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100%;
   &.timer-stopped {
     background-color: #e0e2db50;
   }
