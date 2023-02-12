@@ -12,8 +12,8 @@ initScrambleValues();
 </script>
 
 <template>
-  <main class="container mx-auto">
-    <div class="flex justify-center h-screen">
+  <main class="container mx-auto h-full">
+    <div class="flex justify-center h-full">
       <current-scramble />
       <!-- <div class="columns-6">
         <scramble-history v-if="!isTimerStarted" />
