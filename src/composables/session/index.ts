@@ -74,6 +74,63 @@ function computeFinalTime(baseTime: Time, state: State): Time {
   }
 }
 
+const lastAo5 = computed(() => {
+  return getLastAoN(5);
+});
+
+const lastAo12 = computed(() => {
+  return getLastAoN(12);
+});
+
+const lastAo100 = computed(() => {
+  return getLastAoN(100, false, false);
+});
+
+const mean = computed(() => {
+  return getLastAoN(countingSessionSolves.value.length, false, false);
+});
+
+function getLastAoN(
+  n: number,
+  shouldCountDNF: boolean = true,
+  shouldRemoveBestAndWorst: boolean = true
+) {
+  const { getTimerDisplayValue } = useTimer();
+
+  if (countingSessionSolves.value.length >= n) {
+    let solves = countingSessionSolves.value.slice(-n);
+
+    if (shouldCountDNF) {
+      if (solves.filter((solve) => solve.state === "DNF").length > 1) {
+        return "DNF";
+      }
+    }
+
+    if (shouldRemoveBestAndWorst) {
+      solves = removeBestAndWorstSolves(solves);
+    }
+
+    const rawAverage = getAverage(solves);
+
+    return getTimerDisplayValue(rawAverage);
+  }
+}
+
+function getAverage(solves: SavedSolve[]) {
+  return Math.floor(computeAverage(solves.map((solve) => solve.finalTime)));
+}
+
+function removeBestAndWorstSolves(solves: SavedSolve[]) {
+  const orderedSolves = solves.sort((solveA, solveB) => {
+    return solveA.finalTime > solveB.finalTime ? 1 : -1;
+  });
+  return orderedSolves.slice(1, orderedSolves.length - 1);
+}
+
+function computeAverage(numbers: number[]) {
+  return numbers.reduce((a, b) => a + b, 0) / numbers.length;
+}
+
 export function useSession() {
   return {
     sessionSolves,
@@ -82,5 +139,9 @@ export function useSession() {
     addSolveToSessionSolves,
     updateSolveState,
     updateSolveNote,
+    lastAo5,
+    lastAo12,
+    lastAo100,
+    mean,
   };
 }
