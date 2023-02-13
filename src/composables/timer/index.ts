@@ -4,9 +4,11 @@ import { useScramble } from "@/composables/scramble";
 import { useSession } from "@/composables/session";
 import { useSeed } from "@/composables/seed";
 import type { DisplayTime, State, Time } from "./types";
+import { useRouter } from "vue-router";
 
-const { currentScramble, goToNextScramble } = useScramble();
-const { currentScrambleSeed } = useSeed();
+const { currentScramble, goToNextScramble, currentScrambleIndex } =
+  useScramble();
+const { currentScrambleSeed, baseSessionSeed } = useSeed();
 const { addSolveToSessionSolves } = useSession();
 
 const timerInterval: Ref<number> = ref(0);
@@ -26,20 +28,6 @@ function startTimer() {
   timerStartedAt.value = performance.now();
   isTimerStarted.value = true;
   timerInterval.value = setInterval(updateTimerValue, 10);
-}
-
-function stopTimer() {
-  // stop updating timer value
-  clearInterval(timerInterval.value);
-  // update timer value one last time (in case we stopped the timer before a new 10ms window (yes we are that precise it's important))
-  updateTimerValue();
-  isTimerStarted.value = false;
-  addSolveToSessionSolves({
-    scramble: currentScramble.value,
-    seed: currentScrambleSeed.value,
-    baseTime: timerValue.value,
-  });
-  goToNextScramble();
 }
 
 function getTimerDisplayValue(
@@ -85,14 +73,6 @@ const isSpaceHeldLongEnough = computed(() => {
   return holdTime.value > holdTimeBeforeStart.value;
 });
 
-function handleTimerTriggerHeld() {
-  if (!isTimerStarted.value) {
-    startHoldTime();
-  } else {
-    stopTimer();
-  }
-}
-
 function handleTimerTriggerReleased() {
   if (
     !isTimerStarted.value &&
@@ -105,6 +85,33 @@ function handleTimerTriggerReleased() {
 }
 
 export function useTimer() {
+  // useRouter can only be used in setup so we have to export all of this in useTimer to be able to push routes
+  const router = useRouter();
+
+  function handleTimerTriggerHeld() {
+    if (!isTimerStarted.value) {
+      startHoldTime();
+    } else {
+      stopTimer();
+    }
+  }
+  function stopTimer() {
+    // stop updating timer value
+    clearInterval(timerInterval.value);
+    // update timer value one last time (in case we stopped the timer before a new 10ms window (yes we are that precise it's important))
+    updateTimerValue();
+    isTimerStarted.value = false;
+    addSolveToSessionSolves({
+      scramble: currentScramble.value,
+      seed: currentScrambleSeed.value,
+      baseTime: timerValue.value,
+    });
+
+    router.push(
+      `/scramble/${baseSessionSeed.value}/${currentScrambleIndex.value + 1}`
+    );
+    goToNextScramble();
+  }
   return {
     startTimer,
     stopTimer,

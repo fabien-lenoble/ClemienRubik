@@ -8,7 +8,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: redirectToScramblePage(),
+      redirect: () => redirectToScramblePage(),
     },
     {
       path: "/scramble/:seed/:scrambleIndex",

@@ -3,15 +3,13 @@ import type { Ref } from "vue";
 import type { Note, SavedSolve, Solve } from "./types";
 import { useTimer } from "@/composables/timer";
 import { useScramble } from "@/composables/scramble";
+import { useSeed } from "@/composables/seed";
+import { useRouter } from "vue-router";
 import type { State, Time } from "@/composables/timer/types";
 
 const sessionSolves: Ref<SavedSolve[]> = ref(
   JSON.parse(localStorage.getItem("sessionSolves") || "[]") as SavedSolve[]
 );
-
-function startNewSession() {
-  setSessionSolves([]);
-}
 
 function setSessionSolves(solves: SavedSolve[]) {
   sessionSolves.value = solves;
@@ -141,6 +139,16 @@ function computeAverage(numbers: number[]) {
 }
 
 export function useSession() {
+  const router = useRouter();
+  const { initSeedValues } = useSeed();
+
+  function startNewSession() {
+    setSessionSolves([]);
+
+    router.push("/");
+    initSeedValues();
+  }
+
   return {
     sessionSolves,
     startNewSession,

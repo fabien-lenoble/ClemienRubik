@@ -27,10 +27,14 @@ const {
     </div>
     <div class="flex gap-5">
       <div class="basis-1/2 text-end">
-        <button @click="goToNextScramble">scramble</button>
+        <button @click="goToNextScramble" @keydown.space.prevent>
+          scramble
+        </button>
       </div>
       <div class="basis-1/2 text-start">
-        <button @click="startNewSession">new session</button>
+        <button @click="startNewSession" @keydown.space.prevent>
+          new session
+        </button>
       </div>
     </div>
   </div>
