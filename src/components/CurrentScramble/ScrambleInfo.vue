@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { useSeed } from "@/composables/seed";
 import { useScramble } from "@/composables/scramble";
+import { useSession } from "@/composables/session";
 
 const { baseSessionSeed, currentScrambleSeed } = useSeed();
+
+const { startNewSession } = useSession();
 
 const {
   numberOfMoves,
@@ -22,6 +25,13 @@ const {
     <div class="text-xl md:text-2xl lg:text-3xl xl:text-4xl">
       {{ stringifiedScramble(currentScramble) }}
     </div>
-    <button @click="goToNextScramble">scramble</button>
+    <div class="flex gap-5">
+      <div class="basis-1/2 text-end">
+        <button @click="goToNextScramble">scramble</button>
+      </div>
+      <div class="basis-1/2 text-start">
+        <button @click="startNewSession">new session</button>
+      </div>
+    </div>
   </div>
 </template>
