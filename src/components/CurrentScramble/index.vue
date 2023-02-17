@@ -1,21 +1,32 @@
 <script setup lang="ts">
+import { useScramble } from "@/composables/scramble";
+import { useSeed } from "@/composables/seed";
 import { useTimer } from "@/composables/timer";
+import { useRouter } from "vue-router";
 import CubeImage from "./CubeImage/index.vue";
 import LastAverages from "./LastAverages/index.vue";
 import ScrambleInfo from "./ScrambleInfo.vue";
 import Timer from "./Timer.vue";
-const { isTimerStarted, handleTimerTriggerHeld, handleTimerTriggerReleased } =
-  useTimer();
+const { isTimerStarted } = useTimer();
+const router = useRouter();
+const { baseSessionSeed } = useSeed();
+const { currentScrambleIndex } = useScramble();
+
+function updateRouteScrambleIndex() {
+  currentScrambleIndex.value++;
+  router.push(
+    `/scramble/${baseSessionSeed.value}/${currentScrambleIndex.value}`
+  );
+}
 </script>
 
 <template>
   <div class="flex flex-col gap-y-5 text-center py-2 md:py-5">
-    <scramble-info v-if="!isTimerStarted" />
-    <timer
-      class="prevent-select w-screen flex-grow flex items-center place-content-center mx-auto"
-      @touchstart="handleTimerTriggerHeld()"
-      @touchend="handleTimerTriggerReleased()"
+    <scramble-info
+      v-if="!isTimerStarted"
+      @update-route-scramble-index="updateRouteScrambleIndex"
     />
+    <timer @update-route-scramble-index="updateRouteScrambleIndex" />
     <div class="flex gap-x-3 px-2 md:px-5" v-if="!isTimerStarted">
       <cube-image />
       <div class="border-2 border-black rounded-md flex-grow">

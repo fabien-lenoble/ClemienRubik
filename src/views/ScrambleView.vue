@@ -2,12 +2,13 @@
 import { useSeed } from "@/composables/seed";
 import { useScramble } from "@/composables/scramble";
 import CurrentScramble from "@/components/CurrentScramble/index.vue";
-import ScrambleHistory from "@/components/ScrambleHistory/index.vue";
-import { useTimer } from "@/composables/timer";
+import { useRoute } from "vue-router";
 
 const { initSeedValues } = useSeed();
 const { initScrambleValues } = useScramble();
-initSeedValues();
+const route = useRoute();
+
+initSeedValues(Number(route.params.seed));
 initScrambleValues();
 </script>
 
@@ -15,9 +16,6 @@ initScrambleValues();
   <main class="container mx-auto h-full">
     <div class="flex justify-center h-full">
       <current-scramble />
-      <!-- <div class="columns-6">
-        <scramble-history v-if="!isTimerStarted" />
-      </div> -->
     </div>
   </main>
 </template>

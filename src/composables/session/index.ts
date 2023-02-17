@@ -3,8 +3,6 @@ import type { Ref } from "vue";
 import type { Note, SavedSolve, Solve } from "./types";
 import { useTimer } from "@/composables/timer";
 import { useScramble } from "@/composables/scramble";
-import { useSeed } from "@/composables/seed";
-import { useRouter } from "vue-router";
 import type { State, Time } from "@/composables/timer/types";
 
 const sessionSolves: Ref<SavedSolve[]> = ref(
@@ -138,17 +136,11 @@ function computeAverage(numbers: number[]) {
   return numbers.reduce((a, b) => a + b, 0) / numbers.length;
 }
 
+function startNewSession() {
+  setSessionSolves([]);
+}
+
 export function useSession() {
-  const router = useRouter();
-  const { initSeedValues } = useSeed();
-
-  function startNewSession() {
-    setSessionSolves([]);
-
-    router.push("/");
-    initSeedValues();
-  }
-
   return {
     sessionSolves,
     startNewSession,

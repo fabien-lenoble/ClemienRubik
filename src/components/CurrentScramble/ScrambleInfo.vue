@@ -1,27 +1,29 @@
 <script setup lang="ts">
-import { useSeed } from "@/composables/seed";
 import { useScramble } from "@/composables/scramble";
 import { useSession } from "@/composables/session";
+import { useRouter } from "vue-router";
 
-const { baseSessionSeed, currentScrambleSeed } = useSeed();
+const router = useRouter();
 
-const { startNewSession } = useSession();
+const emit = defineEmits<{
+  (e: "updateRouteScrambleIndex"): void;
+}>();
 
-const {
-  numberOfMoves,
-  stringifiedScramble,
-  currentScrambleIndex,
-  goToNextScramble,
-  currentScramble,
-} = useScramble();
+const { stringifiedScramble, currentScramble } = useScramble();
+
+function goToNextScramble() {
+  useScramble().goToNextScramble();
+  emit("updateRouteScrambleIndex");
+}
+
+function startNewSession() {
+  useSession().startNewSession();
+  router.push("/");
+}
 </script>
 
 <template>
   <div class="text-center px-3">
-    <!-- <div>number of moves <input type="number" v-model="numberOfMoves" /></div>
-    <div>my seed : {{ baseSessionSeed }}</div>
-    <div>current seed : {{ currentScrambleSeed }}</div>
-    <div>mélange # : {{ currentScrambleIndex }}</div> -->
     <div class="text-xl md:text-2xl lg:text-3xl xl:text-4xl">
       {{ stringifiedScramble(currentScramble) }}
     </div>
