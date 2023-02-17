@@ -9,6 +9,11 @@ const sessionSolves: Ref<SavedSolve[]> = ref(
   JSON.parse(localStorage.getItem("sessionSolves") || "[]") as SavedSolve[]
 );
 
+function setSessionSolves(solves: SavedSolve[]) {
+  sessionSolves.value = solves;
+  localStorage.setItem("sessionSolves", JSON.stringify(solves));
+}
+
 // solves that count when we will want to look for the personal bests (single, Ao5, Ao12, ...)
 const countingSessionSolves = computed(() => {
   return sessionSolves.value.filter(
@@ -131,9 +136,14 @@ function computeAverage(numbers: number[]) {
   return numbers.reduce((a, b) => a + b, 0) / numbers.length;
 }
 
+function startNewSession() {
+  setSessionSolves([]);
+}
+
 export function useSession() {
   return {
     sessionSolves,
+    startNewSession,
     getPersonalBest,
     countingSessionSolves,
     addSolveToSessionSolves,

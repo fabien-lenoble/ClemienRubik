@@ -28,20 +28,6 @@ function startTimer() {
   timerInterval.value = setInterval(updateTimerValue, 10);
 }
 
-function stopTimer() {
-  // stop updating timer value
-  clearInterval(timerInterval.value);
-  // update timer value one last time (in case we stopped the timer before a new 10ms window (yes we are that precise it's important))
-  updateTimerValue();
-  isTimerStarted.value = false;
-  addSolveToSessionSolves({
-    scramble: currentScramble.value,
-    seed: currentScrambleSeed.value,
-    baseTime: timerValue.value,
-  });
-  goToNextScramble();
-}
-
 function getTimerDisplayValue(
   timeInMilliseconds: Time,
   state?: State
@@ -85,23 +71,19 @@ const isSpaceHeldLongEnough = computed(() => {
   return holdTime.value > holdTimeBeforeStart.value;
 });
 
-function handleTimerTriggerHeld() {
-  if (!isTimerStarted.value) {
-    startHoldTime();
-  } else {
-    stopTimer();
-  }
-}
+function stopTimer() {
+  // stop updating timer value
+  clearInterval(timerInterval.value);
+  // update timer value one last time (in case we stopped the timer before a new 10ms window (yes we are that precise it's important))
+  updateTimerValue();
+  isTimerStarted.value = false;
+  addSolveToSessionSolves({
+    scramble: currentScramble.value,
+    seed: currentScrambleSeed.value,
+    baseTime: timerValue.value,
+  });
 
-function handleTimerTriggerReleased() {
-  if (
-    !isTimerStarted.value &&
-    isTimerOnHold.value &&
-    isSpaceHeldLongEnough.value
-  ) {
-    startTimer();
-  }
-  stopHoldTime();
+  goToNextScramble();
 }
 
 export function useTimer() {
@@ -111,8 +93,6 @@ export function useTimer() {
     getTimerDisplayValue,
     startHoldTime,
     stopHoldTime,
-    handleTimerTriggerHeld,
-    handleTimerTriggerReleased,
     isTimerStarted,
     isTimerOnHold,
     timerValue,

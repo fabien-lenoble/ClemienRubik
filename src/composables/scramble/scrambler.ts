@@ -27,7 +27,9 @@ const moveSet: MoveSet = [
 
 function initScrambleValues() {
   const route = useRoute();
-  goToScrambleIndex(Number(route.params.scrambleIndex));
+  const scrambleIndex = Number(route.params.scrambleIndex);
+  goToScrambleIndex(scrambleIndex);
+  currentScrambleIndex.value = scrambleIndex;
 }
 
 // function to go to a specific scramble in the seeded session
@@ -44,8 +46,7 @@ function goToNextScramble() {
     scramblesHistory.value.push(currentScramble.value);
   }
   currentScrambleSeed.value = lastGeneratedSeed.value;
-  currentScramble.value = generateScramble();
-  currentScrambleIndex.value++;
+  generateScramble();
 }
 
 function generateScramble() {
@@ -70,7 +71,7 @@ function generateScramble() {
     secondToLastSubMoveSetIndex = lastSubMoveSetIndex;
     lastSubMoveSetIndex = currentSubMoveSetIndex;
   }
-  return scramble;
+  currentScramble.value = scramble;
 }
 
 function pickSubMoveSetIndex(
