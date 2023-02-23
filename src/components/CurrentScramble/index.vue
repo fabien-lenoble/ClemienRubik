@@ -5,7 +5,7 @@ import { useTimer } from "@/composables/timer";
 import { useRouter } from "vue-router";
 import CubeImage from "./CubeImage/index.vue";
 import LastAverages from "./LastAverages/index.vue";
-import ScrambleInfo from "./ScrambleInfo.vue";
+import ScrambleInfo from "./ScrambleInfo/index.vue";
 import Timer from "./Timer.vue";
 const { isTimerStarted } = useTimer();
 const router = useRouter();

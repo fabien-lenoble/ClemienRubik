@@ -13,6 +13,8 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.9",
     "@heroicons/vue": "^2.0.15",
+    "@types/qrcode": "^1.5.0",
+    "qrcode": "^1.5.1",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },
