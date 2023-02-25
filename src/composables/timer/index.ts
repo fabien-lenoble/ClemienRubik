@@ -9,15 +9,18 @@ const { currentScramble, goToNextScramble } = useScramble();
 const { currentScrambleSeed } = useSeed();
 const { addSolveToSessionSolves } = useSession();
 
-const timerInterval: Ref<number> = ref(0);
+const timerInterval: Ref<ReturnType<typeof setInterval>> = ref(
+  setTimeout(() => {})
+);
+const holdTimeInterval: Ref<ReturnType<typeof setInterval>> = ref(
+  setTimeout(() => {})
+);
 const isTimerStarted: Ref<Boolean> = ref(false);
 const isTimerOnHold: Ref<Boolean> = ref(false);
 const timerValue: Ref<Time> = ref(0);
 const timerStartedAt: Ref<Time> = ref(0);
 const holdTimeBeforeStart: Ref<Time> = ref(30);
 const holdTime = ref(0);
-const holdTimeInterval = ref(0);
-
 function updateTimerValue() {
   timerValue.value = Math.floor(performance.now() - timerStartedAt.value);
 }
