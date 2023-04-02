@@ -6,7 +6,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "lib": ["dom", "es2021"]
+    "lib": ["dom", "es2021"],
+    "types": ["dom-screen-wake-lock"]
   },
 
   "references": [

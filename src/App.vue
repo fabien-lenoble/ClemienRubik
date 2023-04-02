@@ -31,6 +31,13 @@ window.addEventListener("resize", () => {
   const vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 });
+
+// create an async function to request a wake lock
+try {
+  await navigator.wakeLock.request("screen");
+} catch (err) {
+  console.error(err);
+}
 </script>
 
 <template>
