@@ -8,3 +8,10 @@ const app = createApp(App);
 app.use(router);
 
 app.mount("#app");
+
+// create an async function to request a wake lock
+try {
+  await navigator?.wakeLock.request("screen");
+} catch (err) {
+  console.error(err);
+}
