@@ -14,9 +14,40 @@ function copyUrl() {
   copyLinkClicked.value = true;
 }
 
+function hasGetUserMedia() {
+  return !!(
+    navigator?.getUserMedia ||
+    navigator?.webkitGetUserMedia ||
+    navigator?.mozGetUserMedia ||
+    navigator?.msGetUserMedia
+  );
+}
+
 async function getMedia() {
   try {
-    return await navigator.mediaDevices.getUserMedia();
+    if (hasGetUserMedia()) {
+      var errorCallback = function (e) {
+        console.log("Reeeejected!", e);
+      };
+
+      // Not showing vendor prefixes.
+      navigator.getUserMedia(
+        { video: true, audio: true },
+        function (localMediaStream) {
+          var video = document.querySelector("video");
+          video.src = window.URL.createObjectURL(localMediaStream);
+
+          // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
+          // See crbug.com/110938.
+          video.onloadedmetadata = function (e) {
+            // Ready to go. Do some stuff.
+          };
+        },
+        errorCallback
+      );
+    } else {
+      alert("getUserMedia() is not supported in your browser");
+    }
     /* use the stream */
   } catch (err) {
     /* handle the error */
@@ -64,6 +95,7 @@ async function getMedia() {
             </button>
           </div>
           <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+            <video autoplay></video>
             <button
               type="button"
               class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
