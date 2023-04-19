@@ -15,11 +15,12 @@ function copyUrl() {
 }
 
 function hasGetUserMedia() {
+  const nav = navigator as any;
   return !!(
-    navigator?.getUserMedia ||
-    navigator?.webkitGetUserMedia ||
-    navigator?.mozGetUserMedia ||
-    navigator?.msGetUserMedia
+    nav.getUserMedia ||
+    nav.webkitGetUserMedia ||
+    nav.mozGetUserMedia ||
+    nav.msGetUserMedia
   );
 }
 
@@ -31,17 +32,19 @@ async function getMedia() {
       };
 
       // Not showing vendor prefixes.
-      navigator.getUserMedia(
+      (navigator as any).getUserMedia(
         { video: true, audio: true },
-        function (localMediaStream) {
+        function (localMediaStream: Blob) {
           var video = document.querySelector("video");
-          video.src = window.URL.createObjectURL(localMediaStream);
+          if (video) {
+            video.src = window.URL.createObjectURL(localMediaStream);
 
-          // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
-          // See crbug.com/110938.
-          video.onloadedmetadata = function (e) {
-            // Ready to go. Do some stuff.
-          };
+            // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
+            // See crbug.com/110938.
+            video.onloadedmetadata = function (e) {
+              // Ready to go. Do some stuff.
+            };
+          }
         },
         errorCallback
       );
