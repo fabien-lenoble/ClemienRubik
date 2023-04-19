@@ -20,7 +20,8 @@ function hasGetUserMedia() {
     nav.getUserMedia ||
     nav.webkitGetUserMedia ||
     nav.mozGetUserMedia ||
-    nav.msGetUserMedia
+    nav.msGetUserMedia ||
+    nav.mediaDevices?.getUserMedia
   );
 }
 
@@ -28,8 +29,8 @@ async function getMedia() {
   try {
     if (hasGetUserMedia()) {
       // Not showing vendor prefixes.
-      (navigator as any).getUserMedia(
-        { video: true, audio: true },
+      (navigator as any).mediaDevices?.getUserMedia(
+        { video: true },
         function (localMediaStream: Blob) {
           var video = document.querySelector("video");
           if (video) {
