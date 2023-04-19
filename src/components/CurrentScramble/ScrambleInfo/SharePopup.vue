@@ -14,36 +14,23 @@ function copyUrl() {
   copyLinkClicked.value = true;
 }
 
-function hasGetUserMedia() {
-  const nav = navigator as any;
-  return !!(
-    nav.getUserMedia ||
-    nav.webkitGetUserMedia ||
-    nav.mozGetUserMedia ||
-    nav.msGetUserMedia ||
-    nav.mediaDevices?.getUserMedia
-  );
-}
-
-async function getMedia() {
+async function openCamera() {
   try {
-    if (hasGetUserMedia()) {
-      // Not showing vendor prefixes.
-      (navigator as any).mediaDevices?.getUserMedia(
-        { video: true },
-        function (localMediaStream: Blob) {
-          var video = document.querySelector("video");
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia()
+        .then(function (mediaStream) {
+          const video = document.querySelector("video");
           if (video) {
-            video.src = window.URL.createObjectURL(localMediaStream);
-
-            // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
-            // See crbug.com/110938.
-            video.onloadedmetadata = function (e) {
-              // Ready to go. Do some stuff.
+            video.srcObject = mediaStream;
+            video.onloadedmetadata = function () {
+              video.play();
             };
           }
-        }
-      );
+        })
+        .catch(function (err) {
+          console.log(err.name + ": " + err.message);
+        });
     } else {
       alert("getUserMedia() is not supported in your browser");
     }
@@ -98,7 +85,7 @@ async function getMedia() {
             <button
               type="button"
               class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-              @click="getMedia()"
+              @click="openCamera()"
             >
               Join session
             </button>
@@ -117,3 +104,8 @@ async function getMedia() {
     </div>
   </div>
 </template>
+
+<style lang="sass">
+video
+  display: none
+</style>
