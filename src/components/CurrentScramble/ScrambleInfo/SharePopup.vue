@@ -27,10 +27,6 @@ function hasGetUserMedia() {
 async function getMedia() {
   try {
     if (hasGetUserMedia()) {
-      var errorCallback = function (e) {
-        console.log("Reeeejected!", e);
-      };
-
       // Not showing vendor prefixes.
       (navigator as any).getUserMedia(
         { video: true, audio: true },
@@ -45,8 +41,7 @@ async function getMedia() {
               // Ready to go. Do some stuff.
             };
           }
-        },
-        errorCallback
+        }
       );
     } else {
       alert("getUserMedia() is not supported in your browser");
