@@ -19,15 +19,6 @@ async function openCamera() {
     if (navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia({ audio: false, video: { facingMode: "environment" } })
-        .then(function (mediaStream) {
-          const video = document.querySelector("video");
-          if (video) {
-            video.srcObject = mediaStream;
-            video.onloadedmetadata = function () {
-              video.play();
-            };
-          }
-        })
         .catch(function (err) {
           console.log(err.name + ": " + err.message);
         });
