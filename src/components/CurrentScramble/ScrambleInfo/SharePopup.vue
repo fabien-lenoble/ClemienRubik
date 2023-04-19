@@ -18,7 +18,7 @@ async function openCamera() {
   try {
     if (navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
-        .getUserMedia({ audio: false, video: { width: 1280, height: 720 } })
+        .getUserMedia({ audio: false, video: { facingMode: "environment" } })
         .then(function (mediaStream) {
           const video = document.querySelector("video");
           if (video) {
