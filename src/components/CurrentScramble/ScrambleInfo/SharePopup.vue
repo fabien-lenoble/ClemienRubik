@@ -18,7 +18,7 @@ async function openCamera() {
   try {
     if (navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
-        .getUserMedia()
+        .getUserMedia({ audio: false, video: { width: 1280, height: 720 } })
         .then(function (mediaStream) {
           const video = document.querySelector("video");
           if (video) {
@@ -105,7 +105,8 @@ async function openCamera() {
   </div>
 </template>
 
-<style lang="sass">
-video
-  display: none
+<style lang="scss">
+video {
+  display: none !important;
+}
 </style>
