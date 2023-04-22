@@ -67,6 +67,16 @@ onUnmounted(() => {
     @touchstart="handleTimerTriggerHeld()"
     @touchend="handleTimerTriggerReleased()"
   >
-    {{ getTimerDisplayValue(timerValue) }}
+    <p class="text-outline">
+      {{ getTimerDisplayValue(timerValue) }}
+    </p>
   </div>
 </template>
+
+<style lang="scss">
+.text-outline {
+  text-shadow: -2px -2px 0 #004643, 2px -2px 0 #004643, -2px 2px 0 #004643,
+    2px 2px 0 #004643;
+  color: white;
+}
+</style>

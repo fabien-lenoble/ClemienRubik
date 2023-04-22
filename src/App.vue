@@ -34,7 +34,13 @@ window.addEventListener("resize", () => {
 </script>
 
 <template>
-  <div class="app" :class="`timer-${timerClass}`">
+  <div
+    class="app"
+    :class="{
+      [`timer-${timerClass}`]: true,
+      'background-shown': !isTimerStarted,
+    }"
+  >
     <RouterView />
   </div>
 </template>
@@ -55,7 +61,7 @@ html {
 .app {
   height: 100%;
   &.timer-stopped {
-    background-color: #e0e2db50;
+    background-color: #faf4d3;
   }
   &.timer-held {
     background-color: #ee353572;
@@ -66,5 +72,12 @@ html {
   &.timer-started {
     background-color: #4897345c;
   }
+}
+
+.background-shown {
+  background-image: url("assets/background-image.png");
+  background-repeat: no-repeat;
+  background-size: 40%;
+  background-position: bottom 75% right 50%;
 }
 </style>

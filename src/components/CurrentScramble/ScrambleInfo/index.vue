@@ -35,7 +35,7 @@ function join() {
 
 <template>
   <div class="text-center px-3">
-    <div class="text-xl md:text-2xl lg:text-3xl xl:text-4xl">
+    <div class="word-spacing text-xl md:text-2xl lg:text-3xl xl:text-4xl">
       {{ stringifiedScramble(currentScramble) }}
     </div>
     <div class="flex gap-5">
@@ -60,3 +60,9 @@ function join() {
     </div>
   </div>
 </template>
+
+<style lang="scss">
+.word-spacing {
+  word-spacing: 5px;
+}
+</style>

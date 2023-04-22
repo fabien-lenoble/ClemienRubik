@@ -8,30 +8,30 @@ defineProps<{
 
 <template>
   <div
-    :class="`sticker ${sticker}`"
-    class="w-2 h-2 md:w-4 md:h-4 xl:w-6 xl:h-6 m-px"
+    :class="sticker"
+    class="sticker w-2 h-2 md:w-4 md:h-4 xl:w-6 xl:h-6 border"
   ></div>
 </template>
 
 <style lang="scss">
 .sticker {
   &.U {
-    background-color: rgb(225, 216, 216);
+    background-color: #ffffff;
   }
   &.L {
-    background-color: orange;
+    background-color: #ff5800;
   }
   &.F {
-    background-color: green;
+    background-color: #009b48;
   }
   &.R {
-    background-color: red;
+    background-color: #b71234;
   }
   &.B {
-    background-color: blue;
+    background-color: #0046ad;
   }
   &.D {
-    background-color: yellow;
+    background-color: #ffd500;
   }
 }
 </style>
