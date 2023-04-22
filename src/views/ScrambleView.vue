@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onUpdated, onMounted } from "vue";
 import { useSeed } from "@/composables/seed";
 import { useScramble } from "@/composables/scramble";
 import { useSession } from "@/composables/session";
@@ -15,14 +15,17 @@ const router = useRouter();
 initSeedValues(Number(route.params.seed));
 initScrambleValues();
 
-onMounted(() => {
+function checkResetSession() {
   if (route.name === "join") {
     if (confirm("Do you wish to reset your session?")) {
       startNewSession();
     }
     router.push(route.fullPath.replace("join", "scramble"));
   }
-});
+}
+
+onMounted(() => checkResetSession());
+onUpdated(() => checkResetSession());
 </script>
 
 <template>

@@ -3,8 +3,9 @@ import { useScramble } from "@/composables/scramble";
 import { useSession } from "@/composables/session";
 import { useRouter } from "vue-router";
 import SharePopup from "./SharePopup.vue";
+import JoinPopup from "./JoinPopup.vue";
 import { useShare } from "@/composables/share";
-const { isShareModalOpen } = useShare();
+const { isShareModalOpen, isJoinModalOpen } = useShare();
 
 const router = useRouter();
 
@@ -27,6 +28,9 @@ function startNewSession() {
 function share() {
   isShareModalOpen.value = true;
 }
+function join() {
+  isJoinModalOpen.value = true;
+}
 </script>
 
 <template>
@@ -35,20 +39,24 @@ function share() {
       {{ stringifiedScramble(currentScramble) }}
     </div>
     <div class="flex gap-5">
-      <div class="basis-1/3">
+      <div class="basis-1/4">
         <button @click="goToNextScramble" @keydown.space.prevent>
           scramble
         </button>
       </div>
-      <div class="basis-1/3">
+      <div class="basis-1/4">
         <button @click="startNewSession" @keydown.space.prevent>
           new session
         </button>
       </div>
-      <div class="basis-1/3">
+      <div class="basis-1/4">
         <button @click="share" @keydown.space.prevent>share</button>
       </div>
+      <div class="basis-1/4">
+        <button @click="join" @keydown.space.prevent>join</button>
+      </div>
       <share-popup v-if="isShareModalOpen"></share-popup>
+      <join-popup v-if="isJoinModalOpen"></join-popup>
     </div>
   </div>
 </template>
