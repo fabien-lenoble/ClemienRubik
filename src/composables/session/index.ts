@@ -102,7 +102,7 @@ function getLastAoN(
 ) {
   const { getTimerDisplayValue } = useTimer();
 
-  if (countingSessionSolves.value.length >= n) {
+  if (n && countingSessionSolves.value.length >= n) {
     let solves = countingSessionSolves.value.slice(-n);
 
     if (shouldCountDNF) {

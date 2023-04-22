@@ -9,7 +9,7 @@ defineProps<{
 <template>
   <div
     :class="sticker"
-    class="sticker w-2 h-2 md:w-4 md:h-4 xl:w-6 xl:h-6 border"
+    class="sticker w-2 h-2 md:w-4 md:h-4 xl:w-6 xl:h-6 border border-black"
   ></div>
 </template>
 
