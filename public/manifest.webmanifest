@@ -1,0 +1,16 @@
+{
+    "short_name": "RumixCube",
+    "name": "RumixCube",
+    "theme_color": "#eb5252",
+    "background_color": "#000000",
+    "display": "fullscreen",
+    "Scope": "/",
+    "orientation": "portrait",
+    "icons": [
+      {
+        "src": "favicon.ico",
+        "type": "image/png",
+        "sizes": "48x48"
+      }
+    ]
+  }
