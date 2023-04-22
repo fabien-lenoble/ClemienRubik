@@ -16,6 +16,11 @@ const router = createRouter({
       name: "scramble",
       component: ScrambleView,
     },
+    {
+      path: "/join/:seed/:scrambleIndex",
+      name: "join",
+      component: ScrambleView,
+    },
   ],
 });
 

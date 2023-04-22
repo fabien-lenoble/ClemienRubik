@@ -3,32 +3,18 @@ import { ref, onMounted } from "vue";
 import QRCode from "qrcode";
 import { useShare } from "@/composables/share";
 const { isShareModalOpen } = useShare();
+
+const shareUrl = window.location.href.replace("scramble", "join");
+
 onMounted(() => {
   const canvas = document.getElementById("canvas");
-  QRCode.toCanvas(canvas, window.location.href, () => {});
+  QRCode.toCanvas(canvas, shareUrl, () => {});
 });
 const copyLinkClicked = ref(false);
 
 function copyUrl() {
-  navigator.clipboard.writeText(window.location.href);
+  navigator.clipboard.writeText(shareUrl);
   copyLinkClicked.value = true;
-}
-
-async function openCamera() {
-  try {
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ audio: false, video: { facingMode: "environment" } })
-        .catch(function (err) {
-          console.log(err.name + ": " + err.message);
-        });
-    } else {
-      alert("getUserMedia() is not supported in your browser");
-    }
-    /* use the stream */
-  } catch (err) {
-    /* handle the error */
-  }
 }
 </script>
 
@@ -72,16 +58,6 @@ async function openCamera() {
             </button>
           </div>
           <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-            <video autoplay></video>
-            <button
-              type="button"
-              class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-              @click="openCamera()"
-            >
-              Join session
-            </button>
-          </div>
-          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
             <button
               type="button"
               class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
@@ -95,9 +71,3 @@ async function openCamera() {
     </div>
   </div>
 </template>
-
-<style lang="scss">
-video {
-  display: none !important;
-}
-</style>
