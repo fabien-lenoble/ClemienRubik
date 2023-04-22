@@ -6,7 +6,7 @@ const router = useRouter();
 const { isJoinModalOpen } = useShare();
 function updateDecodedValue(stream: string) {
   if (stream.match(/https:\/\/www\.rumixcube\.fr\/join\/[0-9]+\/[0-9]+$/)) {
-    if (confirm("Join session?")) {
+    if (confirm && confirm("Join session?")) {
       isJoinModalOpen.value = false;
       router.push("/join" + stream.split("join")[1]);
     }
