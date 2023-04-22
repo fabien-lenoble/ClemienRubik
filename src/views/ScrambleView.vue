@@ -12,10 +12,10 @@ const { startNewSession } = useSession();
 const route = useRoute();
 const router = useRouter();
 
-initSeedValues(Number(route.params.seed));
-initScrambleValues();
+function init() {
+  initSeedValues(Number(route.params.seed));
+  initScrambleValues();
 
-function checkResetSession() {
   if (route.name === "join") {
     if (confirm("Do you wish to reset your session?")) {
       startNewSession();
@@ -24,8 +24,8 @@ function checkResetSession() {
   }
 }
 
-onMounted(() => checkResetSession());
-onUpdated(() => checkResetSession());
+onMounted(() => init());
+onUpdated(() => init());
 </script>
 
 <template>
