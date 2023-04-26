@@ -40,20 +40,22 @@ function join() {
     </div>
     <div class="flex gap-5">
       <div class="basis-1/4">
-        <button @click="goToNextScramble" @keydown.space.prevent>
+        <button @click="goToNextScramble" @keydown.space.prevent type="button">
           scramble
         </button>
       </div>
       <div class="basis-1/4">
-        <button @click="startNewSession" @keydown.space.prevent>
+        <button @click="startNewSession" @keydown.space.prevent type="button">
           new session
         </button>
       </div>
       <div class="basis-1/4">
-        <button @click="share" @keydown.space.prevent>share</button>
+        <button @click="share" @keydown.space.prevent type="button">
+          share
+        </button>
       </div>
       <div class="basis-1/4">
-        <button @click="join" @keydown.space.prevent>join</button>
+        <button @click="join" @keydown.space.prevent type="button">join</button>
       </div>
       <share-popup v-if="isShareModalOpen"></share-popup>
       <join-popup v-if="isJoinModalOpen"></join-popup>
