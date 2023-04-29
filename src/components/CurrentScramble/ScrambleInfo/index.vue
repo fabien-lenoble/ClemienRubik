@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useScramble } from "@/composables/scramble";
 import { useSession } from "@/composables/session";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import SharePopup from "./SharePopup.vue";
 import JoinPopup from "./JoinPopup.vue";
 import { useShare } from "@/composables/share";
 const { isShareModalOpen, isJoinModalOpen } = useShare();
 
 const router = useRouter();
+const route = useRoute();
 
 const emit = defineEmits<{
   (e: "updateRouteScrambleIndex"): void;
@@ -31,12 +32,19 @@ function share() {
 function join() {
   isJoinModalOpen.value = true;
 }
+
+function goToSolves() {
+  router.push("/solves");
+}
 </script>
 
 <template>
   <div class="text-center px-3">
     <div class="word-spacing text-xl md:text-2xl lg:text-3xl xl:text-4xl">
       {{ stringifiedScramble(currentScramble) }}
+    </div>
+    <div class="text-xs">
+      seed: {{ route.params.seed }} scramble: {{ route.params.scrambleIndex }}
     </div>
     <div class="flex gap-5">
       <div class="basis-1/4">
@@ -56,6 +64,11 @@ function join() {
       </div>
       <div class="basis-1/4">
         <button @click="join" @keydown.space.prevent type="button">join</button>
+      </div>
+      <div class="basis-1/4">
+        <button @click="goToSolves()" @keydown.space.prevent type="button">
+          solves
+        </button>
       </div>
       <share-popup v-if="isShareModalOpen"></share-popup>
       <join-popup v-if="isJoinModalOpen"></join-popup>

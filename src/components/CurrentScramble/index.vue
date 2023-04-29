@@ -10,7 +10,7 @@ import Timer from "./Timer.vue";
 const { isTimerStarted } = useTimer();
 const router = useRouter();
 const { baseSessionSeed } = useSeed();
-const { currentScrambleIndex } = useScramble();
+const { currentScrambleIndex, currentScramble } = useScramble();
 
 function updateRouteScrambleIndex() {
   currentScrambleIndex.value++;
@@ -28,7 +28,7 @@ function updateRouteScrambleIndex() {
     />
     <timer @update-route-scramble-index="updateRouteScrambleIndex" />
     <div class="flex gap-x-3 px-2 md:px-5" v-if="!isTimerStarted">
-      <cube-image />
+      <cube-image :scramble="currentScramble" />
       <div class="border-2 border-black rounded-md flex-grow">
         <last-averages />
       </div>

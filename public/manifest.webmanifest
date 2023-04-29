@@ -4,7 +4,6 @@
     "theme_color": "#faf4d3",
     "background_color": "#000000",
     "display": "fullscreen",
-    "start_url": "https://rumixcube.fr",
     "scope": "/",
     "orientation": "portrait",
     "icons": [

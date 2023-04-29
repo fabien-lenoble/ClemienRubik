@@ -29,9 +29,7 @@ onUpdated(() => init());
 </script>
 
 <template>
-  <main class="container mx-auto h-full">
-    <div class="flex justify-center h-full">
-      <current-scramble />
-    </div>
-  </main>
+  <div class="flex justify-center h-full">
+    <current-scramble />
+  </div>
 </template>

@@ -3,9 +3,14 @@ import { computed } from "vue";
 import Face from "./Face.vue";
 
 import { useScramble } from "@/composables/scramble";
+import type { Scramble } from "@/composables/scramble/types";
 
-const { getScrambledImage, currentScramble } = useScramble();
-const cube = computed(() => getScrambledImage(currentScramble.value));
+const props = defineProps<{
+  scramble: Scramble;
+}>();
+
+const { getScrambledImage } = useScramble();
+const cube = computed(() => getScrambledImage(props.scramble));
 </script>
 
 <template>

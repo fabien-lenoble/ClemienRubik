@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
 import { useTimer } from "@/composables/timer";
 const { isTimerStarted, isTimerOnHold, isSpaceHeldLongEnough } = useTimer();
 
@@ -18,6 +18,10 @@ const timerClass = computed(() => {
       return "stopped";
     }
   }
+});
+
+const isBackgroundImageShown = computed(() => {
+  return !isTimerStarted.value && useRoute().name === "scramble";
 });
 
 // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
@@ -38,10 +42,12 @@ window.addEventListener("resize", () => {
     class="app"
     :class="{
       [`timer-${timerClass}`]: true,
-      'background-shown': !isTimerStarted,
+      'background-shown': isBackgroundImageShown,
     }"
   >
-    <RouterView />
+    <main class="container mx-auto h-full">
+      <RouterView />
+    </main>
   </div>
 </template>
 
@@ -60,6 +66,7 @@ html {
 }
 .app {
   height: 100%;
+  padding-bottom: 12px;
   &.timer-stopped {
     background-color: #faf4d3;
   }

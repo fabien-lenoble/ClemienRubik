@@ -29,7 +29,8 @@ const countingSessionSolves = computed(() => {
 // });
 
 const getPersonalBest = computed(() => {
-  return countingSessionSolves.value.sort((solveA, solveB) => {
+  const countingSessionSolvesCopy = [...countingSessionSolves.value];
+  return countingSessionSolvesCopy.sort((solveA, solveB) => {
     return solveA.finalTime < solveB.finalTime ? -1 : 1;
   })[0];
 });
@@ -126,10 +127,13 @@ function getAverage(solves: SavedSolve[]) {
 }
 
 function removeBestAndWorstSolves(solves: SavedSolve[]) {
-  const orderedSolves = solves.sort((solveA, solveB) => {
-    return solveA.finalTime > solveB.finalTime ? 1 : -1;
-  });
-  return orderedSolves.slice(1, orderedSolves.length - 1);
+  let orderedSolvesCopy = JSON.parse(JSON.stringify(solves));
+  orderedSolvesCopy = (orderedSolvesCopy as SavedSolve[]).sort(
+    (solveA, solveB) => {
+      return solveA.finalTime > solveB.finalTime ? 1 : -1;
+    }
+  );
+  return orderedSolvesCopy.slice(1, orderedSolvesCopy.length - 1);
 }
 
 function computeAverage(numbers: number[]) {
