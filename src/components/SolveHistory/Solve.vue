@@ -32,10 +32,10 @@ function updateSelectedSolve() {
     @click="updateSelectedSolve()"
   >
     {{ solve.displayTime }}
-    <div class="absolute bottom-1 right-1 text-lg" v-if="isWorst || isBest">
+    <div class="absolute bottom-2 right-1 text-lg" v-if="isWorst || isBest">
       <svg
-        width="20px"
-        height="20px"
+        width="14px"
+        height="14px"
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"

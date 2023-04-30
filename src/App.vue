@@ -45,8 +45,10 @@ window.addEventListener("resize", () => {
       'background-shown': isBackgroundImageShown,
     }"
   >
-    <main class="container mx-auto h-full">
-      <RouterView />
+    <main class="container mx-auto h-full py-5">
+      <div class="flex flex-col h-full gap-y-5">
+        <RouterView />
+      </div>
     </main>
   </div>
 </template>

@@ -35,7 +35,7 @@ function join() {
 </script>
 
 <template>
-  <div class="text-center px-3">
+  <div class="text-center">
     <div class="word-spacing text-xl md:text-2xl lg:text-3xl xl:text-4xl">
       {{ stringifiedScramble(currentScramble) }}
     </div>

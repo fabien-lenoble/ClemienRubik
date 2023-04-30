@@ -106,43 +106,41 @@ function goBack() {
 </script>
 
 <template>
-  <div class="flex flex-col h-full gap-y-5">
-    <div class="flex">
-      <button type="button" @click="goBack">back</button>
-    </div>
-    <template v-if="reversedSolves.length > 0">
-      <div>
-        {{ currentSelectedSolve.displayScramble }}
-      </div>
-      <div class="flex justify-between">
-        <div class="flex text-4xl">
-          {{ currentSelectedSolve.displayTime }}
-        </div>
-        <div class="flex">
-          <cube-image :scramble="currentSelectedSolve.scramble" />
-        </div>
-      </div>
-      <div class="grid grid-cols-3 px-2 overflow-y-scroll">
-        <solve
-          v-for="(solve, index) in reversedSolves"
-          :id="`solve-${index}`"
-          :key="index"
-          :solve="solve"
-          :index="index"
-          :is-selected="index === currentSelectedSolveIndex"
-          :is-best="isBest(validSessionSolves.length - 1 - index)"
-          :is-worst="isWorst(validSessionSolves.length - 1 - index)"
-          :is-in-best-ao-n="
-            isIndexInCurrentBestAoN(validSessionSolves.length - 1 - index)
-          "
-          @update-selected-solve="updateSelectedSolve"
-        />
-      </div>
-      <div class="flex items-center mt-auto">
-        <best-ao-n-picker
-          @update-selected-best-ao-n="updateSelectedBestAoN"
-        ></best-ao-n-picker>
-      </div>
-    </template>
+  <div class="flex">
+    <button type="button" @click="goBack">back</button>
   </div>
+  <template v-if="reversedSolves.length > 0">
+    <div>
+      {{ currentSelectedSolve.displayScramble }}
+    </div>
+    <div class="flex justify-between">
+      <div class="flex text-4xl">
+        {{ currentSelectedSolve.displayTime }}
+      </div>
+      <div class="flex">
+        <cube-image :scramble="currentSelectedSolve.scramble" />
+      </div>
+    </div>
+    <div class="grid grid-cols-3 px-2 overflow-y-scroll">
+      <solve
+        v-for="(solve, index) in reversedSolves"
+        :id="`solve-${index}`"
+        :key="index"
+        :solve="solve"
+        :index="index"
+        :is-selected="index === currentSelectedSolveIndex"
+        :is-best="isBest(validSessionSolves.length - 1 - index)"
+        :is-worst="isWorst(validSessionSolves.length - 1 - index)"
+        :is-in-best-ao-n="
+          isIndexInCurrentBestAoN(validSessionSolves.length - 1 - index)
+        "
+        @update-selected-solve="updateSelectedSolve"
+      />
+    </div>
+    <div class="flex items-center mt-auto">
+      <best-ao-n-picker
+        @update-selected-best-ao-n="updateSelectedBestAoN"
+      ></best-ao-n-picker>
+    </div>
+  </template>
 </template>
