@@ -15,11 +15,15 @@ function setSessionSolves(solves: SavedSolve[]) {
 }
 
 // solves that count when we will want to look for the personal bests (single, Ao5, Ao12, ...)
-const countingSessionSolves = computed(() => {
-  return sessionSolves.value.filter(
+const validSessionSolves = computed(() => {
+  return validSolves(sessionSolves.value);
+});
+
+function validSolves(solves: SavedSolve[]) {
+  return solves.filter(
     (solve) => !["deleted", "rerolled"].includes(solve.state)
   );
-});
+}
 
 // TODO: probably needed to send as a state or something like that for challenges in order to skip specific scrambles
 // const skippedSolvesIndices = computed(() => {
@@ -29,8 +33,8 @@ const countingSessionSolves = computed(() => {
 // });
 
 const getPersonalBest = computed(() => {
-  const countingSessionSolvesCopy = [...countingSessionSolves.value];
-  return countingSessionSolvesCopy.sort((solveA, solveB) => {
+  const validSessionSolvesCopy = [...validSessionSolves.value];
+  return validSessionSolvesCopy.sort((solveA, solveB) => {
     return solveA.finalTime < solveB.finalTime ? -1 : 1;
   })[0];
 });
@@ -81,35 +85,42 @@ function computeFinalTime(baseTime: Time, state: State): Time {
 }
 
 const lastAo5 = computed(() => {
-  return getLastAoN(5);
+  return getAoN(validSessionSolves.value, 5);
 });
 
 const lastAo12 = computed(() => {
-  return getLastAoN(12);
+  return getAoN(validSessionSolves.value, 12);
 });
 
 const lastAo100 = computed(() => {
-  return getLastAoN(100, false, false);
+  return getAoN(validSessionSolves.value, 100, false);
 });
 
 const mean = computed(() => {
-  return getLastAoN(countingSessionSolves.value.length, false, false);
+  return getAoN(
+    validSessionSolves.value,
+    validSessionSolves.value.length,
+    false
+  );
 });
 
-function getLastAoN(
+function getAoN(
+  solves: SavedSolve[],
   n: number,
-  shouldCountDNF: boolean = true,
-  shouldRemoveBestAndWorst: boolean = true
+  shouldRemoveBestAndWorst: boolean = true,
+  fromIndex: number = solves.length - n
 ) {
   const { getTimerDisplayValue } = useTimer();
 
-  if (n && countingSessionSolves.value.length >= n) {
-    let solves = countingSessionSolves.value.slice(-n);
+  solves = validSolves(solves);
 
-    if (shouldCountDNF) {
-      if (solves.filter((solve) => solve.state === "DNF").length > 1) {
-        return "DNF";
-      }
+  // check that there are at least n solves
+  if (n && solves.length - fromIndex >= n) {
+    solves = solves.slice(fromIndex, fromIndex + n);
+
+    // if more than one DNF in the solves, then return DNF as the average
+    if (solves.filter((solve) => solve.state === "DNF").length > 1) {
+      return "DNF";
     }
 
     if (shouldRemoveBestAndWorst) {
@@ -120,6 +131,35 @@ function getLastAoN(
 
     return getTimerDisplayValue(rawAverage);
   }
+}
+
+function bestAoNIndex(n: number, shouldRemoveBestAndWorst: boolean = true) {
+  let bestIndex = 0;
+  let bestAoN: string | undefined = "Infinity";
+  let currentAoN: string | undefined = "Infinity";
+  for (
+    let currentIndex = 0;
+    currentIndex < validSessionSolves.value.length - 1;
+    currentIndex++
+  ) {
+    currentAoN = getAoN(
+      validSessionSolves.value,
+      n,
+      shouldRemoveBestAndWorst,
+      currentIndex
+    );
+
+    if (
+      currentAoN &&
+      currentAoN !== "DNF" &&
+      Number(currentAoN) < Number(bestAoN)
+    ) {
+      bestIndex = currentIndex;
+      bestAoN = currentAoN;
+    }
+  }
+
+  return bestIndex;
 }
 
 function getAverage(solves: SavedSolve[]) {
@@ -149,13 +189,15 @@ export function useSession() {
     sessionSolves,
     startNewSession,
     getPersonalBest,
-    countingSessionSolves,
+    validSessionSolves,
     addSolveToSessionSolves,
     updateSolveState,
     updateSolveNote,
+    getAoN,
     lastAo5,
     lastAo12,
     lastAo100,
+    bestAoNIndex,
     mean,
   };
 }
