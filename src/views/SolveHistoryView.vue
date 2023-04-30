@@ -68,6 +68,12 @@ function updateSelectedBestAoN(n: number) {
     currentSelectedSolveIndex.value =
       validSessionSolves.value.length - 1 - currentBestAoNIndex.value;
   }
+
+  // scroll to solve
+  const element = document.getElementById(
+    `solve-${currentSelectedSolveIndex.value - n + 1}`
+  );
+  element?.scrollIntoView();
 }
 
 function isIndexInCurrentBestAoN(index: number) {
@@ -106,7 +112,6 @@ function goBack() {
     </div>
     <template v-if="reversedSolves.length > 0">
       <div>
-        #{{ currentSelectedSolveIndex }}
         {{ currentSelectedSolve.displayScramble }}
       </div>
       <div class="flex justify-between">
@@ -120,6 +125,7 @@ function goBack() {
       <div class="grid grid-cols-3 px-2 overflow-y-scroll">
         <solve
           v-for="(solve, index) in reversedSolves"
+          :id="`solve-${index}`"
           :key="index"
           :solve="solve"
           :index="index"
@@ -132,7 +138,7 @@ function goBack() {
           @update-selected-solve="updateSelectedSolve"
         />
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center mt-auto">
         <best-ao-n-picker
           @update-selected-best-ao-n="updateSelectedBestAoN"
         ></best-ao-n-picker>

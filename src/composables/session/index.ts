@@ -115,7 +115,7 @@ function getAoN(
   solves = validSolves(solves);
 
   // check that there are at least n solves
-  if (n && solves.length - fromIndex >= n) {
+  if (n && fromIndex >= 0 && solves.length - fromIndex >= n) {
     solves = solves.slice(fromIndex, fromIndex + n);
 
     // if more than one DNF in the solves, then return DNF as the average

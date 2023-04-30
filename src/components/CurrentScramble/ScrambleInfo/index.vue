@@ -32,10 +32,6 @@ function share() {
 function join() {
   isJoinModalOpen.value = true;
 }
-
-function goToSolves() {
-  router.push("/solves");
-}
 </script>
 
 <template>
@@ -64,11 +60,6 @@ function goToSolves() {
       </div>
       <div class="basis-1/4">
         <button @click="join" @keydown.space.prevent type="button">join</button>
-      </div>
-      <div class="basis-1/4">
-        <button @click="goToSolves()" @keydown.space.prevent type="button">
-          solves
-        </button>
       </div>
       <share-popup v-if="isShareModalOpen"></share-popup>
       <join-popup v-if="isJoinModalOpen"></join-popup>

@@ -18,6 +18,10 @@ function updateRouteScrambleIndex() {
     `/scramble/${baseSessionSeed.value}/${currentScrambleIndex.value}`
   );
 }
+
+function goToSolves() {
+  router.push("/solves");
+}
 </script>
 
 <template>
@@ -29,7 +33,10 @@ function updateRouteScrambleIndex() {
     <timer @update-route-scramble-index="updateRouteScrambleIndex" />
     <div class="flex gap-x-3 px-2 md:px-5" v-if="!isTimerStarted">
       <cube-image :scramble="currentScramble" />
-      <div class="border-2 border-black rounded-md flex-grow">
+      <div
+        class="border-2 border-black rounded-md flex-grow"
+        @click="goToSolves"
+      >
         <last-averages />
       </div>
     </div>
