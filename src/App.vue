@@ -45,7 +45,7 @@ window.addEventListener("resize", () => {
     }"
   >
     <main
-      class="container mx-auto h-full py-5"
+      class="container mx-auto h-full py-5 text-[#ffffff]"
       :class="{ 'background-shown': isBackgroundImageShown }"
     >
       <div class="flex flex-col h-full gap-y-5">
@@ -72,7 +72,6 @@ html {
   height: 100%;
   padding-bottom: 12px;
   &.timer-stopped {
-    background: rgb(2, 0, 36);
     background: linear-gradient(
       180deg,
       #0038a899 0%,

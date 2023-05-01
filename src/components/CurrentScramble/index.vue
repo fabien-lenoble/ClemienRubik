@@ -33,10 +33,7 @@ function goToSolves() {
     <timer @update-route-scramble-index="updateRouteScrambleIndex" />
     <div class="flex gap-x-3 md:px-3" v-if="!isTimerStarted">
       <cube-image :scramble="currentScramble" />
-      <div
-        class="border-2 border-black rounded-md flex-grow"
-        @click="goToSolves"
-      >
+      <div class="flex-grow" @click="goToSolves">
         <last-averages />
       </div>
     </div>

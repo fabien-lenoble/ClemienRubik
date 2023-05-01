@@ -23,13 +23,15 @@ function updateSelectedSolve() {
 
 <template>
   <div
-    class="relative m-1 justify-center flex h-[32px] cursor-pointer items-center rounded-md border border-[#4897345c] px-[12px] py-0 text-[13px] text-[#4f4f4f] hover:!shadow-none dark:text-neutral-200"
+    class="relative m-1 justify-center flex h-[32px] cursor-pointer items-center rounded-md border px-[12px] py-0 text-[13px] hover:!shadow-none"
     :class="{
-      'bg-[#44c2258f]': isSelected,
-      'bg-[#b5d42875]': isInBestAoN && !isSelected,
+      'bg-[#2870d423]': !isInBestAoN && !isSelected,
+      'bg-[#2547c28f]': isSelected,
+      'bg-[#2581c28f]': isInBestAoN && !isSelected,
     }"
     @click="updateSelectedSolve()"
   >
+    <!-- 'bg-[#2547c28f]': !isInBestAoN && !isSelected, -->
     {{ solve.displayTime }}
     <div class="absolute bottom-2 right-1 text-lg" v-if="isWorst || isBest">
       <svg
