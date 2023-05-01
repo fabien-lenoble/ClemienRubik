@@ -45,8 +45,11 @@ window.addEventListener("resize", () => {
     }"
   >
     <main
-      class="container mx-auto h-full py-5 text-[#ffffff]"
-      :class="{ 'background-shown': isBackgroundImageShown }"
+      class="h-full text-[#ffffff]"
+      :class="{
+        'background-shown': isBackgroundImageShown,
+        'mx-auto container py-5': !isTimerStarted,
+      }"
     >
       <div class="flex flex-col h-full gap-y-5">
         <RouterView />

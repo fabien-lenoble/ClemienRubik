@@ -63,7 +63,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="prevent-select flex-grow flex items-center place-content-center mx-auto text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-mono"
+    class="prevent-select flex-grow flex items-center place-content-center text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-mono"
     @touchstart="handleTimerTriggerHeld()"
     @touchend="handleTimerTriggerReleased()"
   >
