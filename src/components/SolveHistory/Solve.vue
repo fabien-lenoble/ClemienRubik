@@ -23,12 +23,11 @@ function updateSelectedSolve() {
 
 <template>
   <div
-    class="relative m-1 justify-center flex h-[32px] cursor-pointer items-center rounded-md border border-[#3b71ca] px-[12px] py-0 text-[13px] text-[#4f4f4f] hover:border-[#3b71ca] hover:!shadow-none dark:text-neutral-200"
+    class="relative m-1 justify-center flex h-[32px] cursor-pointer items-center rounded-md border border-[#4897345c] px-[12px] py-0 text-[13px] text-[#4f4f4f] hover:!shadow-none dark:text-neutral-200"
     :class="{
-      'bg-[#0ea0eeaf]': isSelected,
-      'bg-[#eceff1]': isInBestAoN && !isSelected,
+      'bg-[#44c2258f]': isSelected,
+      'bg-[#b5d42875]': isInBestAoN && !isSelected,
     }"
-    data-te-ripple-color="dark"
     @click="updateSelectedSolve()"
   >
     {{ solve.displayTime }}

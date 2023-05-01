@@ -121,7 +121,7 @@ function goBack() {
         <cube-image :scramble="currentSelectedSolve.scramble" />
       </div>
     </div>
-    <div class="grid grid-cols-3 px-2 overflow-y-scroll">
+    <div class="grid grid-cols-3 overflow-y-scroll">
       <solve
         v-for="(solve, index) in reversedSolves"
         :id="`solve-${index}`"
