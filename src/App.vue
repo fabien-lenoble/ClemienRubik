@@ -42,10 +42,12 @@ window.addEventListener("resize", () => {
     class="app"
     :class="{
       [`timer-${timerClass}`]: true,
-      'background-shown': isBackgroundImageShown,
     }"
   >
-    <main class="container mx-auto h-full py-5">
+    <main
+      class="container mx-auto h-full py-5"
+      :class="{ 'background-shown': isBackgroundImageShown }"
+    >
       <div class="flex flex-col h-full gap-y-5">
         <RouterView />
       </div>
@@ -70,7 +72,16 @@ html {
   height: 100%;
   padding-bottom: 12px;
   &.timer-stopped {
-    background-color: #faf4d3;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(
+      180deg,
+      #0038a899 0%,
+      #0038a899 30%,
+      #9b4f9699 45%,
+      #9b4f9699 55%,
+      #d6026f99 70%
+    );
+    // background-color: #faf4d3;
   }
   &.timer-held {
     background-color: #ee353572;

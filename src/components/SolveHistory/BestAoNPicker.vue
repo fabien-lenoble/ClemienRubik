@@ -8,7 +8,7 @@ const emit = defineEmits<{
 }>();
 
 function updateSelectedBestAoN(n: number) {
-  if (getNSolvesFromIndex(n)) {
+  if (getNSolvesFromIndex(n) || n === 0) {
     emit("updateSelectedBestAoN", n);
   }
 }
