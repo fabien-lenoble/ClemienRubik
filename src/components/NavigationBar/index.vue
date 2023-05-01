@@ -11,7 +11,7 @@ import NavigationButton from "@/components/NavigationBar/Button.vue";
       class="rounded-l"
       :route-push="'/'"
       :is-active-check="'scramble'"
-      >lesgo</navigation-button
+      >let's rumix</navigation-button
     >
     <navigation-button
       class="rounded-r"
