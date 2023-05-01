@@ -18,7 +18,7 @@ const props = defineProps<{
 <template>
   <button
     type="button"
-    class="w-1/2 inline-block rounded-l border-2 border-white px-6 py-[1px] text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out"
+    class="w-1/2 inline-block border-2 border-white px-6 py-[1px] text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out"
     :class="{
       'border-primary-700 active:text-primary-700': isActive,
     }"
