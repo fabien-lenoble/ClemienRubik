@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { RouterView, useRoute } from "vue-router";
 import { useTimer } from "@/composables/timer";
+import NavigationBar from "./components/NavigationBar.vue";
 const { isTimerStarted, isTimerOnHold, isSpaceHeldLongEnough } = useTimer();
 
 const timerClass = computed(() => {
@@ -53,6 +54,7 @@ window.addEventListener("resize", () => {
     >
       <div class="flex flex-col h-full gap-y-5">
         <RouterView />
+        <navigation-bar v-show="!isTimerStarted" />
       </div>
     </main>
   </div>

@@ -99,16 +99,9 @@ function isBest(index: number) {
 function updateSelectedSolve(index: number) {
   currentSelectedSolveIndex.value = index;
 }
-
-function goBack() {
-  router.go(-1);
-}
 </script>
 
 <template>
-  <div class="flex">
-    <button type="button" @click="goBack">back</button>
-  </div>
   <template v-if="reversedSolves.length > 0">
     <div>
       {{ currentSelectedSolve.displayScramble }}
@@ -137,7 +130,7 @@ function goBack() {
         @update-selected-solve="updateSelectedSolve"
       />
     </div>
-    <div class="flex items-center mt-auto">
+    <div class="items-center">
       <best-ao-n-picker
         @update-selected-best-ao-n="updateSelectedBestAoN"
       ></best-ao-n-picker>
