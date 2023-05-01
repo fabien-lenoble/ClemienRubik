@@ -139,7 +139,7 @@ function bestAoNIndex(n: number, shouldRemoveBestAndWorst: boolean = true) {
   let currentAoN: string | undefined = "Infinity";
   for (
     let currentIndex = 0;
-    currentIndex < validSessionSolves.value.length - 1;
+    currentIndex < validSessionSolves.value.length;
     currentIndex++
   ) {
     currentAoN = getAoN(
