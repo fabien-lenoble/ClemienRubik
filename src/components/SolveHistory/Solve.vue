@@ -37,7 +37,7 @@ function updateSelectedSolve() {
       stroke="currentColor"
       stroke-width="1.5"
       viewBox="0 0 24 24"
-      :src="`/src/assets/${isWorst ? 'poop' : 'trophy'}.svg`"
+      :src="`../../assets/${isWorst ? 'poop' : 'trophy'}.svg`"
     />
   </div>
 </template>

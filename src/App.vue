@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { RouterView, useRoute } from "vue-router";
 import { useTimer } from "@/composables/timer";
-import NavigationBar from "@/components/NavigationBar.vue";
+import NavigationBar from "@/components/NavigationBar/index.vue";
 const { isTimerStarted, isTimerOnHold, isSpaceHeldLongEnough } = useTimer();
 
 const timerClass = computed(() => {
