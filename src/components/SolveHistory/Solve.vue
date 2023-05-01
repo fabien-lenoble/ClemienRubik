@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { SavedSolve } from "@/composables/session/types";
-import CustomIcon from "@/components/CustomIcon.vue";
 
 const props = defineProps<{
   solve: SavedSolve;
@@ -31,15 +30,23 @@ function updateSelectedSolve() {
     @click="updateSelectedSolve()"
   >
     {{ solve.displayTime }}
-    <custom-icon
+    <img
       v-if="isBest"
       class="absolute w-[23%] right-1"
-      src="/src/assets/trophy.svg"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      viewBox="0 0 24 24"
+      src="../../assets/trophy.svg"
     />
-    <custom-icon
-      v-if="isWorst"
+    <img
+      v-else-if="isWorst"
       class="absolute w-[23%] right-1"
-      src="/src/assets/poop.svg"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      viewBox="0 0 24 24"
+      src="../../assets/poop.svg"
     />
   </div>
 </template>
