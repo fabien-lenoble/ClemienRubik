@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ripple, initTE } from "tw-elements";
-initTE({ Ripple });
 import { useRoute, useRouter } from "vue-router";
+initTE({ Ripple });
 const route = useRoute();
 const router = useRouter();
 

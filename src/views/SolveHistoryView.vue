@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useSession } from "@/composables/session";
-import { useRouter } from "vue-router";
 import Solve from "@/components/SolveHistory/Solve.vue";
 import BestAoNPicker from "@/components/SolveHistory/BestAoNPicker.vue";
 import CubeImage from "@/components/CurrentScramble/CubeImage/index.vue";
 
 const { validSessionSolves, bestAoNIndex } = useSession();
-const router = useRouter();
 
 const currentSelectedSolveIndex = ref(0);
 
