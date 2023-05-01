@@ -2,7 +2,7 @@
     "short_name": "RumixCube",
     "name": "RumixCube",
     "theme_color": "#0038a899",
-    "background_color": "#000000",
+    "background_color": "#0038a899",
     "display": "fullscreen",
     "scope": "/",
     "orientation": "portrait",
