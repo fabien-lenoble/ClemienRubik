@@ -128,10 +128,8 @@ function updateSelectedSolve(index: number) {
         @update-selected-solve="updateSelectedSolve"
       />
     </div>
-    <div class="items-center">
-      <best-ao-n-picker
-        @update-selected-best-ao-n="updateSelectedBestAoN"
-      ></best-ao-n-picker>
-    </div>
+    <best-ao-n-picker
+      @update-selected-best-ao-n="updateSelectedBestAoN"
+    ></best-ao-n-picker>
   </template>
 </template>
