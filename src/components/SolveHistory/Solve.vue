@@ -21,11 +21,12 @@ function updateSelectedSolve() {
 
 <template>
   <div
-    class="relative m-1 justify-center flex h-[32px] cursor-pointer items-center rounded-md border px-[12px] py-0 text-[13px] hover:!shadow-none"
+    class="relative justify-center flex h-[32px] rounded-md cursor-pointer items-center px-[2px] py-0 text-[13px]"
     :class="{
-      'bg-[#2870d423]': !isInBestAoN && !isSelected,
-      'bg-[#2547c28f]': isSelected,
-      'bg-[#2581c28f]': isInBestAoN && !isSelected,
+      'bg-[#2870d423]': !isInBestAoN,
+      'rounded-corners-gradient-borders': isSelected,
+      border: !isSelected,
+      'bg-[#2581c2ba]': isInBestAoN,
     }"
     @click="updateSelectedSolve()"
   >
@@ -50,3 +51,46 @@ function updateSelectedSolve() {
     />
   </div>
 </template>
+
+<style lang="scss">
+.rounded-corners-gradient-borders {
+  background-size: 100% 0px;
+  background-position: 0 0, 0 100%;
+  background-repeat: no-repeat;
+  animation: gradient 0.7s linear infinite;
+  background-image: linear-gradient(0deg, #d6026f, #0038a8),
+    linear-gradient(0deg, #d6026f, #0038a8);
+}
+@keyframes gradient {
+  0% {
+    border-left: 2px solid #d6026f;
+    border-right: 2px solid #0038a8;
+    border-top: 2px solid #d6026f;
+    border-bottom: 2px solid #0038a8;
+  }
+  25% {
+    border-left: 2px solid #0038a8;
+    border-right: 2px solid #d6026f;
+    border-top: 2px solid #d6026f;
+    border-bottom: 2px solid #0038a8;
+  }
+  50% {
+    border-left: 2px solid #0038a8;
+    border-right: 2px solid #d6026f;
+    border-top: 2px solid #0038a8;
+    border-bottom: 2px solid #d6026f;
+  }
+  75% {
+    border-left: 2px solid #d6026f;
+    border-right: 2px solid #0038a8;
+    border-top: 2px solid #0038a8;
+    border-bottom: 2px solid #d6026f;
+  }
+  100% {
+    border-left: 2px solid #d6026f;
+    border-right: 2px solid #0038a8;
+    border-top: 2px solid #d6026f;
+    border-bottom: 2px solid #0038a8;
+  }
+}
+</style>

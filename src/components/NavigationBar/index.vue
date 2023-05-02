@@ -11,13 +11,13 @@ import NavigationButton from "@/components/NavigationBar/Button.vue";
       class="rounded-l"
       :route-push="'/'"
       :is-active-check="'scramble'"
-      >let's rumix</navigation-button
+      >rumix</navigation-button
     >
     <navigation-button
       class="rounded-r"
       :route-push="'/solves'"
       :is-active-check="'solves'"
-      >history</navigation-button
+      >solves</navigation-button
     >
   </div>
 </template>
