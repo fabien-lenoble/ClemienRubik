@@ -79,22 +79,20 @@ html {
   &.timer-stopped {
     background: linear-gradient(
       180deg,
-      #0038a899 0%,
-      #0038a899 30%,
-      #9b4f9699 45%,
-      #9b4f9699 55%,
-      #d6026f99 70%
+      #7682ca 30%,
+      #c394c0 45%,
+      #c394c0 55%,
+      #e768a9 70%
     );
-    // background-color: #faf4d3;
   }
   &.timer-held {
-    background-color: #ee353572;
+    background: linear-gradient(180deg, #7682ca 10%, #c394c0 30%);
   }
   &.timer-ready {
-    background-color: #b5d42875;
+    background: linear-gradient(180deg, #7682ca 10%, #76a4ca 30%);
   }
   &.timer-started {
-    background-color: #4897345c;
+    background: linear-gradient(180deg, #7682ca 10%, #e768a9 30%);
   }
 }
 
