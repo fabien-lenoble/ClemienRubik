@@ -5,10 +5,10 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const { isJoinModalOpen } = useShare();
 function updateDecodedValue(stream: string) {
-  if (stream.match(/https:\/\/www\.rumixcube\.fr\/join\/[0-9]+\/[0-9]+$/)) {
+  if (stream.match(/join\/[0-9]+\/[0-9]+$/)) {
     if (confirm("Join session?")) {
       isJoinModalOpen.value = false;
-      router.push("/join" + stream.split("join")[1]);
+      router.push(stream);
     }
   }
 }
