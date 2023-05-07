@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import ScrambleView from "@/views/ScrambleView.vue";
 import SolveHistoryView from "@/views/SolveHistoryView.vue";
+import SettingsView from "@/views/SettingsView.vue";
 import { useSession } from "@/composables/session";
 import { useScramble } from "@/composables/scramble";
 import { useSeed } from "@/composables/seed";
@@ -26,6 +27,11 @@ const router = createRouter({
       path: "/solves",
       name: "solves",
       component: SolveHistoryView,
+    },
+    {
+      path: "/settings",
+      name: "settings",
+      component: SettingsView,
     },
   ],
 });

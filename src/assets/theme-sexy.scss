@@ -1,0 +1,39 @@
+
+@layer base {
+    [data-theme="sexy"] {
+        --color-primary: 111 78 156;
+        --color-secondary: 233 164 2;
+        --color-tertiary: 0 0 0;
+        --color-quaternary: 255 248 0;
+        --color-selected: 233 164 2;
+        --color-my-text-primary: 233 164 2;
+        --color-my-text-secondary: 0 0 0;
+    }
+}
+
+.app[data-theme="sexy"] {
+    &.timer-stopped {
+        background: linear-gradient(to bottom right, rgb(var(--color-primary)), rgb(var(--color-primary)));
+    }
+    &.timer-held {
+      background: linear-gradient(
+        180deg,
+        rgb(var(--color-primary)) 10%,
+        rgb(var(--color-secondary)) 30%
+      );
+    }
+    &.timer-ready {
+      background: linear-gradient(
+        180deg,
+        rgb(var(--color-primary)) 10%,
+        rgb(var(--color-quaternary)) 30%
+      );
+    }
+    &.timer-started {
+      background: linear-gradient(
+        180deg,
+        rgb(var(--color-primary)) 10%,
+        rgb(var(--color-tertiary)) 30%
+      );
+    }
+}

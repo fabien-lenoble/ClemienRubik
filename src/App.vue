@@ -2,6 +2,8 @@
 import { computed } from "vue";
 import { RouterView, useRoute } from "vue-router";
 import { useTimer } from "@/composables/timer";
+import { useSettings } from "@/composables/settings";
+const { appTheme } = useSettings();
 import NavigationBar from "@/components/NavigationBar/index.vue";
 const { isTimerStarted, isTimerOnHold, isSpaceHeldLongEnough } = useTimer();
 
@@ -41,15 +43,16 @@ window.addEventListener("resize", () => {
 <template>
   <div
     class="app"
+    :data-theme="appTheme"
     :class="{
       [`timer-${timerClass}`]: true,
     }"
   >
     <main
-      class="h-full text-[#ffffff]"
+      class="h-full text-my-text-primary"
       :class="{
         'background-shown': isBackgroundImageShown,
-        'mx-auto container py-5': !isTimerStarted,
+        'px-6 container py-5': !isTimerStarted,
       }"
     >
       <div class="flex flex-col h-full">
@@ -76,24 +79,6 @@ html {
 .app {
   height: 100%;
   padding-bottom: 12px;
-  &.timer-stopped {
-    background: linear-gradient(
-      180deg,
-      #7682ca 30%,
-      #c394c0 45%,
-      #c394c0 55%,
-      #e768a9 70%
-    );
-  }
-  &.timer-held {
-    background: linear-gradient(180deg, #7682ca 10%, #c394c0 30%);
-  }
-  &.timer-ready {
-    background: linear-gradient(180deg, #7682ca 10%, #76a4ca 30%);
-  }
-  &.timer-started {
-    background: linear-gradient(180deg, #7682ca 10%, #e768a9 30%);
-  }
 }
 
 .background-shown {
