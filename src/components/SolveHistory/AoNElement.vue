@@ -47,8 +47,8 @@ const displayTime = computed(() =>
 
 <template>
   <div
-    class="flex-row flex relative border justify-center h-[32px] cursor-pointer items-center rounded-md px-[12px] py-0 text-[13px]"
-    :class="{ 'order-first col-span-3': isSelected }"
+    class="flex-row flex relative border justify-center h-[32px] cursor-pointer items-center rounded-md py-0 text-[13px]"
+    :class="{ 'order-first col-span-4': isSelected }"
     @click="updateSelectedBestAoN(aoNValue)"
   >
     <div :class="{ 'flex flex-grow justify-center': isSelected }">

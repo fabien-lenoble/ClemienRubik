@@ -21,21 +21,25 @@ const props = defineProps<{
     <div class="row-span-1 col-span-2 gap-x-1 grid grid-cols-3">
       <button
         class="col-span-1 justify-center border-2 rounded-md"
-        :class="{ 'border-blue-700': props.solve.state === 'solved' }"
+        :class="{
+          'border-blue-700 text-blue-700': props.solve.state === 'solved',
+        }"
         @click="updateSolveState(props.solve.index, 'solved')"
       >
         OK
       </button>
       <button
         class="col-span-1 justify-center border-2 rounded-md"
-        :class="{ 'border-blue-700': props.solve.state === 'DNF' }"
+        :class="{
+          'border-blue-700 text-blue-700': props.solve.state === 'DNF',
+        }"
         @click="updateSolveState(props.solve.index, 'DNF')"
       >
         DNF
       </button>
       <button
         class="col-span-1 justify-center border-2 rounded-md"
-        :class="{ 'border-blue-700': props.solve.state === '+2' }"
+        :class="{ 'border-blue-700 text-blue-700': props.solve.state === '+2' }"
         @click="updateSolveState(props.solve.index, '+2')"
       >
         +2
