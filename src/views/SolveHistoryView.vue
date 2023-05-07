@@ -3,25 +3,22 @@ import { ref, computed } from "vue";
 import { useSession } from "@/composables/session";
 import Solve from "@/components/SolveHistory/Solve.vue";
 import BestAoNPicker from "@/components/SolveHistory/BestAoNPicker.vue";
-import CubeImage from "@/components/CurrentScramble/CubeImage/index.vue";
+import SelectedSolve from "@/components/SolveHistory/SelectedSolve.vue";
 
 const { validSessionSolves, bestAoNIndex } = useSession();
 
-const currentSelectedSolveIndex = ref(0);
-
+const selectedSolveReverseIndex = ref(0);
 const selectedBestAoN = ref(0);
 const currentBestAoNIndex = ref(0);
 
 const selectedBestAoNSolves = computed(() => {
   const index = currentBestAoNIndex.value;
-  return validSessionSolves.value
-    .slice(index, index + selectedBestAoN.value)
-    .map((solve) => solve.displayTime);
+  return validSessionSolves.value.slice(index, index + selectedBestAoN.value);
 });
 
 const currentBestAoNMaxIndex = computed(() => {
   const DNFIndex = selectedBestAoNSolves.value.findIndex(
-    (solve) => solve === "DNF"
+    (solve) => solve.state === "DNF"
   );
   let index = 0;
   if (DNFIndex >= 0) {
@@ -29,23 +26,27 @@ const currentBestAoNMaxIndex = computed(() => {
   }
   const value = Math.max(
     ...selectedBestAoNSolves.value
-      .map((solve) => Number(solve))
+      .map((solve) => Number(solve.finalTime))
       .filter((solve) => !!solve)
   );
-  index = selectedBestAoNSolves.value.findIndex(
-    (solve) => Number(solve) === value
-  );
+  index = selectedBestAoNSolves.value.findIndex((solve) => {
+    if (DNFIndex >= 0) {
+      return solve.state === "DNF";
+    } else {
+      return Number(solve.finalTime) === value;
+    }
+  });
   return index + currentBestAoNIndex.value;
 });
 
 const currentBestAoNMinIndex = computed(() => {
   const value = Math.min(
     ...selectedBestAoNSolves.value
-      .map((solve) => Number(solve))
+      .map((solve) => Number(solve.finalTime))
       .filter((solve) => !!solve)
   );
   const index = selectedBestAoNSolves.value.findIndex(
-    (solve) => Number(solve) === value
+    (solve) => Number(solve.finalTime) === value
   );
   return index + currentBestAoNIndex.value;
 });
@@ -54,21 +55,21 @@ const reversedSolves = computed(() => {
   return [...validSessionSolves.value].reverse();
 });
 const currentSelectedSolve = computed(
-  () => reversedSolves.value?.[currentSelectedSolveIndex.value]
+  () => reversedSolves.value?.[selectedSolveReverseIndex.value]
 );
 
 function updateSelectedBestAoN(n: number) {
   selectedBestAoN.value = n;
   currentBestAoNIndex.value = bestAoNIndex(n, n !== 1);
   if (n === 0) {
-    currentSelectedSolveIndex.value = 0;
+    selectedSolveReverseIndex.value = 0;
   } else {
-    currentSelectedSolveIndex.value =
-      validSessionSolves.value.length - 1 - currentBestAoNIndex.value;
+    selectedSolveReverseIndex.value =
+      reversedSolves.value.length - 1 - currentBestAoNIndex.value;
   }
 
   // scroll to solve, with an offset of 2 lines
-  let indexToScrollTo = currentSelectedSolveIndex.value - n + 1;
+  let indexToScrollTo = selectedSolveReverseIndex.value - n + 1;
   if (reversedSolves.value[indexToScrollTo - 6]) {
     indexToScrollTo -= 6;
   }
@@ -95,7 +96,7 @@ function isBest(index: number) {
 }
 
 function updateSelectedSolve(index: number) {
-  currentSelectedSolveIndex.value = index;
+  selectedSolveReverseIndex.value = index;
 }
 </script>
 
@@ -110,17 +111,7 @@ function updateSelectedSolve(index: number) {
     src="../assets/poop.svg"
   />
   <template v-else>
-    <div>
-      {{ currentSelectedSolve.displayScramble }}
-    </div>
-    <div class="flex justify-between top-element mb-2 pb-5">
-      <div class="flex text-4xl">
-        {{ currentSelectedSolve.displayTime }}
-      </div>
-      <div class="flex">
-        <cube-image :scramble="currentSelectedSolve.scramble" />
-      </div>
-    </div>
+    <selected-solve :solve="currentSelectedSolve" />
     <div class="grid grid-cols-3 gap-2 overflow-y-scroll scrollbar-hide">
       <solve
         v-for="(solve, index) in reversedSolves"
@@ -128,11 +119,11 @@ function updateSelectedSolve(index: number) {
         :key="index"
         :solve="solve"
         :index="index"
-        :is-selected="index === currentSelectedSolveIndex"
-        :is-best="isBest(validSessionSolves.length - 1 - index)"
-        :is-worst="isWorst(validSessionSolves.length - 1 - index)"
+        :is-selected="index === selectedSolveReverseIndex"
+        :is-best="isBest(reversedSolves.length - 1 - index)"
+        :is-worst="isWorst(reversedSolves.length - 1 - index)"
         :is-in-best-ao-n="
-          isIndexInCurrentBestAoN(validSessionSolves.length - 1 - index)
+          isIndexInCurrentBestAoN(reversedSolves.length - 1 - index)
         "
         @update-selected-solve="updateSelectedSolve"
       />
@@ -155,12 +146,5 @@ function updateSelectedSolve(index: number) {
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-}
-
-.top-element {
-  box-shadow: 0px 15px 10px -15px rgba(0, 0, 0, 0.75);
-  /* The first two values control the horizontal and vertical offset of the shadow */
-  /* The third value controls the blur radius of the shadow */
-  /* The fourth value controls the spread radius of the shadow, and can be used to adjust the size of the shadow */
 }
 </style>

@@ -21,13 +21,18 @@ function updateSelectedBestAoN(n: number) {
 
 function getNSolvesFromIndex(n: number) {
   const index = bestAoNIndex(n, n !== 1);
-  return getAoN(validSessionSolves.value.slice(index, index + n), n, n !== 1);
+  return getAoN(
+    validSessionSolves.value.slice(index, index + n),
+    n,
+    n !== 1,
+    n === 1
+  );
 }
 
 const text = computed(() => {
   switch (props.aoNValue) {
     case 0:
-      return "Overall average";
+      return `Overall average (${validSessionSolves.value.length} solves)`;
     case 1:
       return "Personal best";
     default:
@@ -46,12 +51,12 @@ const displayTime = computed(() =>
     :class="{ 'order-first col-span-3': isSelected }"
     @click="updateSelectedBestAoN(aoNValue)"
   >
-    <div :class="{ 'flex basis-1/2 justify-center': isSelected }">
+    <div :class="{ 'flex flex-grow justify-center': isSelected }">
       <p v-if="isSelected" class="pr-1">
         {{ text }}
       </p>
     </div>
-    <div class="flex" :class="{ 'basis-1/2 justify-center': isSelected }">
+    <div class="flex" :class="{ 'basis-1/3 justify-center': isSelected }">
       <slot />
       <p>
         {{ displayTime || "-" }}

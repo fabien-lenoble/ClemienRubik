@@ -48,12 +48,20 @@ function addSolveToSessionSolves(solve: Solve) {
     displayScramble: stringifiedScramble(solve.scramble),
     displayTime: getTimerDisplayValue(solve.baseTime),
     state: "solved",
+    index: sessionSolves.value.length,
   };
   sessionSolves.value.push(savedSolve);
   localStorage.setItem("sessionSolves", JSON.stringify(sessionSolves.value));
 }
 
 function updateSolveState(index: number, newState: State) {
+  if (
+    newState === "deleted" &&
+    !confirm("Are you sure you want to delete this solve?")
+  ) {
+    return;
+  }
+
   const { getTimerDisplayValue } = useTimer();
   const newFinalTime = computeFinalTime(
     sessionSolves.value[index].baseTime,
@@ -65,6 +73,7 @@ function updateSolveState(index: number, newState: State) {
     newState
   );
   sessionSolves.value[index].finalTime = newFinalTime;
+  localStorage.setItem("sessionSolves", JSON.stringify(sessionSolves.value));
 }
 
 function updateSolveNote(index: number, newNote: Note) {
@@ -76,11 +85,11 @@ function computeFinalTime(baseTime: Time, state: State): Time {
     case "solved":
       return baseTime;
     case "+2":
-      return (baseTime += 200);
+      return (baseTime += 2000);
     case "DNF":
     case "deleted":
     case "rerolled":
-      return +Infinity;
+      return Number.MAX_VALUE;
   }
 }
 
@@ -100,7 +109,8 @@ const mean = computed(() => {
   return getAoN(
     validSessionSolves.value,
     validSessionSolves.value.length,
-    false
+    false,
+    true
   );
 });
 
@@ -108,6 +118,7 @@ function getAoN(
   solves: SavedSolve[],
   n: number,
   shouldRemoveBestAndWorst: boolean = true,
+  shouldRemoveDNF: boolean = false,
   fromIndex: number = solves.length - n
 ) {
   const { getTimerDisplayValue } = useTimer();
@@ -118,9 +129,13 @@ function getAoN(
   if (n && fromIndex >= 0 && solves.length - fromIndex >= n) {
     solves = solves.slice(fromIndex, fromIndex + n);
 
-    // if more than one DNF in the solves, then return DNF as the average
-    if (solves.filter((solve) => solve.state === "DNF").length > 1) {
-      return "DNF";
+    if (shouldRemoveDNF) {
+      solves = solves.filter((solve) => solve.state !== "DNF");
+    } else {
+      // if more than one DNF in the solves, then return DNF as the average
+      if (solves.filter((solve) => solve.state === "DNF").length > 1) {
+        return "DNF";
+      }
     }
 
     if (shouldRemoveBestAndWorst) {
@@ -146,6 +161,7 @@ function bestAoNIndex(n: number, shouldRemoveBestAndWorst: boolean = true) {
       validSessionSolves.value,
       n,
       shouldRemoveBestAndWorst,
+      false,
       currentIndex
     );
 
@@ -170,6 +186,7 @@ function removeBestAndWorstSolves(solves: SavedSolve[]) {
   let orderedSolvesCopy = JSON.parse(JSON.stringify(solves));
   orderedSolvesCopy = (orderedSolvesCopy as SavedSolve[]).sort(
     (solveA, solveB) => {
+      if (solveB.state === "DNF") return -1;
       return solveA.finalTime > solveB.finalTime ? 1 : -1;
     }
   );
