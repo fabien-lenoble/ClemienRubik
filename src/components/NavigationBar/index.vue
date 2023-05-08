@@ -24,11 +24,14 @@ const rumixRoute = computed(() => {
       :is-active-check="'scramble'"
       >rumix</navigation-button
     >
+    <navigation-button route-push="/solves" :is-active-check="'solves'"
+      >solves</navigation-button
+    >
     <navigation-button
       class="rounded-r"
-      :route-push="'/solves'"
-      :is-active-check="'solves'"
-      >solves</navigation-button
+      route-push="/settings"
+      :is-active-check="'settings'"
+      >settings</navigation-button
     >
   </div>
 </template>

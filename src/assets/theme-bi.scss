@@ -1,0 +1,46 @@
+@layer base {
+    [data-theme="bi"] {
+        --color-primary: 118 130 202;
+        --color-secondary: 195 148 192;
+        --color-tertiary: 231 104 169;
+        --color-quaternary: 118 164 202;
+        --color-quinary: 40 112 212;
+        --color-senary: 37 129 194;
+        --color-selected: 29 78 216;
+        --color-my-text-primary: 255 255 255;
+        --color-my-text-secondary: 255 255 255;
+    }
+}
+
+.app[data-theme="bi"] {
+    &.timer-stopped {
+      background: linear-gradient(
+        180deg,
+        rgb(var(--color-primary)) 30%,
+        rgb(var(--color-secondary)) 45%,
+        rgb(var(--color-secondary)) 55%,
+        rgb(var(--color-tertiary)) 70%
+      );
+    }
+    &.timer-held {
+      background: linear-gradient(
+        180deg,
+        rgb(var(--color-primary)) 10%,
+        rgb(var(--color-secondary)) 30%
+      );
+    }
+    &.timer-ready {
+      background: linear-gradient(
+        180deg,
+        rgb(var(--color-primary)) 10%,
+        rgb(var(--color-quaternary)) 30%
+      );
+    }
+    &.timer-started {
+      background: linear-gradient(
+        180deg,
+        rgb(var(--color-primary)) 10%,
+        rgb(var(--color-tertiary)) 30%
+      );
+    }
+  }

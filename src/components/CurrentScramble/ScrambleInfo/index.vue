@@ -39,10 +39,10 @@ function join() {
     <div class="word-spacing text-xl md:text-2xl lg:text-3xl xl:text-4xl">
       {{ stringifiedScramble(currentScramble) }}
     </div>
-    <div class="text-xs">
+    <div class="text-xs text-my-text-secondary">
       seed: {{ route.params.seed }} scramble: {{ route.params.scrambleIndex }}
     </div>
-    <div class="flex gap-5">
+    <div class="flex gap-5 text-my-text-secondary">
       <div class="basis-1/4">
         <button @click="goToNextScramble" @keydown.space.prevent type="button">
           scramble

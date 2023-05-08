@@ -22,7 +22,9 @@ const props = defineProps<{
       <button
         class="col-span-1 justify-center border-2 rounded-md"
         :class="{
-          'border-blue-700 text-blue-700': props.solve.state === 'solved',
+          'border-selected text-selected': props.solve.state === 'solved',
+          'border-my-text-secondary text-my-text-secondary':
+            props.solve.state !== 'solved',
         }"
         @click="updateSolveState(props.solve.index, 'solved')"
       >
@@ -31,7 +33,9 @@ const props = defineProps<{
       <button
         class="col-span-1 justify-center border-2 rounded-md"
         :class="{
-          'border-blue-700 text-blue-700': props.solve.state === 'DNF',
+          'border-selected text-selected': props.solve.state === 'DNF',
+          'border-my-text-secondary text-my-text-secondary':
+            props.solve.state !== 'DNF',
         }"
         @click="updateSolveState(props.solve.index, 'DNF')"
       >
@@ -39,7 +43,11 @@ const props = defineProps<{
       </button>
       <button
         class="col-span-1 justify-center border-2 rounded-md"
-        :class="{ 'border-blue-700 text-blue-700': props.solve.state === '+2' }"
+        :class="{
+          'border-selected text-selected': props.solve.state === '+2',
+          'border-my-text-secondary text-my-text-secondary':
+            props.solve.state !== '+2',
+        }"
         @click="updateSolveState(props.solve.index, '+2')"
       >
         +2
