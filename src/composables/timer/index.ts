@@ -50,7 +50,7 @@ function getTimerDisplayValue(
   }
 
   if (state === "+2") {
-    displayValue += " (+2)";
+    displayValue += "+";
   }
 
   return displayValue;

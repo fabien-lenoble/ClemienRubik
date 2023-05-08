@@ -52,7 +52,7 @@ window.addEventListener("resize", () => {
         'mx-auto container py-5': !isTimerStarted,
       }"
     >
-      <div class="flex flex-col h-full gap-y-5">
+      <div class="flex flex-col h-full">
         <RouterView />
         <navigation-bar v-show="!isTimerStarted" />
       </div>

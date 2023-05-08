@@ -13,6 +13,7 @@ export type SavedSolve = Solve & {
   displayTime: DisplayTime;
   displayScramble: string;
   state: State;
+  index: number;
   note?: Note;
 };
 

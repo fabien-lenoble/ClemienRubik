@@ -2,9 +2,9 @@ import { ref } from "vue";
 import type { Ref } from "vue";
 import type { Seed } from "./types";
 
-const baseSessionSeed: Ref<Seed> = ref(0);
-const currentScrambleSeed: Ref<Seed> = ref(0);
-const lastGeneratedSeed: Ref<Seed> = ref(0);
+const baseSessionSeed: Ref<Seed> = ref(1);
+const currentScrambleSeed: Ref<Seed> = ref(1);
+const lastGeneratedSeed: Ref<Seed> = ref(1);
 
 function initSeedValues(seed: number) {
   baseSessionSeed.value = seed;
