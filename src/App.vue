@@ -3,8 +3,8 @@ import { computed } from "vue";
 import { RouterView, useRoute } from "vue-router";
 import { useTimer } from "@/composables/timer";
 import { useSettings } from "@/composables/settings";
-const { appTheme } = useSettings();
 import NavigationBar from "@/components/NavigationBar/index.vue";
+const { appTheme } = useSettings();
 const { isTimerStarted, isTimerOnHold, isSpaceHeldLongEnough } = useTimer();
 
 const timerClass = computed(() => {
