@@ -21,12 +21,13 @@ function updateSelectedSolve() {
 
 <template>
   <div
-    class="relative justify-center flex h-[32px] rounded-md cursor-pointer items-center px-[2px] py-0 text-[13px] text-my-text-secondary"
+    class="relative justify-center flex h-[32px] rounded-md cursor-pointer items-center px-[2px] py-0 text-[13px] border"
     :class="{
-      'bg-quinary bg-opacity-20': !isInBestAoN,
+      'bg-quinary bg-opacity-100 text-my-text-secondary border-my-text-secondary':
+        !isInBestAoN,
+      'bg-senary bg-opacity-75 text-my-text-primary border-my-text-primary':
+        isInBestAoN,
       'rounded-corners-gradient-borders': isSelected,
-      'border border-my-text-secondary': !isSelected,
-      'bg-senary bg-opacity-75': isInBestAoN,
     }"
     @click="updateSelectedSolve()"
   >
