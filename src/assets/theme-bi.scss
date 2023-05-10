@@ -54,3 +54,13 @@
     );
   }
 }
+
+.theme-background[data-theme="bi"] {
+  background: linear-gradient(
+    180deg,
+    rgb(var(--color-primary)) 30%,
+    rgb(var(--color-secondary)) 45%,
+    rgb(var(--color-secondary)) 55%,
+    rgb(var(--color-tertiary)) 70%
+  );
+}
