@@ -13,7 +13,7 @@ const route = useRoute();
 const router = useRouter();
 
 function init() {
-  initSeedValues(Number(route.params.seed));
+  initSeedValues(route.params.seed as string);
   initScrambleValues();
 
   if (route.name === "join") {
