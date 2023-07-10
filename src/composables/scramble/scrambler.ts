@@ -9,6 +9,7 @@ const {
   currentScrambleSeed,
   lastGeneratedSeed,
   generateNewSeed,
+  castSeedToNumber,
 } = useSeed();
 
 const currentScrambleIndex: Ref<number> = ref(0);
@@ -34,7 +35,7 @@ function initScrambleValues() {
 
 // function to go to a specific scramble in the seeded session
 function goToScrambleIndex(scrambleIndex: number) {
-  lastGeneratedSeed.value = baseSessionSeed.value;
+  lastGeneratedSeed.value = castSeedToNumber(baseSessionSeed.value);
   for (let i = 0; i < scrambleIndex; i++) {
     goToNextScramble();
   }
