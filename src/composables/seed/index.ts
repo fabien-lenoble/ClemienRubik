@@ -7,11 +7,7 @@ const currentScrambleSeed: Ref<Seed> = ref(1);
 const lastGeneratedSeed: Ref<number> = ref(1);
 
 function initSeedValues(seed: Seed) {
-  if (!isNaN(Number(seed))) {
-    seed = Number(seed);
-  } else if (typeof seed === "string") {
-    seed = parseInt(toHex(seed), 16);
-  }
+  seed = castSeedToNumber(seed);
   baseSessionSeed.value = seed;
   lastGeneratedSeed.value = seed;
 }
@@ -28,6 +24,16 @@ function toHex(str: string) {
   return result;
 }
 
+function castSeedToNumber(seed: Seed) {
+  if (!isNaN(Number(seed))) {
+    return Number(seed);
+  } else if (typeof seed === "string") {
+    return parseInt(toHex(seed), 16);
+  } else {
+    return seed;
+  }
+}
+
 export function useSeed() {
   return {
     baseSessionSeed,
@@ -35,5 +41,6 @@ export function useSeed() {
     lastGeneratedSeed,
     initSeedValues,
     generateNewSeed,
+    castSeedToNumber,
   };
 }
