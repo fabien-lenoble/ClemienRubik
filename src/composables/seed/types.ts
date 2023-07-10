@@ -1,1 +1,1 @@
-export type Seed = number;
+export type Seed = number | string;
