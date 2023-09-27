@@ -68,7 +68,7 @@ function generateScramble() {
     const move = pickMoveFromSubMoveSet(currentSubMoveSet);
     scramble.push(move);
 
-    // store used sub move set indexes to make sure we don't use them in next iterations
+    // store used sub move set indices to make sure we don't use them in next iterations
     secondToLastSubMoveSetIndex = lastSubMoveSetIndex;
     lastSubMoveSetIndex = currentSubMoveSetIndex;
   }
