@@ -139,13 +139,11 @@ function checkAreAllSubMoveSetsFromSameOppositeGroups(
   lastSubMoveSetIndex: number,
   secondToLastSubMoveSetIndex: number
 ) {
-  return groups.every((value) =>
-    [
-      currentSubMoveSetIndex,
-      lastSubMoveSetIndex,
-      secondToLastSubMoveSetIndex,
-    ].includes(value)
-  );
+  return [
+    currentSubMoveSetIndex,
+    lastSubMoveSetIndex,
+    secondToLastSubMoveSetIndex,
+  ].every((value) => groups.includes(value));
 }
 
 function pickMoveFromSubMoveSet(currentSubMoveSet: SubMoveSet) {

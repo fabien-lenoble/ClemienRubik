@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { FaceInitial } from "@/composables/scramble/types";
+import type { StickerValue } from "@/composables/scramble/types";
 
 defineProps<{
-  sticker: FaceInitial;
+  sticker: StickerValue;
 }>();
 </script>
 
