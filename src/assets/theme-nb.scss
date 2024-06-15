@@ -1,0 +1,72 @@
+@layer base {
+    [data-theme="nb"] {
+        --color-primary:
+        157 89 210; /* purple */
+        --color-secondary:
+        252 252 252; /* white */
+        --color-tertiary:
+        252 244 49; /* yellow */
+        --color-quaternary:
+        40 40 40; /* black */
+        --color-quinary: 118 130 202;
+        --color-senary: 231 104 169;
+        --color-selected: 29 78 216;
+        --color-my-text-primary:
+        40 40 40; /* black */
+        --color-my-text-secondary:
+        40 40 40; /* black */
+    }
+}
+
+.app[data-theme="nb"] {
+  &.timer-stopped {
+    background: linear-gradient(
+      180deg,
+      rgb(var(--color-primary)) 5%,
+      rgb(var(--color-secondary)) 35%,
+      rgb(var(--color-secondary)) 65%,
+      rgb(var(--color-tertiary)) 85%
+    );
+  }
+  &.timer-held {
+    background: linear-gradient(
+      180deg,
+      rgb(var(--color-primary)) 10%,
+      rgb(var(--color-secondary)) 30%
+    );
+  }
+  &.timer-ready {
+    background: linear-gradient(
+      180deg,
+      rgb(var(--color-primary)) 10%,
+      rgb(var(--color-quaternary)) 30%
+    );
+  }
+  &.timer-started {
+    background: linear-gradient(
+      180deg,
+      rgb(var(--color-primary)) 10%,
+      rgb(var(--color-tertiary)) 30%
+    );
+  }
+
+  .theme-picker-background {
+    background: linear-gradient(
+      180deg,
+      rgb(var(--color-primary)) 30%,
+      rgb(var(--color-secondary)) 45%,
+      rgb(var(--color-secondary)) 55%,
+      rgb(var(--color-tertiary)) 70%
+    );
+  }
+}
+
+.theme-background[data-theme="nb"] {
+  background: linear-gradient(
+    180deg,
+    rgb(var(--color-primary)) 30%,
+    rgb(var(--color-secondary)) 45%,
+    rgb(var(--color-secondary)) 55%,
+    rgb(var(--color-tertiary)) 70%
+  );
+}

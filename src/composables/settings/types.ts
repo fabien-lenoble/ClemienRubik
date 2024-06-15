@@ -1,1 +1,1 @@
-export type Theme = "bi" | "sexy";
+export type Theme = "bi" | "sexy" | "nb";

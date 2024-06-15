@@ -2,7 +2,7 @@ import { ref } from "vue";
 import type { Ref } from "vue";
 import type { Theme } from "./types";
 
-const themes: Theme[] = ["bi", "sexy"];
+const themes: Theme[] = ["bi", "sexy", "nb"];
 
 const appTheme: Ref<Theme> = ref(
   (localStorage.getItem("theme") || "bi") as Theme
