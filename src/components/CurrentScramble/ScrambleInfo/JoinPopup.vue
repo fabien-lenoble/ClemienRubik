@@ -18,7 +18,7 @@ function joinSeed() {
   isJoinModalOpen.value = false;
   router.push({
     name: "join",
-    params: { seed: seedValue.value, scrambleIndex: "1" },
+    params: { seed: seedValue.value.toLowerCase().trim(), scrambleIndex: "1" },
   });
 }
 </script>
@@ -46,7 +46,7 @@ function joinSeed() {
             class="bg-gray-50 py-3 sm:flex sm:flex-row-reverse sm:px-6"
             @update-decoded-value="updateDecodedValue"
           ></qrcode-scanner>
-          <div>Or input seed manually</div>
+          <div>Or input room "password" manually</div>
           <div class="flex gap-2">
             <input
               v-model="seedValue"
@@ -61,7 +61,7 @@ function joinSeed() {
               class="mt-3 flex justify-center rounded-md border border-gray-300 bg-my-text-primary px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
               @click="joinSeed"
             >
-              join seed
+              Go
             </button>
           </div>
           <div class="bg-gray-50 py-3 sm:flex sm:flex-row-reverse sm:px-6">
