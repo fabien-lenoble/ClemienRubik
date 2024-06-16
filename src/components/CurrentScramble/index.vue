@@ -45,8 +45,10 @@ function goToSolves() {
     @update-route-scramble-index="updateRouteScrambleIndex"
   />
   <div class="bottom-0 left-0 text-[10px]">
-    {{ blindMemo.edgesMemo }}
-    {{ blindMemo.cornerMemo }}
+    Edges: {{ blindMemo.edgesMemo }}
+  </div>
+  <div class="bottom-0 left-0 text-[10px]">
+    Corners: {{ blindMemo.cornerMemo }}
   </div>
   <div class="flex gap-x-3 md:px-3 pb-12" v-if="!isTimerStarted">
     <cube-image :scramble="currentScramble" />

@@ -60,14 +60,17 @@ function generateCornerMemo(cube: CubeImage) {
     )?.[0]?.[0];
   }
 
+  // join by pairs
   cornerMemo = cornerPositionMemo
-    .map(
-      (sticker, index) =>
-        cornerMemoMapping[sticker][index % 4] + (index % 4 === 3 ? ". " : " ")
-    )
+    .map((sticker, index) => sticker + (index % 2 ? " " : ""))
     .join("");
+  // .map(
+  //   (sticker, index) =>
+  //     cornerMemoMapping[sticker][index % 4] + (index % 4 === 3 ? ". " : " ")
+  // )
+  // .join("");
 
-  const memo = [cornerMemo, ...cornerFlipMemo].join(". ");
+  const memo = [cornerMemo, ...cornerFlipMemo].join(" ");
   return memo;
 }
 
@@ -236,16 +239,18 @@ function generateCornerFlip(
     const letterFlippingIndex = corners[currentBufferValuePosition].findIndex(
       (cornerValue) => cornerValue === currentBufferValue
     );
+
+    // TODO: remove story code
     const characterFlipping =
       cornerMemoMapping[corners[currentBufferValuePosition][0]][0];
     switch (letterFlippingIndex) {
       case 0:
         break;
       case 1:
-        cornerFlipMemo.push(`${characterFlipping} frontflip`);
+        cornerFlipMemo.push(`${currentBufferValue}-flip`);
         break;
       case 2:
-        cornerFlipMemo.push(`${characterFlipping} backflip`);
+        cornerFlipMemo.push(`${currentBufferValue}-planche`);
         break;
     }
     cornerPositionsMemoed = cornerPositionsMemoed.concat(

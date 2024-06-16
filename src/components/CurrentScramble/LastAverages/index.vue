@@ -18,11 +18,11 @@ const { lastAo5, lastAo12, mean, getPersonalBest } = useSession();
     </div>
     <div class="flex h-full">
       <div class="basis-full self-center">
-        <div class="text-xs">PB</div>
+        <div class="text-xs">Best</div>
         <div class="">{{ getPersonalBest?.displayTime || "-" }}</div>
       </div>
       <div class="basis-full self-center">
-        <div class="text-xs">Mean</div>
+        <div class="text-xs">Average</div>
         <div class="">{{ mean || "-" }}</div>
       </div>
     </div>
