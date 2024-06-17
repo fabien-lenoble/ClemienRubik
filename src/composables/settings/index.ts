@@ -1,22 +1,28 @@
 import { ref } from "vue";
 import type { Ref } from "vue";
-import type { Theme } from "./types";
+import type { Theme, Settings } from "./types";
 
 const themes: Theme[] = ["bi", "sexy", "nb"];
 
-const appTheme: Ref<Theme> = ref(
-  (localStorage.getItem("theme") || "bi") as Theme
+const settings: Ref<Settings> = ref(
+  JSON.parse(localStorage.getItem("settings") || '{ "theme": "bi" }')
 );
 
-function setTheme(theme: Theme) {
-  appTheme.value = theme;
-  localStorage.setItem("theme", theme);
+function setTheme(theme: Settings["theme"]) {
+  settings.value["theme"] = theme;
+  localStorage.setItem("settings", JSON.stringify(settings.value));
+}
+
+function setBlindfoldedMode(blindfoldedMode: Settings["blindfoldedMode"]) {
+  settings.value["blindfoldedMode"] = blindfoldedMode;
+  localStorage.setItem("settings", JSON.stringify(settings.value));
 }
 
 export function useSettings() {
   return {
-    appTheme,
     themes,
     setTheme,
+    settings,
+    setBlindfoldedMode,
   };
 }

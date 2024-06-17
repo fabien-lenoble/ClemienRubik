@@ -8,6 +8,7 @@ import CubeImage from "./CubeImage/index.vue";
 import LastAverages from "./LastAverages/index.vue";
 import ScrambleInfo from "./ScrambleInfo/index.vue";
 import Timer from "./Timer.vue";
+import { useSettings } from "@/composables/settings";
 
 const { isTimerStarted } = useTimer();
 const router = useRouter();
@@ -22,6 +23,8 @@ const {
 const blindMemo = computed(() =>
   generateMemo(getScrambledImage(currentScramble.value))
 );
+
+const blindfoldedMode = useSettings().settings.value.blindfoldedMode;
 
 function updateRouteScrambleIndex() {
   currentScrambleIndex.value++;
@@ -44,11 +47,13 @@ function goToSolves() {
     :class="{ 'pt-12': !isTimerStarted }"
     @update-route-scramble-index="updateRouteScrambleIndex"
   />
-  <div class="bottom-0 left-0 text-[10px]">
-    Edges: {{ blindMemo.edgesMemo }}
-  </div>
-  <div class="bottom-0 left-0 text-[10px]">
-    Corners: {{ blindMemo.cornerMemo }}
+  <div v-if="blindfoldedMode">
+    <div class="bottom-0 left-0 text-[10px]">
+      Edges: {{ blindMemo.edgesMemo }}
+    </div>
+    <div class="bottom-0 left-0 text-[10px]">
+      Corners: {{ blindMemo.cornerMemo }}
+    </div>
   </div>
   <div class="flex gap-x-3 md:px-3 pb-12" v-if="!isTimerStarted">
     <cube-image :scramble="currentScramble" />

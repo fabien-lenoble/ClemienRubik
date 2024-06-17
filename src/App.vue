@@ -4,7 +4,7 @@ import { RouterView, useRoute } from "vue-router";
 import { useTimer } from "@/composables/timer";
 import { useSettings } from "@/composables/settings";
 import NavigationBar from "@/components/NavigationBar/index.vue";
-const { appTheme } = useSettings();
+const { settings } = useSettings();
 const { isTimerStarted, isTimerOnHold, isSpaceHeldLongEnough } = useTimer();
 
 const timerClass = computed(() => {
@@ -41,13 +41,7 @@ window.addEventListener("resize", () => {
 </script>
 
 <template>
-  <div
-    class="app"
-    :data-theme="appTheme"
-    :class="{
-      [`timer-${timerClass}`]: true,
-    }"
-  >
+  <div class="app" :data-theme="settings.theme" :class="`timer-${timerClass}`">
     <main
       class="h-full text-my-text-primary"
       :class="{
