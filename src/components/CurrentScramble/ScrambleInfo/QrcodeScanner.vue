@@ -10,12 +10,10 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div>
-    <div class="center stream">
-      <qr-stream @decode="onDecode" class="mb">
-        <div style="color: red" class="frame"></div>
-      </qr-stream>
-    </div>
+  <div class="center stream">
+    <qr-stream @decode="onDecode" class="mb">
+      <div style="color: red" class="frame"></div>
+    </qr-stream>
   </div>
 </template>
 

@@ -1,9 +1,16 @@
 <script setup lang="ts">
+import { useSession } from "@/composables/session";
 import AoNElement from "./AoNElement.vue";
 
 defineProps<{
   selectedBestAoN: number;
 }>();
+
+function startNewSession() {
+  if (confirm("Are you sure you want to reset all?")) {
+    useSession().startNewSession();
+  }
+}
 
 const emit = defineEmits<{
   (e: "updateSelectedBestAoN", type: number): void;
@@ -38,6 +45,12 @@ function updateSelectedBestAoN(n: number) {
       />
       <img v-else class="w-6 pr-1 left-1" src="../../assets/medal2_all.svg" />
     </ao-n-element>
+    <button
+      class="flex text-danger-700 justify-center items-center"
+      @click="startNewSession"
+    >
+      reset all
+    </button>
     <ao-n-element
       :ao-n-value="1"
       :is-selected="false"

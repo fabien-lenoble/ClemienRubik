@@ -53,7 +53,7 @@ const props = defineProps<{
         +2
       </button>
       <button
-        class="flex basis-1/3 text-danger-700 justify-center"
+        class="flex text-danger-700 justify-center"
         @click="updateSolveState(props.solve.index, 'deleted')"
       >
         DEL
