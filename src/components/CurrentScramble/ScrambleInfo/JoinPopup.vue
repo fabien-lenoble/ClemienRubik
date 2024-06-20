@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import QrcodeScanner from "./QrcodeScanner.vue";
-import { useRouter } from "vue-router";
+import { useShare } from "@/composables/share";
 import { ref, type Ref } from "vue";
+import { useRouter } from "vue-router";
+import QrcodeScanner from "./QrcodeScanner.vue";
+const { isShareModalOpen } = useShare();
 const router = useRouter();
 function updateDecodedValue(stream: string) {
   if (stream.match(/join\/[0-9]+\/[0-9]+$/)) {
     if (confirm("Join session?")) {
+      isShareModalOpen.value = false;
       router.push(stream);
     }
   }
 }
 const seedValue: Ref<string> = ref("");
 function joinSeed() {
+  isShareModalOpen.value = false;
   router.push({
     name: "join",
     params: { seed: seedValue.value.toLowerCase().trim(), scrambleIndex: "1" },

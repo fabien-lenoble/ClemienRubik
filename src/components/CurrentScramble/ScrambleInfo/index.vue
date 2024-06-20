@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useScramble } from "@/composables/scramble";
-import PlayWithFriendsPopup from "./PlayWithFriendsPopup.vue";
 import { useShare } from "@/composables/share";
+import PlayWithFriendsPopup from "./PlayWithFriendsPopup.vue";
 const { isShareModalOpen } = useShare();
 
 const emit = defineEmits<{
