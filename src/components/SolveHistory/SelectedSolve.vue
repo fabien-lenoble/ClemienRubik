@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import CubeImage from "@/components/CurrentScramble/CubeImage/index.vue";
-import type { SavedSolve } from "@/composables/session/types";
+import { useScramble } from "@/composables/scramble";
 import { useSession } from "@/composables/session";
+import type { SavedSolve } from "@/composables/session/types";
+import { useSettings } from "@/composables/settings";
+import { computed } from "vue";
 const { updateSolveState } = useSession();
 const props = defineProps<{
   solve: SavedSolve;
 }>();
+const { generateMemo, getScrambledImage } = useScramble();
+const blindfoldedMode = useSettings().settings.value.blindfoldedMode;
+
+const blindMemo = computed(() =>
+  generateMemo(getScrambledImage(props.solve.scramble))
+);
 </script>
 
 <template>
@@ -17,6 +26,10 @@ const props = defineProps<{
   >
     <div class="row-span-1 col-span-2 text-2xl">
       {{ solve.displayTime }}
+    </div>
+    <div v-if="blindfoldedMode" class="text-[8px]">
+      <div>Edges: {{ blindMemo.edgesMemo }}</div>
+      <div>Corners: {{ blindMemo.cornerMemo }}</div>
     </div>
     <div class="row-span-1 col-span-2 gap-x-1 grid grid-cols-3">
       <button
