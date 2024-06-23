@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import NavigationBar from "@/components/NavigationBar/index.vue";
+import { useSettings } from "@/composables/settings";
+import { useTimer } from "@/composables/timer";
 import { computed } from "vue";
 import { RouterView, useRoute } from "vue-router";
-import { useTimer } from "@/composables/timer";
-import { useSettings } from "@/composables/settings";
-import NavigationBar from "@/components/NavigationBar/index.vue";
 const { settings } = useSettings();
 const { isTimerStarted, isTimerOnHold, isSpaceHeldLongEnough } = useTimer();
 
@@ -46,7 +46,7 @@ window.addEventListener("resize", () => {
       class="h-full text-my-text-primary"
       :class="{
         'background-shown': isBackgroundImageShown,
-        'px-6 container py-5': !isTimerStarted,
+        'px-5 py-5 container': !isTimerStarted,
       }"
     >
       <div class="flex flex-col h-full">
