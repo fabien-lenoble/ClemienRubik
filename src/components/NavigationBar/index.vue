@@ -1,5 +1,18 @@
 <script setup lang="ts">
 import NavigationButton from "@/components/NavigationBar/Button.vue";
+import { computed } from "vue";
+
+import { useScramble } from "@/composables/scramble";
+import { useSeed } from "@/composables/seed";
+
+const { baseSessionSeed } = useSeed();
+const { currentScrambleIndex } = useScramble();
+
+const rumixRoute = computed(() => {
+  return currentScrambleIndex.value
+    ? `/scramble/${baseSessionSeed.value}/${currentScrambleIndex.value}`
+    : "/";
+});
 </script>
 
 <template>
@@ -9,7 +22,7 @@ import NavigationButton from "@/components/NavigationBar/Button.vue";
   >
     <navigation-button
       class="rounded-l"
-      route-push="/"
+      :route-push="rumixRoute"
       :is-active-check="'scramble'"
       >rumix</navigation-button
     >
