@@ -7,10 +7,8 @@ const { isShareModalOpen } = useShare();
 const router = useRouter();
 function updateDecodedValue(stream: string) {
   if (stream.match(/join\/[0-9]+\/[0-9]+$/)) {
-    if (confirm("Join session?")) {
-      isShareModalOpen.value = false;
-      router.push(stream);
-    }
+    isShareModalOpen.value = false;
+    router.push(stream);
   }
 }
 const seedValue: Ref<string> = ref("");
