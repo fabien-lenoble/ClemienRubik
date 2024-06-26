@@ -17,7 +17,7 @@ function init() {
   initScrambleValues();
 
   if (route.name === "join") {
-    if (confirm("Do you wish to reset your session?")) {
+    if (confirm("Do you wish to reset your solve history?")) {
       startNewSession();
     }
     router.push(route.fullPath.replace("join", "scramble"));

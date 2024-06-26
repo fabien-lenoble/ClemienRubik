@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { useSession } from "@/composables/session";
+import { useScramble } from "@/composables/scramble";
 import AoNElement from "./AoNElement.vue";
 
 defineProps<{
   selectedBestAoN: number;
 }>();
 
+const { currentScrambleIndex } = useScramble();
+
 function startNewSession() {
-  if (confirm("Are you sure you want to reset all?")) {
+  if (confirm("Do you wish to reset your solve history?")) {
+    currentScrambleIndex.value = 0;
     useSession().startNewSession();
   }
 }
