@@ -51,7 +51,7 @@ window.addEventListener("resize", () => {
     >
       <div class="flex flex-col h-full">
         <RouterView />
-        <navigation-bar v-show="!isTimerStarted" />
+        <navigation-bar class="z-[1]" v-show="!isTimerStarted" />
       </div>
     </main>
   </div>
@@ -72,7 +72,6 @@ html {
 }
 .app {
   height: 100%;
-  padding-bottom: 12px;
 }
 
 .background-shown {

@@ -40,25 +40,35 @@ function goToSolves() {
 
 <template>
   <scramble-info
+    class="z-[2]"
     v-if="!isTimerStarted"
     @update-route-scramble-index="updateRouteScrambleIndex"
   />
-  <timer
-    :class="{ 'pt-12': !isTimerStarted }"
-    @update-route-scramble-index="updateRouteScrambleIndex"
-  />
-  <div v-if="blindfoldedMode">
-    <div class="bottom-0 left-0 text-[10px]">
-      Edges: {{ blindMemo.edgesMemo }}
-    </div>
-    <div class="bottom-0 left-0 text-[10px]">
-      Corners: {{ blindMemo.cornerMemo }}
-    </div>
+  <div class="flex-grow"></div>
+  <div
+    v-if="blindfoldedMode"
+    class="z-[1] relative"
+    :class="{
+      'text-[10px]': !isTimerStarted,
+      'bottom-[40px] left-[20px] text-[20px]': isTimerStarted,
+    }"
+  >
+    Edges: {{ blindMemo.edgesMemo }}
+    <br />
+    Corners: {{ blindMemo.cornerMemo }}
   </div>
-  <div class="flex gap-x-3 md:px-3 pb-12" v-if="!isTimerStarted">
+  <div class="z-[1] flex gap-x-3 md:px-3 pb-12" v-if="!isTimerStarted">
     <cube-image :scramble="currentScramble" />
     <div class="flex-grow text-center" @click="goToSolves">
       <last-averages />
     </div>
   </div>
+  <timer
+    class="z-0 absolute content-center text-center"
+    :class="{
+      'h-[calc(100%-2.5rem)] w-[calc(100%-2.5rem)]': !isTimerStarted,
+      'h-[100%] w-[100%]': isTimerStarted,
+    }"
+    @update-route-scramble-index="updateRouteScrambleIndex"
+  />
 </template>
