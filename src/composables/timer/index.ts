@@ -1,12 +1,12 @@
-import { ref, computed } from "vue";
-import type { Ref } from "vue";
 import { useScramble } from "@/composables/scramble";
-import { useSession } from "@/composables/session";
 import { useSeed } from "@/composables/seed";
+import { useSession } from "@/composables/session";
+import type { Ref } from "vue";
+import { computed, ref } from "vue";
 import type { DisplayTime, State, Time } from "./types";
 
 const { currentScramble, goToNextScramble } = useScramble();
-const { currentScrambleSeed } = useSeed();
+const { currentScrambleSeed, baseSessionSeed } = useSeed();
 const { addSolveToSessionSolves } = useSession();
 
 const timerInterval: Ref<ReturnType<typeof setInterval>> = ref(
@@ -82,6 +82,7 @@ function stopTimer() {
   isTimerStarted.value = false;
   addSolveToSessionSolves({
     scramble: currentScramble.value,
+    baseSeed: baseSessionSeed.value,
     seed: currentScrambleSeed.value,
     baseTime: timerValue.value,
   });

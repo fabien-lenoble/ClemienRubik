@@ -39,7 +39,7 @@ const blindMemo = computed(() =>
           'border-my-text-secondary text-my-text-secondary':
             props.solve.state !== 'solved',
         }"
-        @click="updateSolveState(props.solve.index, 'solved')"
+        @click="updateSolveState(props.solve.scrambleIndex, 'solved')"
       >
         OK
       </button>
@@ -50,7 +50,7 @@ const blindMemo = computed(() =>
           'border-my-text-secondary text-my-text-secondary':
             props.solve.state !== 'DNF',
         }"
-        @click="updateSolveState(props.solve.index, 'DNF')"
+        @click="updateSolveState(props.solve.scrambleIndex, 'DNF')"
       >
         DNF
       </button>
@@ -61,13 +61,13 @@ const blindMemo = computed(() =>
           'border-my-text-secondary text-my-text-secondary':
             props.solve.state !== '+2',
         }"
-        @click="updateSolveState(props.solve.index, '+2')"
+        @click="updateSolveState(props.solve.scrambleIndex, '+2')"
       >
         +2
       </button>
       <button
         class="flex text-danger-700 justify-center"
-        @click="updateSolveState(props.solve.index, 'deleted')"
+        @click="updateSolveState(props.solve.scrambleIndex, 'deleted')"
       >
         DEL
       </button>

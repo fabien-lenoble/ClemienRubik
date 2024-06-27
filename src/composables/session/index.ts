@@ -1,9 +1,9 @@
-import { computed, ref } from "vue";
-import type { Ref } from "vue";
-import type { Note, SavedSolve, Solve } from "./types";
-import { useTimer } from "@/composables/timer";
 import { useScramble } from "@/composables/scramble";
+import { useTimer } from "@/composables/timer";
 import type { State, Time } from "@/composables/timer/types";
+import type { Ref } from "vue";
+import { computed, ref } from "vue";
+import type { Note, SavedSolve, Solve } from "./types";
 
 const sessionSolves: Ref<SavedSolve[]> = ref(
   JSON.parse(localStorage.getItem("sessionSolves") || "[]") as SavedSolve[]
@@ -41,26 +41,30 @@ const getPersonalBest = computed(() => {
 
 function addSolveToSessionSolves(solve: Solve) {
   const { getTimerDisplayValue } = useTimer();
-  const { stringifiedScramble } = useScramble();
+  const { stringifiedScramble, currentScrambleIndex } = useScramble();
   const savedSolve: SavedSolve = {
     ...solve,
     finalTime: solve.baseTime,
     displayScramble: stringifiedScramble(solve.scramble),
     displayTime: getTimerDisplayValue(solve.baseTime),
     state: "solved",
-    index: sessionSolves.value.length,
+    scrambleIndex: currentScrambleIndex.value,
   };
   sessionSolves.value.push(savedSolve);
   localStorage.setItem("sessionSolves", JSON.stringify(sessionSolves.value));
 }
 
-function updateSolveState(index: number, newState: State) {
+function updateSolveState(scrambleIndex: number, newState: State) {
   if (
     newState === "deleted" &&
     !confirm("Are you sure you want to delete this solve?")
   ) {
     return;
   }
+
+  const index = sessionSolves.value.findIndex(
+    (solve) => solve.scrambleIndex === scrambleIndex
+  );
 
   const { getTimerDisplayValue } = useTimer();
   const newFinalTime = computeFinalTime(

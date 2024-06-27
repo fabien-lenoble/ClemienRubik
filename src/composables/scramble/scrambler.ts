@@ -1,7 +1,8 @@
 import { useSeed } from "@/composables/seed";
+import type { SavedSolve } from "@/composables/session/types";
 import type { Ref } from "vue";
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import type { DisplayScramble, MoveSet, Scramble, SubMoveSet } from "./types";
 
 const {
@@ -26,9 +27,33 @@ const moveSet: MoveSet = [
   ["R", "R'", "R2"],
 ];
 
-function initScrambleValues() {
+function initScrambleValues(sessionSolves: SavedSolve[]) {
   const route = useRoute();
-  const scrambleIndex = Number(route.params.scrambleIndex);
+  const router = useRouter();
+
+  let scrambleIndex = Number(route.params.scrambleIndex);
+
+  // try to find the scramble index in the session solves
+  if (
+    sessionSolves.find((solve) => {
+      return (
+        solve.scrambleIndex === scrambleIndex &&
+        solve.baseSeed === baseSessionSeed.value
+      );
+    })
+  ) {
+    // if the scramble index is found in the session solves, we can go to the next scramble
+    // find the solve with the biggest scramble index with the same base seed as the current session, and add 1 to it
+    const lastScrambleIndex = Math.max(
+      ...sessionSolves
+        .filter((solve) => solve.baseSeed === baseSessionSeed.value)
+        .map((solve) => solve.scrambleIndex)
+    );
+
+    scrambleIndex = lastScrambleIndex + 1;
+    router.push({ name: "scramble", params: { scrambleIndex } });
+  }
+
   goToScrambleIndex(scrambleIndex);
   currentScrambleIndex.value = scrambleIndex;
 }

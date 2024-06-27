@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useSession } from "@/composables/session";
 import { useScramble } from "@/composables/scramble";
+import { useSession } from "@/composables/session";
+import { useRouter } from "vue-router";
 import AoNElement from "./AoNElement.vue";
 
 defineProps<{
@@ -8,11 +9,13 @@ defineProps<{
 }>();
 
 const { currentScrambleIndex } = useScramble();
+const router = useRouter();
 
 function startNewSession() {
   if (confirm("Do you wish to reset your solve history?")) {
     currentScrambleIndex.value = 0;
     useSession().startNewSession();
+    router.push("/");
   }
 }
 
