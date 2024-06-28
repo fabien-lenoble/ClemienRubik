@@ -74,6 +74,7 @@ function updateSolveState(scrambleIndex: number, newState: State) {
   sessionSolves.value[index].state = newState;
   sessionSolves.value[index].displayTime = getTimerDisplayValue(
     newFinalTime,
+    "3decimals",
     newState
   );
   sessionSolves.value[index].finalTime = newFinalTime;
