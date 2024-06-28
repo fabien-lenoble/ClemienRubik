@@ -1,6 +1,7 @@
 import { useScramble } from "@/composables/scramble";
 import { useSeed } from "@/composables/seed";
 import { useSession } from "@/composables/session";
+import type { Settings } from "@/composables/settings/types";
 import type { Ref } from "vue";
 import { computed, ref } from "vue";
 import type { DisplayTime, State, Time } from "./types";
@@ -33,28 +34,50 @@ function startTimer() {
 
 function getTimerDisplayValue(
   timeInMilliseconds: Time,
+  format: Settings["timerFormat"] = "3decimals",
   state?: State
 ): DisplayTime {
+  if (format === "none") {
+    return "-";
+  }
+
   if (state === "DNF") {
     return "DNF";
   }
 
   const minutes = Math.floor(timeInMilliseconds / 60000);
-  const seconds = Math.floor(timeInMilliseconds / 1000) % 60;
-  const milliseconds = timeInMilliseconds % 1000;
-  // pad start with a 0 for the milliseconds so that it doesn't show 5.2s when it should show 5.002s for example
-  let displayValue = `${seconds}.${String(milliseconds).padStart(3, "0")}`;
-  if (minutes) {
-    // pad start with a 0 for the seconds so that it doesn't show 1:5.002s when it should show 1:05.002s for example
-    displayValue = `${minutes}:${displayValue.padStart(6, "0")}`;
+  const seconds = (timeInMilliseconds % 60000) / 1000;
+
+  let decimalPlaces = 3;
+  switch (format) {
+    case "rounded":
+      decimalPlaces = 0;
+      break;
+    case "1decimal":
+      decimalPlaces = 1;
+      break;
+    case "2decimals":
+      decimalPlaces = 2;
+      break;
+    case "3decimals":
+      decimalPlaces = 3;
+      break;
   }
 
-  if (state === "+2") {
-    displayValue += "+";
-  }
+  const formattedSeconds = seconds.toFixed(decimalPlaces);
 
-  return displayValue;
+  if (minutes < 1) {
+    // For values less than 60 seconds, show with specified decimal places
+    return formattedSeconds;
+  } else {
+    // For values 60 seconds or more, convert to minutes and seconds
+    // Pad the seconds part with a '0' if it's less than 10
+    const paddedSeconds =
+      seconds < 10 ? "0" + formattedSeconds : formattedSeconds;
+    return `${minutes}:${paddedSeconds}`;
+  }
 }
+
 function incrementHoldTime() {
   holdTime.value++;
 }

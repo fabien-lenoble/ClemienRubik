@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useSettings } from "@/composables/settings";
 import { useTimer } from "@/composables/timer";
 import { onMounted, onUnmounted } from "vue";
 const {
@@ -12,6 +13,8 @@ const {
   getTimerDisplayValue,
   timerValue,
 } = useTimer();
+
+const { settings } = useSettings();
 
 const emit = defineEmits<{
   (e: "updateRouteScrambleIndex"): void;
@@ -68,7 +71,12 @@ onUnmounted(() => {
     @touchend="handleTimerTriggerReleased()"
   >
     <p class="text-outline text-primary">
-      {{ getTimerDisplayValue(timerValue) }}
+      {{
+        getTimerDisplayValue(
+          timerValue,
+          isTimerStarted ? settings.timerFormat : "3decimals"
+        )
+      }}
     </p>
   </div>
 </template>
