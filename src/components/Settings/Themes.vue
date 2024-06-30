@@ -9,7 +9,7 @@ const { themes, setTheme } = useSettings();
     v-for="theme in themes"
     :key="theme"
     @click="setTheme(theme)"
-    class="border-2 gradient flex basis-full justify-center items-center border-my-text-primary text-white theme-background"
+    class="border-2 gradient flex basis-full justify-center items-center border-my-text-primary theme-background"
     :data-theme="theme"
   ></button>
 </template>

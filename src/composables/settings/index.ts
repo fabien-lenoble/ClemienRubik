@@ -9,6 +9,9 @@ const defaultSettings: Settings = {
   theme: "bi",
   blindfoldedMode: false,
   timerFormat: "3decimals",
+  blindfoldedTraining: {
+    mode: "alternate",
+  },
 };
 
 // Retrieve stored settings and merge with default settings
@@ -36,6 +39,16 @@ function setTimerFormat(timerFormat: Settings["timerFormat"]) {
   localStorage.setItem("settings", JSON.stringify(settings.value));
 }
 
+function setBlindfoldedTraining(
+  blindfoldedTraining: Settings["blindfoldedTraining"]
+) {
+  settings.value["blindfoldedTraining"] = {
+    ...settings.value["blindfoldedTraining"],
+    ...blindfoldedTraining,
+  };
+  localStorage.setItem("settings", JSON.stringify(settings.value));
+}
+
 export function useSettings() {
   return {
     themes,
@@ -43,5 +56,6 @@ export function useSettings() {
     settings,
     setBlindfoldedMode,
     setTimerFormat,
+    setBlindfoldedTraining,
   };
 }
