@@ -1,11 +1,13 @@
-import { createRouter, createWebHistory } from "vue-router";
-import ScrambleView from "@/views/ScrambleView.vue";
-import SolveHistoryView from "@/views/SolveHistoryView.vue";
-import SettingsView from "@/views/SettingsView.vue";
-import { useSession } from "@/composables/session";
 import { useScramble } from "@/composables/scramble";
 import { useSeed } from "@/composables/seed";
 import type { Seed } from "@/composables/seed/types";
+import { useSession } from "@/composables/session";
+import ScrambleView from "@/views/ScrambleView.vue";
+import SettingsView from "@/views/SettingsView.vue";
+import SolveHistoryView from "@/views/SolveHistoryView.vue";
+import TrainingView from "@/views/TrainingView.vue";
+import Training3bldView from "@/views/training/Training3bld.vue";
+import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +35,16 @@ const router = createRouter({
       path: "/settings",
       name: "settings",
       component: SettingsView,
+    },
+    {
+      path: "/training",
+      name: "training",
+      component: TrainingView,
+    },
+    {
+      path: "/training/3bld",
+      name: "training-3bld",
+      component: Training3bldView,
     },
   ],
 });

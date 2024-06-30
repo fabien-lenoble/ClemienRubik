@@ -29,6 +29,9 @@ const rumixRoute = computed(() => {
     <navigation-button route-push="/solves" :is-active-check="'solves'"
       >solves</navigation-button
     >
+    <navigation-button route-push="/training" :is-active-check="'training'"
+      >train</navigation-button
+    >
     <navigation-button
       class="rounded-r"
       route-push="/settings"

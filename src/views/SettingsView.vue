@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SettingsThemes from "@/components/Settings/Themes.vue";
-import SettingsToggles from "@/components/Settings/Toggles.vue";
 import SettingsTimerFormat from "@/components/Settings/TimerFormat.vue";
+import SettingsToggles from "@/components/Settings/Toggles.vue";
 import { useScramble } from "@/composables/scramble";
 const { testScramblesRandomness } = useScramble();
 
