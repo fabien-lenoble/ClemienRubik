@@ -8,6 +8,7 @@ import SolveHistoryView from "@/views/SolveHistoryView.vue";
 import TrainingView from "@/views/TrainingView.vue";
 import Training3bldView from "@/views/training/Training3bld.vue";
 import Training3bldResultsView from "@/views/training/Training3bldResults.vue";
+import TrainingPllRecognition from "@/views/training/TrainingPllRecognition.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -51,6 +52,11 @@ const router = createRouter({
       path: "/training/3bld/results",
       name: "training-3bld-results",
       component: Training3bldResultsView,
+    },
+    {
+      path: "/training/pll-recognition",
+      name: "training-pll-recognition",
+      component: TrainingPllRecognition,
     },
   ],
 });
