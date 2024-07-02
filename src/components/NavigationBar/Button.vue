@@ -5,7 +5,7 @@ const route = useRoute();
 const router = useRouter();
 
 const isActive = computed(() => {
-  return props.isActiveCheck === route.name;
+  return (route?.name as string)?.includes(props.isActiveCheck);
 });
 
 const props = defineProps<{
@@ -16,7 +16,7 @@ const props = defineProps<{
 <template>
   <button
     type="button"
-    class="w-1/2 inline-block border-2 px-6 py-[1px] text-xs font-medium uppercase leading-normal transition duration-150 ease-in-out"
+    class="inline-block border-2 px-6 py-[1px] text-xs font-medium uppercase leading-normal transition duration-150 ease-in-out"
     :class="{
       'border-selected text-selected': isActive,
       'border-my-text-secondary text-my-text-secondary': !isActive,
