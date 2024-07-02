@@ -30,7 +30,9 @@ const { settings } = useSettings();
 const mode = computed(() => settings.value.blindfoldedTraining.mode);
 
 const pairs = Object.fromEntries(
-  Object.entries(threeBldCornerPairs).filter(([_, value]) => value !== "")
+  Object.entries(threeBldCornerPairs).filter(
+    ([_, value]) => !["", "-"].includes(value)
+  )
 );
 const pairKeys = Object.keys(pairs);
 const pairValues = Object.values(pairs);
