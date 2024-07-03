@@ -1,4 +1,7 @@
+import Use3bld from "./3bld";
 
 export function useTraining() {
-  return {};
+  return {
+    ...Use3bld,
+  };
 }
