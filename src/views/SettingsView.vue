@@ -12,11 +12,22 @@ function test() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-y-2 h-72 text-lg">
-    <settings-themes />
-    <settings-toggles />
-    <settings-timer-format />
-    <settings-3-bld-training-select />
-    <!-- <button @click="test">test</button> -->
+  <div class="flex flex-col gap-y-6 h-full">
+    <div>
+      <p class="text-2xl">Appearance</p>
+      <settings-themes />
+    </div>
+    <div>
+      <p class="text-2xl">Solving</p>
+      <settings-toggles />
+      timer format
+      <settings-timer-format />
+    </div>
+    <div>
+      <p class="text-2xl">Training</p>
+      <p class="text">Blindfolded</p>
+      <settings-3-bld-training-select />
+    </div>
+    <!-- <button @click="test">test scramble randomness</button> -->
   </div>
 </template>

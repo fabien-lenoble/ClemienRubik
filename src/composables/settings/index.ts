@@ -11,6 +11,7 @@ const defaultSettings: Settings = {
   timerFormat: "3decimals",
   blindfoldedTraining: {
     mode: "alternate",
+    maximumRecognitionTime: 5,
   },
 };
 
@@ -22,6 +23,10 @@ const storedSettings = storedSettingsString
 const settings: Ref<Settings> = ref({
   ...defaultSettings,
   ...storedSettings,
+  blindfoldedTraining: {
+    ...defaultSettings.blindfoldedTraining,
+    ...storedSettings.blindfoldedTraining,
+  },
 });
 
 function setTheme(theme: Settings["theme"]) {
@@ -40,7 +45,7 @@ function setTimerFormat(timerFormat: Settings["timerFormat"]) {
 }
 
 function setBlindfoldedTraining(
-  blindfoldedTraining: Settings["blindfoldedTraining"]
+  blindfoldedTraining: Partial<Settings["blindfoldedTraining"]>
 ) {
   settings.value["blindfoldedTraining"] = {
     ...settings.value["blindfoldedTraining"],

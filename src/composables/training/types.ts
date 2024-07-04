@@ -3,4 +3,5 @@ export type CornerMemoResult = {
   text: string;
   right: number;
   wrong: number;
+  time?: number;
 };
