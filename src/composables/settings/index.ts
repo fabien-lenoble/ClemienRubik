@@ -1,5 +1,5 @@
 import type { Ref } from "vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { Settings, Theme } from "./types";
 
 const themes: Theme[] = ["bi", "sexy", "nb"];
@@ -11,6 +11,7 @@ const defaultSettings: Settings = {
   timerFormat: "3decimals",
   blindfoldedTraining: {
     mode: "alternate",
+    maximumRecognitionTime: 5,
   },
 };
 
@@ -22,6 +23,10 @@ const storedSettings = storedSettingsString
 const settings: Ref<Settings> = ref({
   ...defaultSettings,
   ...storedSettings,
+  blindfoldedTraining: {
+    ...defaultSettings.blindfoldedTraining,
+    ...storedSettings.blindfoldedTraining,
+  },
 });
 
 function setTheme(theme: Settings["theme"]) {
@@ -40,7 +45,7 @@ function setTimerFormat(timerFormat: Settings["timerFormat"]) {
 }
 
 function setBlindfoldedTraining(
-  blindfoldedTraining: Settings["blindfoldedTraining"]
+  blindfoldedTraining: Partial<Settings["blindfoldedTraining"]>
 ) {
   settings.value["blindfoldedTraining"] = {
     ...settings.value["blindfoldedTraining"],
@@ -48,6 +53,10 @@ function setBlindfoldedTraining(
   };
   localStorage.setItem("settings", JSON.stringify(settings.value));
 }
+
+const hasMaximumRecognitionTime = computed(() => {
+  return settings.value.blindfoldedTraining.maximumRecognitionTime > 0;
+});
 
 export function useSettings() {
   return {
@@ -57,5 +66,6 @@ export function useSettings() {
     setBlindfoldedMode,
     setTimerFormat,
     setBlindfoldedTraining,
+    hasMaximumRecognitionTime,
   };
 }

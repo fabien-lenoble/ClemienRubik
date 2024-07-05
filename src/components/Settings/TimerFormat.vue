@@ -15,8 +15,7 @@ const options: Array<[Settings["timerFormat"], string]> = [
 
 <template>
   <div class="flex flex-col gap-y-2 mt-auto">
-    <label class="flex items-center">
-      <span class="mr-2">timer format</span>
+    <div class="flex items-center">
       <select
         v-model="settings.timerFormat"
         @change="setTimerFormat(settings.timerFormat)"
@@ -31,6 +30,6 @@ const options: Array<[Settings["timerFormat"], string]> = [
           {{ option[1] }}
         </option>
       </select>
-    </label>
+    </div>
   </div>
 </template>

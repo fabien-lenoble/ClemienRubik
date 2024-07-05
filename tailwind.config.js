@@ -16,6 +16,15 @@ module.exports = {
         "my-text-secondary":
           "rgb(var(--color-my-text-secondary) / <alpha-value>)",
       },
+      animation: {
+        squeeze: "squeeze linear forwards",
+      },
+      keyframes: {
+        squeeze: {
+          "0%": { width: "100%", left: "0" },
+          "100%": { width: "0", left: "50%" },
+        },
+      },
     },
   },
   darkMode: "class",

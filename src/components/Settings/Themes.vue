@@ -5,11 +5,13 @@ const { themes, setTheme } = useSettings();
 </script>
 
 <template>
-  <button
-    v-for="theme in themes"
-    :key="theme"
-    @click="setTheme(theme)"
-    class="border-2 gradient flex basis-full justify-center items-center border-my-text-primary theme-background"
-    :data-theme="theme"
-  ></button>
+  <div class="flex flex-row gap-4">
+    <button
+      v-for="theme in themes"
+      :key="theme"
+      @click="setTheme(theme)"
+      class="border-2 gradient flex justify-center items-center border-my-text-primary theme-background h-10 w-full"
+      :data-theme="theme"
+    ></button>
+  </div>
 </template>
