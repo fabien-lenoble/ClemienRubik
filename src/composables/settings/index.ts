@@ -1,5 +1,5 @@
 import type { Ref } from "vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { Settings, Theme } from "./types";
 
 const themes: Theme[] = ["bi", "sexy", "nb"];
@@ -54,6 +54,10 @@ function setBlindfoldedTraining(
   localStorage.setItem("settings", JSON.stringify(settings.value));
 }
 
+const hasMaximumRecognitionTime = computed(() => {
+  return settings.value.blindfoldedTraining.maximumRecognitionTime > 0;
+});
+
 export function useSettings() {
   return {
     themes,
@@ -62,5 +66,6 @@ export function useSettings() {
     setBlindfoldedMode,
     setTimerFormat,
     setBlindfoldedTraining,
+    hasMaximumRecognitionTime,
   };
 }

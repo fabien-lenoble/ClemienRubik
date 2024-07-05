@@ -22,12 +22,7 @@
       <time-bar
         :duration="settings.blindfoldedTraining.maximumRecognitionTime"
       />
-      <p
-        class="text-center"
-        v-if="
-          elapsedTime && settings.blindfoldedTraining.maximumRecognitionTime > 0
-        "
-      >
+      <p class="text-center" v-if="elapsedTime && hasMaximumRecognitionTime">
         {{ elapsedTime.toFixed(2) }}s
       </p>
     </div>
@@ -42,7 +37,7 @@ import { onBeforeUnmount, onMounted } from "vue";
 import ResultHandler from "@/components/Training/3Bld/ResultHandler.vue";
 import TimeBar from "@/components/Training/3Bld/TimeBar.vue";
 
-const { settings } = useSettings();
+const { settings, hasMaximumRecognitionTime } = useSettings();
 const {
   currentHintText,
   currentHiddenText,

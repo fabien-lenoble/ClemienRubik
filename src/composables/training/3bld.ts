@@ -3,7 +3,7 @@ import { threeBldCornerPairs } from "@/composables/training/constants";
 import { computed, ref, type Ref } from "vue";
 import type { CornerMemoResult } from "./types";
 
-const { settings } = useSettings();
+const { settings, hasMaximumRecognitionTime } = useSettings();
 
 const cornerMemoResults: Ref<CornerMemoResult[]> = ref(
   JSON.parse(
@@ -17,14 +17,31 @@ function resetCornerMemoResults() {
 }
 
 const computedCornerMemoResults = computed(() => {
-  return cornerMemoResults.value
-    .map((result) => ({
+  return Object.entries(pairs).map(([key, value]) => {
+    const result = cornerMemoResults.value.find((r) => r.key === key);
+    if (!result) {
+      return {
+        key,
+        text: value,
+        ratio: 0,
+        total: 0,
+        averageTime: NaN,
+      };
+    }
+    const rightResults =
+      result.results?.filter((r) => r.result === "right") || [];
+    const timedRightResults = rightResults.filter((r) => r.time);
+    const resultsLength = result.results?.length || 0;
+
+    return {
       ...result,
-      ratio: (result.right / (result.right + result.wrong)) * 100,
-      total: result.right + result.wrong,
-    }))
-    .sort((a, b) => (b.key > a.key ? -1 : 1))
-    .sort((a, b) => b.ratio - a.ratio);
+      ratio: (rightResults.length / resultsLength) * 100,
+      total: resultsLength,
+      averageTime:
+        timedRightResults.reduce((acc, r) => acc + r.time!, 0) /
+        timedRightResults.length,
+    };
+  });
 });
 
 function addCornerMemoResult(
@@ -33,22 +50,30 @@ function addCornerMemoResult(
   result: "right" | "wrong",
   time: number
 ) {
-  const sameKeyTextIndex = cornerMemoResults.value.find(
-    (result) => result.key === key && result.text === text
+  const sameKeyIndex = cornerMemoResults.value.find(
+    (result) => result.key === key
   );
-  if (sameKeyTextIndex) {
-    if (result === "right") {
-      sameKeyTextIndex.right++;
-    } else {
-      sameKeyTextIndex.wrong++;
-    }
+  if (sameKeyIndex) {
+    sameKeyIndex.results?.push({
+      result,
+      time:
+        result === "right" && hasMaximumRecognitionTime.value
+          ? time
+          : undefined,
+    });
   } else {
     cornerMemoResults.value.push({
       key,
       text,
-      right: result === "right" ? 1 : 0,
-      wrong: result === "wrong" ? 1 : 0,
-      time: result === "right" ? time : undefined,
+      results: [
+        {
+          result,
+          time:
+            result === "right" && hasMaximumRecognitionTime.value
+              ? time
+              : undefined,
+        },
+      ],
     });
   }
 
