@@ -22,7 +22,7 @@ import Settings3BldTrainingSelect from "@/components/Settings/3BldTrainingSelect
 import HintAndAnswerReveal from "@/components/Training/3Bld/HintAndAnswerReveal.vue";
 
 const router = useRouter();
-const { selectRandomPair, isHiddenTextShown } = useTraining();
+const { isHiddenTextShown } = useTraining();
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.code === "Space") {
@@ -36,7 +36,6 @@ function goToResults() {
 }
 
 onMounted(() => {
-  selectRandomPair();
   window.addEventListener("keydown", handleKeyDown);
 });
 

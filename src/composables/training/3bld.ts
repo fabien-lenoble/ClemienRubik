@@ -50,30 +50,28 @@ function addCornerMemoResult(
   result: "right" | "wrong",
   time: number
 ) {
-  const sameKeyIndex = cornerMemoResults.value.find(
+  const sameKeyEntry = cornerMemoResults.value.find(
     (result) => result.key === key
   );
-  if (sameKeyIndex) {
-    sameKeyIndex.results?.push({
-      result,
-      time:
-        result === "right" && hasMaximumRecognitionTime.value
-          ? time
-          : undefined,
-    });
+  const newResultEntry = {
+    result,
+    time:
+      result === "right" && hasMaximumRecognitionTime.value ? time : undefined,
+  };
+
+  if (sameKeyEntry) {
+    if (sameKeyEntry.text === text) {
+      // if the same key already exists, add the new result to the existing entry
+      sameKeyEntry.results?.push(newResultEntry);
+    } else {
+      // if the same key exists but the text is different, overwrite the results
+      sameKeyEntry.results = [newResultEntry];
+    }
   } else {
     cornerMemoResults.value.push({
       key,
       text,
-      results: [
-        {
-          result,
-          time:
-            result === "right" && hasMaximumRecognitionTime.value
-              ? time
-              : undefined,
-        },
-      ],
+      results: [newResultEntry],
     });
   }
 
@@ -96,7 +94,7 @@ const pairsValues = Object.values(pairs);
 const currentRandomIndex = ref(-1);
 const currentHintText = computed(() => {
   if (
-    mode.value === "pairs" ||
+    mode.value === "key" ||
     (mode.value === "alternate" && isKeyRound.value)
   ) {
     return pairsKeys[currentRandomIndex.value];
@@ -106,7 +104,7 @@ const currentHintText = computed(() => {
 });
 const currentHiddenText = computed(() => {
   if (
-    mode.value === "pairs" ||
+    mode.value === "key" ||
     (mode.value === "alternate" && isKeyRound.value)
   ) {
     return pairsValues[currentRandomIndex.value];
@@ -182,6 +180,8 @@ function handleTimeBarAnimationEnd(_isFullDurationUsed: boolean) {
       : (endTime - startTime.value) / 1000;
   }
 }
+
+selectRandomPair();
 
 export default {
   currentHintText,
