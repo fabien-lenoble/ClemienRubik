@@ -4,6 +4,7 @@ export type Settings = {
   blindfoldedTraining: {
     mode: "key" | "value" | "alternate";
     maximumRecognitionTime: 0 | 3 | 5 | 7;
+    resultsViewMode: "key" | "value";
   };
   timerFormat: "none" | "rounded" | "1decimal" | "2decimals" | "3decimals";
 };

@@ -12,6 +12,7 @@ const defaultSettings: Settings = {
   blindfoldedTraining: {
     mode: "alternate",
     maximumRecognitionTime: 5,
+    resultsViewMode: "key",
   },
 };
 
@@ -47,6 +48,14 @@ function setTimerFormat(timerFormat: Settings["timerFormat"]) {
 function setBlindfoldedTraining(
   blindfoldedTraining: Partial<Settings["blindfoldedTraining"]>
 ) {
+  // in case the mode is changed to "key" or "value", update the resultsViewMode as well
+  if (
+    blindfoldedTraining.mode === "key" ||
+    blindfoldedTraining.mode === "value"
+  ) {
+    blindfoldedTraining.resultsViewMode = blindfoldedTraining.mode;
+  }
+
   settings.value["blindfoldedTraining"] = {
     ...settings.value["blindfoldedTraining"],
     ...blindfoldedTraining,

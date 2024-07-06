@@ -5,10 +5,22 @@ import type { CornerMemoResult } from "./types";
 
 const { settings, hasMaximumRecognitionTime } = useSettings();
 
+const isHiddenTextShown = ref(false);
+const roundCounter = ref(0);
+const isKeyRound = ref(true); // Start with keys
+const mode = computed(() => settings.value.blindfoldedTraining.mode);
 const cornerMemoResults: Ref<CornerMemoResult[]> = ref(
-  JSON.parse(
-    localStorage.getItem("cornerMemoResults") || "[]"
-  ) as CornerMemoResult[]
+  (
+    JSON.parse(
+      localStorage.getItem("cornerMemoResults") || "[]"
+    ) as CornerMemoResult[]
+  ).map((result) => ({
+    ...result,
+    results: result.results?.map((r) => ({
+      ...r,
+      hintType: r.hintType ?? "key",
+    })),
+  }))
 );
 
 function resetCornerMemoResults() {
@@ -28,14 +40,19 @@ const computedCornerMemoResults = computed(() => {
         averageTime: NaN,
       };
     }
+    const hintFilteredResults = result.results?.filter(
+      (r) => r.hintType === settings.value.blindfoldedTraining.resultsViewMode
+    );
+
     const rightResults =
-      result.results?.filter((r) => r.result === "right") || [];
+      hintFilteredResults?.filter((r) => r.result === "right") || [];
     const timedRightResults = rightResults.filter((r) => r.time);
-    const resultsLength = result.results?.length || 0;
+    const resultsLength = hintFilteredResults?.length || 0;
 
     return {
       ...result,
-      ratio: (rightResults.length / resultsLength) * 100,
+      ratio:
+        resultsLength === 0 ? 0 : (rightResults.length / resultsLength) * 100,
       total: resultsLength,
       averageTime:
         timedRightResults.reduce((acc, r) => acc + r.time!, 0) /
@@ -53,10 +70,16 @@ function addCornerMemoResult(
   const sameKeyEntry = cornerMemoResults.value.find(
     (result) => result.key === key
   );
+  const hintType: "key" | "value" =
+    (mode.value === "alternate" && !isKeyRound.value) || mode.value === "value"
+      ? "value"
+      : "key";
+
   const newResultEntry = {
     result,
     time:
       result === "right" && hasMaximumRecognitionTime.value ? time : undefined,
+    hintType,
   };
 
   if (sameKeyEntry) {
@@ -80,8 +103,6 @@ function addCornerMemoResult(
     JSON.stringify(cornerMemoResults.value)
   );
 }
-
-const mode = computed(() => settings.value.blindfoldedTraining.mode);
 
 const pairs = Object.fromEntries(
   Object.entries(threeBldCornerPairs).filter(
@@ -112,9 +133,6 @@ const currentHiddenText = computed(() => {
     return pairsKeys[currentRandomIndex.value];
   }
 });
-const isHiddenTextShown = ref(false);
-const roundCounter = ref(0);
-const isKeyRound = ref(true); // Start with keys
 
 function selectRandomPair() {
   let randomIndex = 0;
