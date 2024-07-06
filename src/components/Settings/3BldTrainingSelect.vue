@@ -5,8 +5,8 @@ import type { Settings } from "@/composables/settings/types";
 const { settings, setBlindfoldedTraining } = useSettings();
 
 const modeOptions: Array<[Settings["blindfoldedTraining"]["mode"], string]> = [
-  ["pairs", "pairs only"],
-  ["texts", "texts only"],
+  ["key", "pairs only"],
+  ["value", "texts only"],
   ["alternate", "alternate pairs and texts"],
 ];
 

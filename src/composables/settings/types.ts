@@ -2,7 +2,7 @@ export type Settings = {
   theme: Theme;
   blindfoldedMode: boolean;
   blindfoldedTraining: {
-    mode: "pairs" | "texts" | "alternate";
+    mode: "key" | "value" | "alternate";
     maximumRecognitionTime: 0 | 3 | 5 | 7;
   };
   timerFormat: "none" | "rounded" | "1decimal" | "2decimals" | "3decimals";
