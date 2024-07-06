@@ -2,29 +2,32 @@
   <table class="w-full text-left table-auto text-black">
     <thead class="sticky top-0 bg-tertiary text-xs">
       <tr>
-        <th class="px-4 py-2">Key</th>
-        <th class="px-4 py-2">Text</th>
-        <th v-if="hasMaximumRecognitionTime" class="px-4 py-2">Time</th>
-        <th class="px-4 py-2">Ratio (#)</th>
+        <th class="px-2 py-2 text-center">Key</th>
+        <th class="px-2 py-2 text-center">Text</th>
+        <th v-if="hasMaximumRecognitionTime" class="px-2 py-2 text-center">
+          Time
+        </th>
+        <th class="px-2 py-2 text-center">Ratio (#)</th>
       </tr>
     </thead>
     <tbody>
       <tr
         v-for="(result, index) in computedCornerMemoResults"
         :key="index"
+        :id="getElementId(result.key, index)"
         class="text-xs"
       >
-        <td class="border px-4 py-2 bg-primary">{{ result.key }}</td>
-        <td class="border px-4 py-2 bg-primary">{{ result.text }}</td>
+        <td class="border px-2 py-2 bg-primary">{{ result.key }}</td>
+        <td class="border px-2 py-2 bg-primary">{{ result.text }}</td>
         <td
           v-if="hasMaximumRecognitionTime"
-          class="border px-4 py-2"
+          class="border px-2 py-2"
           :class="getAverageTimeColorClass(result.averageTime)"
         >
           {{ isNaN(result.averageTime) ? "-" : result.averageTime.toFixed(2) }}
         </td>
         <td
-          class="border px-4 py-2"
+          class="border px-2 py-2"
           :class="getRatioColorClass(result.ratio, result.total)"
         >
           {{ result.ratio.toFixed(0) }}% ({{ result.total }})
@@ -37,9 +40,37 @@
 <script setup lang="ts">
 import { useSettings } from "@/composables/settings";
 import { useTraining } from "@/composables/training";
+import { watch } from "vue";
 
-const { computedCornerMemoResults } = useTraining();
+const { computedCornerMemoResults, pairs } = useTraining();
 const { hasMaximumRecognitionTime } = useSettings();
+
+const props = defineProps<{
+  clickedLetter: string;
+}>();
+
+function getElementId(key: string, index: number) {
+  // sets id as the first letter of the key if it is the first occurrence
+  if (
+    (Object.keys(pairs) as any).findLastIndex(
+      (_key: string) => key[0] === _key[0]
+    ) === index
+  ) {
+    return key[0];
+  }
+}
+
+watch(
+  () => props.clickedLetter,
+  (newLetter) => {
+    if (newLetter) {
+      const element = document.getElementById(newLetter);
+      if (element) {
+        element.scrollIntoView({ block: "end" });
+      }
+    }
+  }
+);
 
 function getRatioColorClass(ratio: number, total: number) {
   if (total === 0) {
