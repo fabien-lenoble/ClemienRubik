@@ -126,11 +126,11 @@ function selectRandomPair() {
 
   currentRandomIndex.value = randomIndex;
 
-  // Increment round counter and toggle between key/value rounds every 4 rounds for "alternate" mode
-  roundCounter.value++;
   if (mode.value === "alternate" && roundCounter.value % 4 === 0) {
     isKeyRound.value = !isKeyRound.value;
   }
+  // Increment round counter and toggle between key/value rounds every 4 rounds for "alternate" mode
+  roundCounter.value++;
 }
 
 function handleResult(result: "right" | "wrong" | "skip") {
