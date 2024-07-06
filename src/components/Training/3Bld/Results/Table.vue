@@ -1,10 +1,10 @@
 <template>
   <table class="w-full text-left table-auto text-black">
-    <thead class="sticky top-0 bg-tertiary text-sm">
+    <thead class="sticky top-0 bg-tertiary text-xs">
       <tr>
         <th class="px-4 py-2">Key</th>
         <th class="px-4 py-2">Text</th>
-        <th v-if="hasMaximumRecognitionTime" class="px-4 py-2">Avg time</th>
+        <th v-if="hasMaximumRecognitionTime" class="px-4 py-2">Time</th>
         <th class="px-4 py-2">Ratio (#)</th>
       </tr>
     </thead>
@@ -12,7 +12,7 @@
       <tr
         v-for="(result, index) in computedCornerMemoResults"
         :key="index"
-        class="text-sm"
+        class="text-xs"
       >
         <td class="border px-4 py-2 bg-primary">{{ result.key }}</td>
         <td class="border px-4 py-2 bg-primary">{{ result.text }}</td>

@@ -4,12 +4,19 @@
       <training-3bld-results-table />
     </div>
     <div class="shrink pt-4 pb-2 align text-end">
-      <button
-        @click="resetCornerMemoResults"
-        class="w-1/4 bg-red-500 text-white font-bold py-2 rounded-lg hover:bg-blue-600 transition duration-150 ease-in-out"
-      >
-        reset all
-      </button>
+      <div class="flex flex-row h-full gap-2">
+        <div class="flex basis-1/2 w-full">
+          <training-3bld-results-view-mode-toggle />
+        </div>
+        <div class="flex basis-1/2">
+          <button
+            @click="resetCornerMemoResults"
+            class="w-full bg-red-500 text-white font-bold py-2 rounded-lg hover:bg-blue-600 transition duration-150 ease-in-out"
+          >
+            reset all
+          </button>
+        </div>
+      </div>
     </div>
     <div class="shrink pb-12">
       <button
@@ -24,6 +31,7 @@
 
 <script setup lang="ts">
 import Training3bldResultsTable from "@/components/Training/3Bld/Results/Table.vue";
+import Training3bldResultsViewModeToggle from "@/components/Training/3Bld/Results/ViewModeToggle.vue";
 import { useTraining } from "@/composables/training";
 import { useRouter } from "vue-router";
 
