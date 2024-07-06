@@ -16,7 +16,7 @@ const props = defineProps<{
 <template>
   <button
     type="button"
-    class="inline-block border-2 px-6 py-[1px] text-xs font-medium uppercase leading-normal transition duration-150 ease-in-out"
+    class="w-full inline-block border-2 py-[1px] text-xs font-medium uppercase leading-normal transition duration-150 ease-in-out"
     :class="{
       'border-selected text-selected': isActive,
       'border-my-text-secondary text-my-text-secondary': !isActive,

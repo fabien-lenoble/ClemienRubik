@@ -1,5 +1,4 @@
 import { useSettings } from "@/composables/settings";
-import { threeBldCornerPairs } from "@/composables/training/constants";
 import { computed, ref, type Ref } from "vue";
 import type { CornerMemoResult } from "./types";
 
@@ -21,7 +20,7 @@ function resetCornerMemoResults() {
 }
 
 const computedCornerMemoResults = computed(() => {
-  return Object.entries(pairs).map(([key, value]) => {
+  return Object.entries(pairs.value).map(([key, value]) => {
     const result = cornerMemoResults.value.find((r) => r.key === key);
     if (!result) {
       return {
@@ -96,13 +95,15 @@ function addCornerMemoResult(
   );
 }
 
-const pairs = Object.fromEntries(
-  Object.entries(threeBldCornerPairs).filter(
-    ([_, value]) => !["", "-"].includes(value)
+const pairs = computed(() =>
+  Object.fromEntries(
+    Object.entries(
+      settings.value.blindfoldedTraining.threeBldCornerPairs
+    ).filter(([_, value]) => !["", "-"].includes(value))
   )
 );
-const pairsKeys = Object.keys(pairs);
-const pairsValues = Object.values(pairs);
+const pairsKeys = Object.keys(pairs.value);
+const pairsValues = Object.values(pairs.value);
 
 const currentRandomIndex = ref(-1);
 const currentHintText = computed(() => {

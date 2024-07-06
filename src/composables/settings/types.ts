@@ -5,6 +5,7 @@ export type Settings = {
     mode: "key" | "value" | "alternate";
     maximumRecognitionTime: 0 | 3 | 5 | 7;
     resultsViewMode: "key" | "value";
+    threeBldCornerPairs: Record<string, string>;
   };
   timerFormat: "none" | "rounded" | "1decimal" | "2decimals" | "3decimals";
 };
