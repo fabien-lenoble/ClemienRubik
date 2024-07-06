@@ -52,7 +52,7 @@ const props = defineProps<{
 function getElementId(key: string, index: number) {
   // sets id as the first letter of the key if it is the first occurrence
   if (
-    (Object.keys(pairs) as any).findLastIndex(
+    (Object.keys(pairs.value) as any).findLastIndex(
       (_key: string) => key[0] === _key[0]
     ) === index
   ) {

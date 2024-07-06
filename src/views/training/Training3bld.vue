@@ -18,7 +18,7 @@ import { useTraining } from "@/composables/training";
 import { onBeforeUnmount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
-import Settings3BldTrainingSelect from "@/components/Settings/3BldTrainingSelect.vue";
+import Settings3BldTrainingSelect from "@/components/Settings/3BldTraining/Select.vue";
 import HintAndAnswerReveal from "@/components/Training/3Bld/HintAndAnswerReveal.vue";
 
 const router = useRouter();
