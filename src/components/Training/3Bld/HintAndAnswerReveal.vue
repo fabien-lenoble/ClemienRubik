@@ -42,7 +42,6 @@ const {
   currentHintText,
   currentHiddenText,
   roundCounter,
-  selectRandomPair,
   isHiddenTextShown,
   handleTimeBarAnimationEnd,
   elapsedTime,
@@ -61,7 +60,6 @@ function checkMyAnswer() {
 }
 
 onMounted(() => {
-  selectRandomPair();
   window.addEventListener("keydown", handleKeyDown);
 });
 

@@ -29,27 +29,6 @@
 
 <script setup lang="ts">
 import { useTraining } from "@/composables/training";
-import { onBeforeUnmount, onMounted } from "vue";
 
-const {
-  selectRandomPair,
-  isHiddenTextShown,
-  handleResult,
-  isFullDurationUsed,
-} = useTraining();
-
-const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.code === "Space") {
-    event.preventDefault(); // Prevent the default action (scrolling) when space is pressed
-  }
-};
-
-onMounted(() => {
-  selectRandomPair();
-  window.addEventListener("keydown", handleKeyDown);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("keydown", handleKeyDown);
-});
+const { isHiddenTextShown, handleResult, isFullDurationUsed } = useTraining();
 </script>
