@@ -10,17 +10,9 @@ const roundCounter = ref(0);
 const isKeyRound = ref(true); // Start with keys
 const mode = computed(() => settings.value.blindfoldedTraining.mode);
 const cornerMemoResults: Ref<CornerMemoResult[]> = ref(
-  (
-    JSON.parse(
-      localStorage.getItem("cornerMemoResults") || "[]"
-    ) as CornerMemoResult[]
-  ).map((result) => ({
-    ...result,
-    results: result.results?.map((r) => ({
-      ...r,
-      hintType: r.hintType ?? "key",
-    })),
-  }))
+  JSON.parse(
+    localStorage.getItem("cornerMemoResults") || "[]"
+  ) as CornerMemoResult[]
 );
 
 function resetCornerMemoResults() {
@@ -216,4 +208,5 @@ export default {
   timeBarAnimationKey,
   elapsedTime,
   isFullDurationUsed,
+  pairs,
 };
