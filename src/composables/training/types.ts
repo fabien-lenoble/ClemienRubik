@@ -7,3 +7,9 @@ export type CornerMemoResult = {
     time?: number;
   }>;
 };
+
+export type ComputedCornerMemoResult = CornerMemoResult & {
+  averageTime: number;
+  total: number;
+  ratio: number;
+};

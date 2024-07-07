@@ -1,6 +1,6 @@
 import { useSettings } from "@/composables/settings";
 import { computed, ref, type Ref } from "vue";
-import type { CornerMemoResult } from "./types";
+import type { ComputedCornerMemoResult, CornerMemoResult } from "./types";
 
 const { settings, hasMaximumRecognitionTime } = useSettings();
 
@@ -8,6 +8,42 @@ const isHiddenTextShown = ref(false);
 const roundCounter = ref(0);
 const isKeyRound = ref(true); // Start with keys
 const mode = computed(() => settings.value.blindfoldedTraining.mode);
+const thresholdLevels = {
+  time: [3, 2],
+  ratio: [50, 80],
+};
+const thresholds = ref({
+  unknown: {
+    ratioChecker: (result: ComputedCornerMemoResult) => result.total === 0,
+    timeChecker: (result: ComputedCornerMemoResult) =>
+      isNaN(result.averageTime),
+    active: true,
+  },
+  bad: {
+    ratioChecker: (result: ComputedCornerMemoResult) =>
+      result.ratio < thresholdLevels.ratio[0],
+    timeChecker: (result: ComputedCornerMemoResult) =>
+      result.averageTime > thresholdLevels.time[0],
+    active: true,
+  },
+  medium: {
+    ratioChecker: (result: ComputedCornerMemoResult) =>
+      result.ratio < thresholdLevels.ratio[1] &&
+      result.ratio >= thresholdLevels.ratio[0],
+    timeChecker: (result: ComputedCornerMemoResult) =>
+      result.averageTime <= thresholdLevels.time[1] &&
+      result.averageTime > thresholdLevels.time[0],
+    active: true,
+  },
+  good: {
+    ratioChecker: (result: ComputedCornerMemoResult) =>
+      result.ratio >= thresholdLevels.ratio[1],
+    timeChecker: (result: ComputedCornerMemoResult) =>
+      result.averageTime <= thresholdLevels.time[1],
+    active: true,
+  },
+});
+
 const cornerMemoResults: Ref<CornerMemoResult[]> = ref(
   JSON.parse(
     localStorage.getItem("cornerMemoResults") || "[]"
@@ -21,36 +57,69 @@ function resetCornerMemoResults() {
   }
 }
 
-const computedCornerMemoResults = computed(() => {
-  return Object.entries(pairs.value).map(([key, value]) => {
-    const result = cornerMemoResults.value.find((r) => r.key === key);
-    if (!result) {
+const computedCornerMemoResults: Ref<ComputedCornerMemoResult[]> = computed(
+  () => {
+    return Object.entries(pairs.value).map(([key, value]) => {
+      const result = cornerMemoResults.value.find(
+        (r) => r.key === key && r.text === value
+      );
+      if (!result) {
+        return {
+          key,
+          text: value,
+          ratio: 0,
+          total: 0,
+          averageTime: NaN,
+        };
+      }
+      const hintFilteredResults = result.results?.filter(
+        (r) => r.hintType === settings.value.blindfoldedTraining.resultsViewMode
+      );
+
+      const rightResults =
+        hintFilteredResults?.filter((r) => r.result === "right") || [];
+      const timedRightResults = rightResults.filter((r) => r.time);
+      const resultsLength = hintFilteredResults?.length || 0;
+
       return {
-        key,
-        text: value,
-        ratio: 0,
-        total: 0,
-        averageTime: NaN,
+        ...result,
+        ratio:
+          resultsLength === 0 ? 0 : (rightResults.length / resultsLength) * 100,
+        total: resultsLength,
+        averageTime:
+          timedRightResults.reduce((acc, r) => acc + r.time!, 0) /
+          timedRightResults.length,
       };
+    });
+  }
+);
+
+const displayedCornerResults = computed(() => {
+  return computedCornerMemoResults.value.filter((result) => {
+    if (!thresholds.value.unknown.active) {
+      if (isNaN(result.averageTime) && result.total === 0) {
+        return false;
+      }
     }
-    const hintFilteredResults = result.results?.filter(
-      (r) => r.hintType === settings.value.blindfoldedTraining.resultsViewMode
-    );
-
-    const rightResults =
-      hintFilteredResults?.filter((r) => r.result === "right") || [];
-    const timedRightResults = rightResults.filter((r) => r.time);
-    const resultsLength = hintFilteredResults?.length || 0;
-
-    return {
-      ...result,
-      ratio:
-        resultsLength === 0 ? 0 : (rightResults.length / resultsLength) * 100,
-      total: resultsLength,
-      averageTime:
-        timedRightResults.reduce((acc, r) => acc + r.time!, 0) /
-        timedRightResults.length,
-    };
+    if (thresholds.value.bad.active) {
+      if (result.averageTime > 3 || result.ratio < 50) {
+        return true;
+      }
+    }
+    if (thresholds.value.medium.active) {
+      if (
+        (result.averageTime <= 3 && result.averageTime > 2) ||
+        (result.ratio < 50 && result.ratio >= 80)
+      ) {
+        return true;
+      }
+    }
+    if (thresholds.value.good.active) {
+      if (result.averageTime <= 2 || result.ratio >= 80) {
+        return true;
+      }
+    }
+    return false;
   });
 });
 
@@ -194,6 +263,29 @@ function handleTimeBarAnimationEnd(_isFullDurationUsed: boolean) {
   }
 }
 
+function updateLevels(key: string) {
+  switch (key) {
+    case "unknown":
+      thresholds.value.unknown.active = !thresholds.value.unknown.active;
+      break;
+    case "bad":
+      thresholds.value.bad.active = true;
+      thresholds.value.medium.active = false;
+      thresholds.value.good.active = false;
+      break;
+    case "medium":
+      thresholds.value.bad.active = true;
+      thresholds.value.medium.active = true;
+      thresholds.value.good.active = false;
+      break;
+    case "good":
+      thresholds.value.bad.active = true;
+      thresholds.value.medium.active = true;
+      thresholds.value.good.active = true;
+      break;
+  }
+}
+
 selectRandomPair();
 
 export default {
@@ -203,7 +295,7 @@ export default {
   selectRandomPair,
   isHiddenTextShown,
   handleResult,
-  computedCornerMemoResults,
+  displayedCornerResults,
   resetCornerMemoResults,
   handleTimeBarAnimationStart,
   handleTimeBarAnimationEnd,
@@ -212,4 +304,7 @@ export default {
   elapsedTime,
   isFullDurationUsed,
   pairs,
+  thresholdLevels,
+  thresholds,
+  updateLevels,
 };
