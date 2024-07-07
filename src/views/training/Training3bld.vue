@@ -2,12 +2,12 @@
   <div class="flex flex-col h-full">
     <settings-3-bld-training-select />
     <hint-and-answer-reveal />
-    <div class="shrink pb-12 align text-end">
+    <div class="shrink pb-12 text-center">
       <button
-        class="w-full bg-blue-500 text-white font-bold py-2 rounded-lg hover:bg-blue-600 transition duration-150 ease-in-out"
+        class="w-full px-6 py-2 text-black font-semibold rounded-lg shadow border-2"
         @click="goToResults"
       >
-        Results
+        results
       </button>
     </div>
   </div>
