@@ -15,8 +15,10 @@ const cornerMemoResults: Ref<CornerMemoResult[]> = ref(
 );
 
 function resetCornerMemoResults() {
-  cornerMemoResults.value = [];
-  localStorage.removeItem("cornerMemoResults");
+  if (confirm("Are you sure you want to reset the results?")) {
+    cornerMemoResults.value = [];
+    localStorage.removeItem("cornerMemoResults");
+  }
 }
 
 const computedCornerMemoResults = computed(() => {

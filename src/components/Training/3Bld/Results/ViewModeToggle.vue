@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-row gap-2 w-full border rounded-md"
+    class="flex flex-row gap-2 w-full border-2 rounded-md"
     @click="toggleResultsViewModeOptions"
   >
     <div class="flex basis-1/3 justify-center m-auto">
@@ -22,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-
 import { useSettings } from "@/composables/settings";
 
 const { settings, setBlindfoldedTraining } = useSettings();
