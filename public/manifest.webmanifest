@@ -3,7 +3,7 @@
     "name": "RumixCube",
     "theme_color": "#7682ca",
     "background_color": "#7682ca",
-    "display": "fullscreen",
+    "display": "standalone",
     "scope": "/",
     "orientation": "portrait",
     "icons": [
