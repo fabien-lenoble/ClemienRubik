@@ -12,11 +12,12 @@ export type ComputedCornerMemoResult = CornerMemoResult & {
   averageTime: number;
   total: number;
   ratio: number;
+  score: number;
 };
 
 export type Threshold = {
-  ratioChecker(result: ComputedCornerMemoResult): boolean;
-  timeChecker(result: ComputedCornerMemoResult): boolean;
+  ratioChecker(result: Omit<ComputedCornerMemoResult, "score">): boolean;
+  timeChecker(result: Omit<ComputedCornerMemoResult, "score">): boolean;
   active: boolean;
   color: string;
 };
