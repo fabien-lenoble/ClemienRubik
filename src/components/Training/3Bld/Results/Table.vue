@@ -24,14 +24,11 @@
         <td
           v-if="hasMaximumRecognitionTime"
           class="border px-2 py-2"
-          :class="getAverageTimeColorClass(result.averageTime)"
+          :class="getAverageTimeColorClass(result)"
         >
           {{ isNaN(result.averageTime) ? "-" : result.averageTime.toFixed(2) }}
         </td>
-        <td
-          class="border px-2 py-2"
-          :class="getRatioColorClass(result.ratio, result.total)"
-        >
+        <td class="border px-2 py-2" :class="getRatioColorClass(result)">
           {{ result.ratio.toFixed(0) }}% ({{ result.total }})
         </td>
       </tr>
@@ -42,9 +39,10 @@
 <script setup lang="ts">
 import { useSettings } from "@/composables/settings";
 import { useTraining } from "@/composables/training";
+import type { ComputedCornerMemoResult } from "@/composables/training/types";
 import { watch } from "vue";
 
-const { displayedCornerResults } = useTraining();
+const { displayedCornerResults, thresholds } = useTraining();
 const { hasMaximumRecognitionTime } = useSettings();
 
 const props = defineProps<{
@@ -74,31 +72,19 @@ watch(
   }
 );
 
-// TODO: update to use thresholds from UseTraining
-function getRatioColorClass(ratio: number, total: number) {
-  if (total === 0) {
-    return "bg-gray-300";
-  }
-
-  if (ratio < 50) {
-    return "bg-red-300";
-  }
-  if (ratio < 80) {
-    return "bg-yellow-100";
-  }
-  return "bg-green-300";
+function getRatioColorClass(result: ComputedCornerMemoResult) {
+  return Object.fromEntries(
+    Object.values(thresholds.value).map((threshold) => {
+      return [`bg-${threshold.color}`, threshold.ratioChecker(result)];
+    })
+  );
 }
 
-function getAverageTimeColorClass(averageTime: number) {
-  if (isNaN(averageTime)) {
-    return "bg-gray-300";
-  }
-  if (averageTime > 3) {
-    return "bg-red-300";
-  }
-  if (averageTime > 2) {
-    return "bg-yellow-100";
-  }
-  return "bg-green-300";
+function getAverageTimeColorClass(result: ComputedCornerMemoResult) {
+  return Object.fromEntries(
+    Object.values(thresholds.value).map((threshold) => {
+      return [`bg-${threshold.color}`, threshold.timeChecker(result)];
+    })
+  );
 }
 </script>

@@ -22,7 +22,7 @@
     <div class="flex justify-center gap-2">
       <button
         @click="goBack"
-        class="w-full px-6 py-2 font-semibold rounded-lg shadow border-2"
+        class="w-full text-white px-6 py-2 font-semibold rounded-lg shadow border-2"
       >
         back
       </button>

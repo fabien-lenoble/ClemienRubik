@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="props.duration"
-    class="w-full h-5 bg-gray-300 relative overflow-hidden"
+    class="w-full h-5 bg-gray-300 relative overflow-hidden rounded-lg"
   >
     <div
       :key="timeBarAnimationKey"

@@ -1,6 +1,10 @@
 import { useSettings } from "@/composables/settings";
 import { computed, ref, type Ref } from "vue";
-import type { ComputedCornerMemoResult, CornerMemoResult } from "./types";
+import type {
+  ComputedCornerMemoResult,
+  CornerMemoResult,
+  Threshold,
+} from "./types";
 
 const { settings, hasMaximumRecognitionTime } = useSettings();
 
@@ -12,34 +16,39 @@ const thresholdLevels = {
   time: [3, 2],
   ratio: [50, 80],
 };
-const thresholds = ref({
+const thresholds: Ref<Record<string, Threshold>> = ref({
   unknown: {
     ratioChecker: (result: ComputedCornerMemoResult) => result.total === 0,
     timeChecker: (result: ComputedCornerMemoResult) =>
       isNaN(result.averageTime),
+    color: "gray-300",
     active: true,
   },
   bad: {
     ratioChecker: (result: ComputedCornerMemoResult) =>
-      result.ratio < thresholdLevels.ratio[0],
+      result.total > 0 && result.ratio < thresholdLevels.ratio[0],
     timeChecker: (result: ComputedCornerMemoResult) =>
       result.averageTime > thresholdLevels.time[0],
+    color: "red-300",
     active: true,
   },
   medium: {
     ratioChecker: (result: ComputedCornerMemoResult) =>
+      result.total > 0 &&
       result.ratio < thresholdLevels.ratio[1] &&
       result.ratio >= thresholdLevels.ratio[0],
     timeChecker: (result: ComputedCornerMemoResult) =>
-      result.averageTime <= thresholdLevels.time[1] &&
-      result.averageTime > thresholdLevels.time[0],
+      result.averageTime >= thresholdLevels.time[1] &&
+      result.averageTime < thresholdLevels.time[0],
+    color: "yellow-100",
     active: true,
   },
   good: {
     ratioChecker: (result: ComputedCornerMemoResult) =>
-      result.ratio >= thresholdLevels.ratio[1],
+      result.total > 0 && result.ratio >= thresholdLevels.ratio[1],
     timeChecker: (result: ComputedCornerMemoResult) =>
       result.averageTime <= thresholdLevels.time[1],
+    color: "green-300",
     active: true,
   },
 });

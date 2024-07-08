@@ -28,4 +28,9 @@ module.exports = {
     },
   },
   darkMode: "class",
+  safelist: [
+    {
+      pattern: /bg-(red|green|blue|yellow|gray)-(100|200|300|400|500)/,
+    },
+  ],
 };

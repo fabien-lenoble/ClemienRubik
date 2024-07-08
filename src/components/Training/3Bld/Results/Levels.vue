@@ -4,7 +4,7 @@
       v-for="(threshold, key) in thresholds"
       :key="key"
       class="flex flex-col basis-1/4 justify-center h-full rounded-md items-center text-black py-1"
-      :class="getElementClass(threshold, key)"
+      :class="getElementClass(threshold)"
       @click="updateLevels(key)"
     >
       <div class="basis-full content-center">{{ getTimeText(key) }}</div>
@@ -17,28 +17,13 @@
 
 <script setup lang="ts">
 import { useTraining } from "@/composables/training";
+import type { Threshold } from "@/composables/training/types";
 
 const { thresholds, thresholdLevels, updateLevels } = useTraining();
 
-function getElementClass(threshold: { active: boolean }, key: string) {
-  let color = "";
-  switch (key) {
-    case "unknown":
-      color = "bg-gray-300";
-      break;
-    case "bad":
-      color = "bg-red-300";
-      break;
-    case "medium":
-      color = "bg-yellow-100";
-      break;
-    case "good":
-      color = "bg-green-300";
-      break;
-  }
-
+function getElementClass(threshold: Threshold) {
   return {
-    [color]: true,
+    [`bg-${threshold.color}`]: true,
     "opacity-30": !threshold.active,
   };
 }

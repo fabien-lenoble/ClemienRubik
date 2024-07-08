@@ -13,3 +13,10 @@ export type ComputedCornerMemoResult = CornerMemoResult & {
   total: number;
   ratio: number;
 };
+
+export type Threshold = {
+  ratioChecker(result: ComputedCornerMemoResult): boolean;
+  timeChecker(result: ComputedCornerMemoResult): boolean;
+  active: boolean;
+  color: string;
+};
