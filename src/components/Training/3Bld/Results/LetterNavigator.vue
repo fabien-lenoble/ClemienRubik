@@ -12,20 +12,36 @@
     {{ letter }}
   </div>
 </template>
-
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { useTraining } from "@/composables/training";
+import { defineEmits, nextTick, onMounted, ref, watch } from "vue";
 
 const emit = defineEmits(["clickLetter"]);
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const currentVisibleLetter = ref<string | null>(null);
+const { displayedCornerResults } = useTraining();
 
 function clickLetter(letter: string) {
   emit("clickLetter", letter);
 }
 
+let observer: IntersectionObserver;
+
 onMounted(() => {
-  const observer = new IntersectionObserver(
+  initObserver();
+});
+
+watch(displayedCornerResults, () => {
+  if (observer) {
+    observer.disconnect();
+  }
+  nextTick(() => {
+    initObserver();
+  });
+});
+
+function initObserver() {
+  observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -42,5 +58,5 @@ onMounted(() => {
       observer.observe(element);
     }
   });
-});
+}
 </script>

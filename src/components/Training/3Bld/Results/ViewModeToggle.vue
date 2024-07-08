@@ -1,11 +1,11 @@
 <template>
   <div
-    class="flex flex-row gap-2 w-full border-2 rounded-md"
+    class="flex flex-row gap-2 w-full border-2 rounded-md px-2"
     @click="toggleResultsViewModeOptions"
   >
     <div class="flex basis-1/3 justify-center m-auto">
       {{
-        settings.blindfoldedTraining.resultsViewMode === "key" ? "key" : "??"
+        settings.blindfoldedTraining.resultsViewMode === "key" ? "pair" : "??"
       }}
     </div>
     <div class="flex basis-1/3 justify-center m-auto">
@@ -13,9 +13,7 @@
     </div>
     <div class="flex basis-1/3 justify-center m-auto">
       {{
-        settings.blindfoldedTraining.resultsViewMode === "value"
-          ? "value"
-          : "??"
+        settings.blindfoldedTraining.resultsViewMode === "value" ? "text" : "??"
       }}
     </div>
   </div>

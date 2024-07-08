@@ -11,32 +11,36 @@
 
     <div class="flex">
       <div class="flex gap-2 w-full">
-        <div class="flex basis-1/2 w-full">
+        <div class="flex">
           <training-3bld-results-view-mode-toggle />
         </div>
-        <div class="flex basis-1/2">
-          <button
-            @click="resetCornerMemoResults"
-            class="w-full bg-red-500 text-white font-bold py-2 rounded-lg transition duration-150 ease-in-out"
-          >
-            reset all
-          </button>
+        <div class="grow">
+          <training-3bld-results-levels />
         </div>
       </div>
     </div>
-    <div class="flex justify-center">
+    <div class="flex justify-center gap-2">
       <button
         @click="goBack"
-        class="w-full px-6 py-2 text-black font-semibold rounded-lg shadow border-2"
+        class="w-full text-white px-6 py-2 font-semibold rounded-lg shadow border-2"
       >
         back
       </button>
+      <div class="flex basis-1/6">
+        <button
+          @click="resetCornerMemoResults"
+          class="w-full bg-red-500 text-white font-bold py-2 rounded-lg transition duration-150 ease-in-out"
+        >
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import Training3bldResultsLetterNavigator from "@/components/Training/3Bld/Results/LetterNavigator.vue";
+import Training3bldResultsLevels from "@/components/Training/3Bld/Results/Levels.vue";
 import Training3bldResultsTable from "@/components/Training/3Bld/Results/Table.vue";
 import Training3bldResultsViewModeToggle from "@/components/Training/3Bld/Results/ViewModeToggle.vue";
 import { useTraining } from "@/composables/training";
