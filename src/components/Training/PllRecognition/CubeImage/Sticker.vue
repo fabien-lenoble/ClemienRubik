@@ -11,7 +11,7 @@ const props = defineProps<{
 }>();
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .sticker {
   &.R {
     background-color: #b71234;
