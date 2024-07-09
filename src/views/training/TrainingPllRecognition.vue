@@ -3,24 +3,27 @@
     <div class="basis-1/4 self-center content-center">
       <pll-recognition-cube-image
         :current-pll-index="currentPllIndex"
-        :current-front-side-index="currentFrontSideIndex"
-        :current-number-of-u-turns="currentNumberOfUTurns"
+        :loader="loader"
+        @image-loaded="loader = false"
       />
     </div>
     <div class="grow">
       <pll-recognition-answer-picker
         :current-pll-index="currentPllIndex"
-        :pll-selected="pllSelected"
-        @select-pll="pllSelected = true"
+        :is-pll-selected="isPllSelected"
+        :selected-pll-index="selectedPllIndex"
+        @select-pll="selectPll($event)"
       />
     </div>
     <div class="flex flex-wrap justify-center items-center pt-4 pb-12">
       <button
         @click="chooseNextPll"
-        :disabled="!pllSelected"
-        class="w-full px-6 py-2 text-black font-semibold rounded-lg shadow border-2 transition-colors duration-300"
+        :disabled="!isPllSelected"
+        class="w-full px-6 py-2 font-semibold rounded-lg shadow border-2 transition-colors duration-300"
         :class="{
-          'border-green-500 bg-green-100': pllSelected,
+          'border-green-500 bg-green-100': isPllSelected,
+          'text-my-text-secondary': !isPllSelected,
+          'text-black': isPllSelected,
         }"
       >
         next
@@ -38,24 +41,30 @@ import PllRecognitionCubeImage from "@/components/Training/PllRecognition/CubeIm
 
 const currentPllIndex = ref(0);
 const lastPllIndex = ref(0);
-const currentFrontSideIndex = ref(0);
-const currentNumberOfUTurns = ref(0);
-const pllSelected = ref(false);
+const isPllSelected = ref(false);
+const selectedPllIndex = ref();
+const loader = ref(false);
 
 function pickNewRandomPll() {
+  loader.value = true;
   do {
     currentPllIndex.value = Math.floor(Math.random() * pllCases.length);
   } while (lastPllIndex.value === currentPllIndex.value);
 
   lastPllIndex.value = currentPllIndex.value;
-  currentFrontSideIndex.value = Math.floor(Math.random() * 4);
-  currentNumberOfUTurns.value = Math.floor(Math.random() * 4);
 }
 
 function chooseNextPll() {
-  if (pllSelected.value === true) {
+  if (isPllSelected.value === true) {
     pickNewRandomPll();
-    pllSelected.value = false;
+    isPllSelected.value = false;
+  }
+}
+
+function selectPll(index: number) {
+  if (isPllSelected.value === false) {
+    isPllSelected.value = true;
+    selectedPllIndex.value = index;
   }
 }
 
