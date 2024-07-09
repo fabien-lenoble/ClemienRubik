@@ -68,68 +68,117 @@ function resetCornerMemoResults() {
 
 const computedCornerMemoResults: Ref<ComputedCornerMemoResult[]> = computed(
   () => {
-    return Object.entries(pairs.value).map(([key, value]) => {
-      const result = cornerMemoResults.value.find(
-        (r) => r.key === key && r.text === value
-      );
-      if (!result) {
-        return {
-          key,
-          text: value,
-          ratio: 0,
-          total: 0,
-          averageTime: NaN,
-        };
-      }
-      const hintFilteredResults = result.results?.filter(
-        (r) => r.hintType === settings.value.blindfoldedTraining.resultsViewMode
-      );
+    return Object.entries(pairs.value)
+      .map(([key, value]) => {
+        const result = cornerMemoResults.value.find(
+          (r) => r.key === key && r.text === value
+        );
+        if (!result) {
+          return {
+            key,
+            text: value,
+            ratio: 0,
+            total: 0,
+            averageTime: NaN,
+            score: 1,
+          };
+        }
+        const hintFilteredResults = result.results?.filter(
+          (r) =>
+            r.hintType === settings.value.blindfoldedTraining.resultsViewMode
+        );
 
-      const rightResults =
-        hintFilteredResults?.filter((r) => r.result === "right") || [];
-      const timedRightResults = rightResults.filter((r) => r.time);
-      const resultsLength = hintFilteredResults?.length || 0;
-
-      return {
-        ...result,
-        ratio:
-          resultsLength === 0 ? 0 : (rightResults.length / resultsLength) * 100,
-        total: resultsLength,
-        averageTime:
+        const rightResults =
+          hintFilteredResults?.filter((r) => r.result === "right") || [];
+        const timedRightResults = rightResults.filter((r) => r.time);
+        const resultsLength = hintFilteredResults?.length || 0;
+        const ratio =
+          resultsLength === 0 ? 0 : (rightResults.length / resultsLength) * 100;
+        const averageTime =
           timedRightResults.reduce((acc, r) => acc + r.time!, 0) /
-          timedRightResults.length,
-      };
-    });
+          timedRightResults.length;
+
+        const finalResult = {
+          ...result,
+          ratio,
+          total: resultsLength,
+          averageTime,
+        };
+
+        return {
+          ...finalResult,
+          score: computeScore(finalResult),
+        };
+      })
+      .sort((a, b) => (b.score > a.score ? 1 : -1));
   }
 );
 
+function computeScore(result: Omit<ComputedCornerMemoResult, "score">) {
+  let score = 1;
+
+  if (thresholds.value.bad.ratioChecker(result)) {
+    score += 0.5;
+  }
+  if (thresholds.value.bad.timeChecker(result)) {
+    score += 0.5;
+  }
+
+  if (thresholds.value.medium.ratioChecker(result)) {
+    score += 0.25;
+  }
+  if (thresholds.value.medium.timeChecker(result)) {
+    score += 0.25;
+  }
+
+  if (thresholds.value.good.ratioChecker(result)) {
+    score -= 0.25;
+  }
+  if (thresholds.value.good.timeChecker(result)) {
+    score -= 0.25;
+  }
+
+  return score;
+}
+
+const scores = computed(() => {
+  return computedCornerMemoResults.value.map((result) => result.score);
+});
+
+const totaledScores = computed(() => {
+  return scores.value.reduce((acc, score) => acc + score, 0);
+});
+
 const displayedCornerResults = computed(() => {
-  return computedCornerMemoResults.value.filter((result) => {
-    if (!thresholds.value.unknown.active) {
-      if (isNaN(result.averageTime) && result.total === 0) {
-        return false;
+  return computedCornerMemoResults.value
+    .filter((result) => {
+      // TODO: use thresholds ratioChecker and timeChecker for all these checks
+      if (!thresholds.value.unknown.active) {
+        if (isNaN(result.averageTime) && result.total === 0) {
+          return false;
+        }
       }
-    }
-    if (thresholds.value.bad.active) {
-      if (result.averageTime > 3 || result.ratio < 50) {
-        return true;
+      if (thresholds.value.bad.active) {
+        if (result.averageTime > 3 || result.ratio < 50) {
+          return true;
+        }
       }
-    }
-    if (thresholds.value.medium.active) {
-      if (
-        (result.averageTime <= 3 && result.averageTime > 2) ||
-        (result.ratio < 50 && result.ratio >= 80)
-      ) {
-        return true;
+      if (thresholds.value.medium.active) {
+        if (
+          (result.averageTime <= 3 && result.averageTime > 2) ||
+          (result.ratio < 50 && result.ratio >= 80)
+        ) {
+          return true;
+        }
       }
-    }
-    if (thresholds.value.good.active) {
-      if (result.averageTime <= 2 || result.ratio >= 80) {
-        return true;
+      if (thresholds.value.good.active) {
+        if (result.averageTime <= 2 || result.ratio >= 80) {
+          return true;
+        }
       }
-    }
-    return false;
-  });
+      return false;
+    })
+    .sort((a, b) => (b.key > a.key ? -1 : 1));
 });
 
 function addCornerMemoResult(
@@ -158,7 +207,8 @@ function addCornerMemoResult(
       // if the same key already exists, add the new result to the existing entry
       sameKeyEntry.results?.push(newResultEntry);
     } else {
-      // if the same key exists but the text is different, overwrite the results
+      // if the same key exists but the text is different, update the text and overwrite the results
+      sameKeyEntry.text = text;
       sameKeyEntry.results = [newResultEntry];
     }
   } else {
@@ -182,8 +232,12 @@ const pairs = computed(() =>
     ).filter(([_, value]) => !["", "-"].includes(value))
   )
 );
-const pairsKeys = Object.keys(pairs.value);
-const pairsValues = Object.values(pairs.value);
+const pairsKeys = computed(() =>
+  computedCornerMemoResults.value.map((r) => r.key)
+);
+const pairsValues = computed(() =>
+  computedCornerMemoResults.value.map((r) => r.text)
+);
 
 const currentRandomIndex = ref(-1);
 const currentHintText = computed(() => {
@@ -191,9 +245,9 @@ const currentHintText = computed(() => {
     mode.value === "key" ||
     (mode.value === "alternate" && isKeyRound.value)
   ) {
-    return pairsKeys[currentRandomIndex.value];
+    return pairsKeys.value[currentRandomIndex.value];
   } else {
-    return pairsValues[currentRandomIndex.value];
+    return pairsValues.value[currentRandomIndex.value];
   }
 });
 const currentHiddenText = computed(() => {
@@ -201,19 +255,29 @@ const currentHiddenText = computed(() => {
     mode.value === "key" ||
     (mode.value === "alternate" && isKeyRound.value)
   ) {
-    return pairsValues[currentRandomIndex.value];
+    return pairsValues.value[currentRandomIndex.value];
   } else {
-    return pairsKeys[currentRandomIndex.value];
+    return pairsKeys.value[currentRandomIndex.value];
   }
 });
 
-function selectRandomPair() {
-  let randomIndex = 0;
+function selectNextPair() {
+  let index = 0;
+  let randomNumber = 0;
+  const cumulativeDistributionFunction = scores.value.map(
+    (
+      (sum) => (value) =>
+        (sum += value)
+    )(0)
+  );
   do {
-    randomIndex = Math.floor(Math.random() * pairsKeys.length);
-  } while (currentRandomIndex.value === randomIndex);
+    randomNumber = Math.random() * totaledScores.value;
+    index = cumulativeDistributionFunction.findIndex(
+      (score) => randomNumber <= score
+    );
+  } while (currentRandomIndex.value === index);
 
-  currentRandomIndex.value = randomIndex;
+  currentRandomIndex.value = index;
 
   if (mode.value === "alternate" && roundCounter.value % 4 === 0) {
     isKeyRound.value = !isKeyRound.value;
@@ -221,6 +285,23 @@ function selectRandomPair() {
   // Increment round counter and toggle between key/value rounds every 4 rounds for "alternate" mode
   roundCounter.value++;
 }
+
+function weightedRandomTester() {
+  const res: Record<string, number> = {};
+  const n = 100000;
+  for (let i = 0; i < n; i++) {
+    selectNextPair();
+    res[currentHintText.value] = (res[currentHintText.value] || 0) + 1;
+  }
+  // log the percentage of each hint text
+  for (const key in res) {
+    res[key] = (res[key] / n) * 100;
+  }
+  console.log(res);
+}
+
+// uncomment to test the weighted random function
+// weightedRandomTester();
 
 function handleResult(result: "right" | "wrong" | "skip") {
   if (
@@ -232,8 +313,8 @@ function handleResult(result: "right" | "wrong" | "skip") {
   }
   if (result !== "skip") {
     addCornerMemoResult(
-      pairsKeys[currentRandomIndex.value],
-      pairsValues[currentRandomIndex.value],
+      pairsKeys.value[currentRandomIndex.value],
+      pairsValues.value[currentRandomIndex.value],
       result,
       elapsedTime.value
     );
@@ -241,7 +322,7 @@ function handleResult(result: "right" | "wrong" | "skip") {
   resetTimeBarAnimation();
 
   isHiddenTextShown.value = false;
-  selectRandomPair();
+  selectNextPair();
 }
 
 const startTime = ref(0);
@@ -295,13 +376,13 @@ function updateLevels(key: string) {
   }
 }
 
-selectRandomPair();
+selectNextPair();
 
 export default {
   currentHintText,
   currentHiddenText,
   roundCounter,
-  selectRandomPair,
+  selectNextPair,
   isHiddenTextShown,
   handleResult,
   displayedCornerResults,
