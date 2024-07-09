@@ -21,11 +21,8 @@
 </template>
 
 <script setup lang="ts">
+import { useTraining } from "@/composables/training";
 import { pllCases } from "@/composables/training/constants";
 
-defineProps<{
-  currentPllIndex: number;
-  isPllSelected: boolean;
-  selectedPllIndex: number;
-}>();
+const { currentPllIndex, isPllSelected, selectedPllIndex } = useTraining();
 </script>

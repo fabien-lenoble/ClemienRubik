@@ -1,19 +1,24 @@
 <template>
   <div class="flex flex-col h-full">
-    <div class="basis-1/4 self-center content-center">
-      <pll-recognition-cube-image
-        :current-pll-index="currentPllIndex"
-        :loader="loader"
-        @image-loaded="loader = false"
-      />
+    <div class="flex basis-1/4 self-center content-center w-full">
+      <div class="shrink content-center min-w-[150px]">
+        <pll-recognition-cube-image
+          :is-main-image="true"
+          :u-turn="currentRandomUTurn"
+          :y-turn="currentRandomYTurn"
+        />
+      </div>
+      <div class="grow flex-col content-center">
+        <div class="basis-1/2">
+          <pll-recognition-revealed-cube-images />
+        </div>
+        <div v-if="isPllSelected">
+          {{ currentPllAlgorithm }}
+        </div>
+      </div>
     </div>
     <div class="grow">
-      <pll-recognition-answer-picker
-        :current-pll-index="currentPllIndex"
-        :is-pll-selected="isPllSelected"
-        :selected-pll-index="selectedPllIndex"
-        @select-pll="selectPll($event)"
-      />
+      <pll-recognition-answer-picker @select-pll="selectPll($event)" />
     </div>
     <div class="flex flex-wrap justify-center items-center pt-4 pb-12">
       <button
@@ -33,40 +38,22 @@
 </template>
 
 <script setup lang="ts">
-import { pllCases } from "@/composables/training/constants";
-import { onMounted, ref } from "vue";
+import { useTraining } from "@/composables/training";
+import { onMounted } from "vue";
 
 import PllRecognitionAnswerPicker from "@/components/Training/PllRecognition/AnswerPicker.vue";
-import PllRecognitionCubeImage from "@/components/Training/PllRecognition/CubeImage/index.vue";
+import PllRecognitionCubeImage from "@/components/Training/PllRecognition/CubeImage.vue";
+import PllRecognitionRevealedCubeImages from "@/components/Training/PllRecognition/RevealedCubeImages.vue";
 
-const currentPllIndex = ref(0);
-const lastPllIndex = ref(0);
-const isPllSelected = ref(false);
-const selectedPllIndex = ref();
-const loader = ref(false);
-
-function pickNewRandomPll() {
-  loader.value = true;
-  do {
-    currentPllIndex.value = Math.floor(Math.random() * pllCases.length);
-  } while (lastPllIndex.value === currentPllIndex.value);
-
-  lastPllIndex.value = currentPllIndex.value;
-}
-
-function chooseNextPll() {
-  if (isPllSelected.value === true) {
-    pickNewRandomPll();
-    isPllSelected.value = false;
-  }
-}
-
-function selectPll(index: number) {
-  if (isPllSelected.value === false) {
-    isPllSelected.value = true;
-    selectedPllIndex.value = index;
-  }
-}
+const {
+  isPllSelected,
+  currentRandomUTurn,
+  currentRandomYTurn,
+  pickNewRandomPll,
+  chooseNextPll,
+  selectPll,
+  currentPllAlgorithm,
+} = useTraining();
 
 onMounted(() => {
   pickNewRandomPll();
