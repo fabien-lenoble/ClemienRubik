@@ -580,192 +580,87 @@ const threeBldCornerPairs = {
 const pllCases = [
   {
     name: "Aa",
-    sides: [
-      ["A", "A", "C"],
-      ["D", "B", "A"],
-      ["B", "C", "B"],
-      ["C", "D", "D"],
-    ],
+    algorithm: "x L2 D2 L' U' L D2 L' U L' x'",
   },
   {
     name: "Ab",
-    sides: [
-      ["A", "A", "B"],
-      ["C", "B", "C"],
-      ["D", "C", "A"],
-      ["B", "D", "D"],
-    ],
+    algorithm: "x' L2 D2 L U L' D2 L U' L x",
   },
   {
     name: "E",
-    sides: [
-      ["D", "A", "B"],
-      ["C", "B", "A"],
-      ["B", "C", "D"],
-      ["A", "D", "C"],
-    ],
+    algorithm: "x' L' U L D' L' U' L D L' U' L D' L' U L D x",
   },
   {
     name: "F",
-    sides: [
-      ["A", "C", "B"],
-      ["C", "B", "A"],
-      ["B", "A", "C"],
-      ["D", "D", "D"],
-    ],
+    algorithm: "R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R",
   },
   {
     name: "Ga",
-    sides: [
-      ["A", "B", "B"],
-      ["C", "D", "A"],
-      ["B", "A", "C"],
-      ["D", "C", "D"],
-    ],
+    algorithm: "R2 U R' U R' U' R U' R2 U' D R' U R D'",
   },
   {
     name: "Gb",
-    sides: [
-      ["A", "C", "B"],
-      ["C", "A", "A"],
-      ["B", "D", "C"],
-      ["D", "B", "D"],
-    ],
+    algorithm: "R' U' R U D' R2 U R' U R U' R U' R2 D",
   },
   {
     name: "Gc",
-    sides: [
-      ["A", "C", "B"],
-      ["C", "D", "A"],
-      ["B", "B", "C"],
-      ["D", "A", "D"],
-    ],
+    algorithm: "R2 U' R U' R U R' U R2 U D' R U' R' D",
   },
   {
     name: "Gd",
-    sides: [
-      ["A", "D", "B"],
-      ["C", "C", "A"],
-      ["B", "A", "C"],
-      ["D", "B", "D"],
-    ],
+    algorithm: "R U R' U' D R2 U' R U' R' U R' U R2 D'",
   },
   {
     name: "H",
-    sides: [
-      ["A", "C", "A"],
-      ["B", "D", "B"],
-      ["C", "A", "C"],
-      ["D", "B", "D"],
-    ],
+    algorithm: "M2 U M2 U2 M2 U M2",
   },
   {
     name: "Ja",
-    sides: [
-      ["A", "A", "B"],
-      ["C", "C", "A"],
-      ["B", "B", "C"],
-      ["D", "D", "D"],
-    ],
+    algorithm: "x R2 F R F' R U2 r' U r U2 x'",
   },
   {
     name: "Jb",
-    sides: [
-      ["D", "A", "A"],
-      ["B", "D", "D"],
-      ["A", "B", "B"],
-      ["C", "C", "C"],
-    ],
+    algorithm: "R U R' F' R U R' U' R' F R2 U' R'",
   },
   {
     name: "Na",
-    sides: [
-      ["C", "A", "A"],
-      ["B", "D", "D"],
-      ["A", "C", "C"],
-      ["D", "B", "B"],
-    ],
+    algorithm: "R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'",
   },
   {
     name: "Nb",
-    sides: [
-      ["A", "A", "C"],
-      ["D", "D", "B"],
-      ["C", "C", "A"],
-      ["B", "B", "D"],
-    ],
+    algorithm: "R' U R U' R' F' U' F R U R' F R' F' R U' R",
   },
   {
     name: "Ra",
-    sides: [
-      ["D", "D", "A"],
-      ["B", "A", "D"],
-      ["A", "C", "B"],
-      ["C", "B", "C"],
-    ],
+    algorithm: "R U' R' U' R U R D R' U' R D' R' U2 R'",
   },
   {
     name: "Rb",
-    sides: [
-      ["B", "A", "C"],
-      ["D", "C", "B"],
-      ["C", "D", "D"],
-      ["A", "B", "A"],
-    ],
+    algorithm: "R2 F R U R U' R' F' R U2 R' U2 R",
   },
   {
     name: "T",
-    sides: [
-      ["A", "A", "B"],
-      ["C", "D", "A"],
-      ["B", "C", "C"],
-      ["D", "B", "D"],
-    ],
+    algorithm: "R U R' U' R' F R2 U' R' U' R U R' F'",
   },
   {
     name: "Ua",
-    sides: [
-      ["A", "B", "A"],
-      ["B", "D", "B"],
-      ["C", "C", "C"],
-      ["D", "A", "D"],
-    ],
+    algorithm: "M2 U M U2 M' U M2",
   },
   {
     name: "Ub",
-    sides: [
-      ["A", "D", "A"],
-      ["B", "A", "B"],
-      ["C", "C", "C"],
-      ["D", "B", "D"],
-    ],
+    algorithm: "M2 U' M U2 M' U' M2",
   },
   {
     name: "V",
-    sides: [
-      ["A", "A", "C"],
-      ["D", "C", "B"],
-      ["C", "B", "A"],
-      ["B", "D", "D"],
-    ],
+    algorithm: "R' U R' U' y R' F' R2 U' R' U R' F R F",
   },
   {
     name: "Y",
-    sides: [
-      ["A", "A", "C"],
-      ["D", "B", "B"],
-      ["C", "D", "A"],
-      ["B", "C", "D"],
-    ],
+    algorithm: "F R U' R' U' R U R' F' R U R' U' R' F R F'",
   },
   {
     name: "Z",
-    sides: [
-      ["D", "C", "D"],
-      ["A", "B", "A"],
-      ["B", "A", "B"],
-      ["C", "D", "C"],
-    ],
+    algorithm: "M' U M2 U M2 U M' U2 M2",
   },
 ];
 

@@ -1,26 +1,34 @@
 <template>
   <div class="flex flex-col h-full">
-    <div class="basis-1/4 self-center content-center">
-      <pll-recognition-cube-image
-        :current-pll-index="currentPllIndex"
-        :current-front-side-index="currentFrontSideIndex"
-        :current-number-of-u-turns="currentNumberOfUTurns"
-      />
+    <div class="flex basis-1/4 self-center content-center w-full">
+      <div class="shrink content-center min-w-[150px]">
+        <pll-recognition-cube-image
+          :is-main-image="true"
+          :u-turn="currentRandomUTurn"
+          :y-turn="currentRandomYTurn"
+        />
+      </div>
+      <div class="grow flex-col content-center">
+        <div class="basis-1/2">
+          <pll-recognition-revealed-cube-images />
+        </div>
+        <div v-if="isPllSelected">
+          {{ currentPllAlgorithm }}
+        </div>
+      </div>
     </div>
     <div class="grow">
-      <pll-recognition-answer-picker
-        :current-pll-index="currentPllIndex"
-        :pll-selected="pllSelected"
-        @select-pll="pllSelected = true"
-      />
+      <pll-recognition-answer-picker @select-pll="selectPll($event)" />
     </div>
     <div class="flex flex-wrap justify-center items-center pt-4 pb-12">
       <button
         @click="chooseNextPll"
-        :disabled="!pllSelected"
-        class="w-full px-6 py-2 text-black font-semibold rounded-lg shadow border-2 transition-colors duration-300"
+        :disabled="!isPllSelected"
+        class="w-full px-6 py-2 font-semibold rounded-lg shadow border-2 transition-colors duration-300"
         :class="{
-          'border-green-500 bg-green-100': pllSelected,
+          'border-green-500 bg-green-100': isPllSelected,
+          'text-my-text-secondary': !isPllSelected,
+          'text-black': isPllSelected,
         }"
       >
         next
@@ -30,34 +38,22 @@
 </template>
 
 <script setup lang="ts">
-import { pllCases } from "@/composables/training/constants";
-import { onMounted, ref } from "vue";
+import { useTraining } from "@/composables/training";
+import { onMounted } from "vue";
 
 import PllRecognitionAnswerPicker from "@/components/Training/PllRecognition/AnswerPicker.vue";
-import PllRecognitionCubeImage from "@/components/Training/PllRecognition/CubeImage/index.vue";
+import PllRecognitionCubeImage from "@/components/Training/PllRecognition/CubeImage.vue";
+import PllRecognitionRevealedCubeImages from "@/components/Training/PllRecognition/RevealedCubeImages.vue";
 
-const currentPllIndex = ref(0);
-const lastPllIndex = ref(0);
-const currentFrontSideIndex = ref(0);
-const currentNumberOfUTurns = ref(0);
-const pllSelected = ref(false);
-
-function pickNewRandomPll() {
-  do {
-    currentPllIndex.value = Math.floor(Math.random() * pllCases.length);
-  } while (lastPllIndex.value === currentPllIndex.value);
-
-  lastPllIndex.value = currentPllIndex.value;
-  currentFrontSideIndex.value = Math.floor(Math.random() * 4);
-  currentNumberOfUTurns.value = Math.floor(Math.random() * 4);
-}
-
-function chooseNextPll() {
-  if (pllSelected.value === true) {
-    pickNewRandomPll();
-    pllSelected.value = false;
-  }
-}
+const {
+  isPllSelected,
+  currentRandomUTurn,
+  currentRandomYTurn,
+  pickNewRandomPll,
+  chooseNextPll,
+  selectPll,
+  currentPllAlgorithm,
+} = useTraining();
 
 onMounted(() => {
   pickNewRandomPll();
