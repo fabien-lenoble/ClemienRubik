@@ -1,11 +1,15 @@
 <script setup lang="ts">
 const links = [
   {
-    text: "3BLD",
-    to: "/training/3bld",
+    text: "3bld corners memo",
+    to: "/training/3bld/memo/corners",
   },
   {
-    text: "Pll Recognition",
+    text: "3bld corners recognition",
+    to: "/training/3bld/recognition/corners",
+  },
+  {
+    text: "PLL recognition",
     to: "/training/pll-recognition",
   },
 ];

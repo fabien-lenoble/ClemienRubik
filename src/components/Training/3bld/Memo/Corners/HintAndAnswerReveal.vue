@@ -34,8 +34,8 @@ import { useSettings } from "@/composables/settings";
 import { useTraining } from "@/composables/training";
 import { onBeforeUnmount, onMounted } from "vue";
 
-import ResultHandler from "@/components/Training/3Bld/ResultHandler.vue";
-import TimeBar from "@/components/Training/3Bld/TimeBar.vue";
+import ResultHandler from "@/components/Training/3bld/Memo/Corners/ResultHandler.vue";
+import TimeBar from "@/components/Training/3bld/Memo/Corners/TimeBar.vue";
 
 const { settings, hasMaximumRecognitionTime } = useSettings();
 const {

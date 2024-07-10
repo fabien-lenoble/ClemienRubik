@@ -85,7 +85,7 @@ const hasMaximumRecognitionTime = computed(() => {
   return settings.value.blindfoldedTraining.maximumRecognitionTime > 0;
 });
 
-function import3BldCornerPairs() {
+function import3bldCornerPairs() {
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.accept = ".csv";
@@ -141,7 +141,7 @@ export function useSettings() {
     setTimerFormat,
     setBlindfoldedTraining,
     hasMaximumRecognitionTime,
-    import3BldCornerPairs,
+    import3bldCornerPairs,
     setPllRecognition,
   };
 }

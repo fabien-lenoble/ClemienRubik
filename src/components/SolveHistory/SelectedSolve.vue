@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CubeImage from "@/components/CurrentScramble/CubeImage/index.vue";
+import CubeImage from "@/components/CubeImage/index.vue";
 import { useScramble } from "@/composables/scramble";
 import { useSession } from "@/composables/session";
 import type { SavedSolve } from "@/composables/session/types";
