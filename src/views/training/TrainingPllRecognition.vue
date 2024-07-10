@@ -8,11 +8,11 @@
           :y-turn="currentRandomYTurn"
         />
       </div>
-      <div class="grow flex-col content-center">
+      <div class="grow content-center">
         <div class="basis-1/2">
           <pll-recognition-revealed-cube-images />
         </div>
-        <div v-if="isPllSelected">
+        <div class="px-2" v-if="isPllSelected">
           {{ currentPllAlgorithm }}
         </div>
       </div>

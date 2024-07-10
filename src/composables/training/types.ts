@@ -21,3 +21,8 @@ export type Threshold = {
   active: boolean;
   color: string;
 };
+
+export type PllCase = {
+  name: string;
+  algorithm: string;
+};

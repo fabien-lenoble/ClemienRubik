@@ -1,4 +1,7 @@
-import { threeBldCornerPairs } from "@/composables/training/constants";
+import {
+  pllCases,
+  threeBldCornerPairs,
+} from "@/composables/training/constants";
 import type { Ref } from "vue";
 import { computed, ref } from "vue";
 import type { Settings, Theme } from "./types";
@@ -15,6 +18,9 @@ const defaultSettings: Settings = {
     maximumRecognitionTime: 5,
     resultsViewMode: "key",
     threeBldCornerPairs,
+  },
+  pllRecognition: {
+    selectablePlls: pllCases.map((pll) => pll.name),
   },
 };
 
@@ -61,6 +67,16 @@ function setBlindfoldedTraining(
   settings.value["blindfoldedTraining"] = {
     ...settings.value["blindfoldedTraining"],
     ...blindfoldedTraining,
+  };
+  localStorage.setItem("settings", JSON.stringify(settings.value));
+}
+
+function setPllRecognition(
+  pllRecognition: Partial<Settings["pllRecognition"]>
+) {
+  settings.value["pllRecognition"] = {
+    ...settings.value["pllRecognition"],
+    ...pllRecognition,
   };
   localStorage.setItem("settings", JSON.stringify(settings.value));
 }
@@ -120,5 +136,6 @@ export function useSettings() {
     setBlindfoldedTraining,
     hasMaximumRecognitionTime,
     import3BldCornerPairs,
+    setPllRecognition,
   };
 }

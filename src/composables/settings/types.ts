@@ -7,6 +7,9 @@ export type Settings = {
     resultsViewMode: "key" | "value";
     threeBldCornerPairs: Record<string, string>;
   };
+  pllRecognition: {
+    selectablePlls: string[];
+  };
   timerFormat: "none" | "rounded" | "1decimal" | "2decimals" | "3decimals";
 };
 export type Theme = "bi" | "sexy" | "nb";
