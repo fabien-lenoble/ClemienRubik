@@ -5,7 +5,7 @@
       :key="key"
       class="flex flex-col basis-1/4 justify-center h-full rounded-md items-center text-black py-1"
       :class="getElementClass(threshold)"
-      @click="updateLevels(key)"
+      @click="thresholds[key].active = !thresholds[key].active"
     >
       <div class="basis-full content-center">{{ getTimeText(key) }}</div>
       <div class="basis-full" v-if="getRatioText(key)">
@@ -19,7 +19,7 @@
 import { useTraining } from "@/composables/training";
 import type { Threshold } from "@/composables/training/types";
 
-const { thresholds, thresholdLevels, updateLevels } = useTraining();
+const { thresholds, thresholdLevels } = useTraining();
 
 function getElementClass(threshold: Threshold) {
   return {

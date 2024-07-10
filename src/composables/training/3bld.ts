@@ -70,6 +70,7 @@ const computedCornerMemoResults: Ref<ComputedCornerMemoResult[]> = computed(
   () => {
     return Object.entries(pairs.value)
       .map(([key, value]) => {
+        value = value.trim();
         const result = cornerMemoResults.value.find(
           (r) => r.key === key && r.text.trim() === value.trim()
         );
@@ -152,31 +153,13 @@ const totaledScores = computed(() => {
 const displayedCornerResults = computed(() => {
   return computedCornerMemoResults.value
     .filter((result) => {
-      // TODO: use thresholds ratioChecker and timeChecker for all these checks
-      if (!thresholds.value.unknown.active) {
-        if (isNaN(result.averageTime) && result.total === 0) {
-          return false;
+      for (const threshold of Object.values(thresholds.value)) {
+        if (threshold.active) {
+          return (
+            threshold.ratioChecker(result) || threshold.timeChecker(result)
+          );
         }
       }
-      if (thresholds.value.bad.active) {
-        if (result.averageTime > 3 || result.ratio < 50) {
-          return true;
-        }
-      }
-      if (thresholds.value.medium.active) {
-        if (
-          (result.averageTime <= 3 && result.averageTime > 2) ||
-          (result.ratio < 50 && result.ratio >= 80)
-        ) {
-          return true;
-        }
-      }
-      if (thresholds.value.good.active) {
-        if (result.averageTime <= 2 || result.ratio >= 80) {
-          return true;
-        }
-      }
-      return false;
     })
     .sort((a, b) => (b.key > a.key ? -1 : 1));
 });
@@ -202,8 +185,10 @@ function addCornerMemoResult(
     hintType,
   };
 
+  text = text.trim();
+
   if (sameKeyEntry) {
-    if (sameKeyEntry.text.trim() === text.trim()) {
+    if (sameKeyEntry.text.trim() === text) {
       // if the same key already exists, add the new result to the existing entry
       sameKeyEntry.results?.push(newResultEntry);
     } else {
@@ -353,29 +338,6 @@ function handleTimeBarAnimationEnd(_isFullDurationUsed: boolean) {
   }
 }
 
-function updateLevels(key: string) {
-  switch (key) {
-    case "unknown":
-      thresholds.value.unknown.active = !thresholds.value.unknown.active;
-      break;
-    case "bad":
-      thresholds.value.bad.active = true;
-      thresholds.value.medium.active = false;
-      thresholds.value.good.active = false;
-      break;
-    case "medium":
-      thresholds.value.bad.active = true;
-      thresholds.value.medium.active = true;
-      thresholds.value.good.active = false;
-      break;
-    case "good":
-      thresholds.value.bad.active = true;
-      thresholds.value.medium.active = true;
-      thresholds.value.good.active = true;
-      break;
-  }
-}
-
 selectNextPair();
 
 export default {
@@ -396,5 +358,4 @@ export default {
   pairs,
   thresholdLevels,
   thresholds,
-  updateLevels,
 };
