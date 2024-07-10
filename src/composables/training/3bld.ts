@@ -71,7 +71,7 @@ const computedCornerMemoResults: Ref<ComputedCornerMemoResult[]> = computed(
     return Object.entries(pairs.value)
       .map(([key, value]) => {
         const result = cornerMemoResults.value.find(
-          (r) => r.key === key && r.text === value
+          (r) => r.key === key && r.text.trim() === value.trim()
         );
         if (!result) {
           return {
@@ -203,7 +203,7 @@ function addCornerMemoResult(
   };
 
   if (sameKeyEntry) {
-    if (sameKeyEntry.text === text) {
+    if (sameKeyEntry.text.trim() === text.trim()) {
       // if the same key already exists, add the new result to the existing entry
       sameKeyEntry.results?.push(newResultEntry);
     } else {
