@@ -4,6 +4,7 @@
       @click="import3BldCornerPairs"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-1 rounded transition duration-150 ease-in-out transform"
     >
+      <i class="fa-solid fa-upload"></i>
       Update Memo File
     </button>
     <div class="relative flex items-center">
