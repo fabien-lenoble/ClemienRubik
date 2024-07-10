@@ -155,9 +155,9 @@ const displayedCornerResults = computed(() => {
     .filter((result) => {
       for (const threshold of Object.values(thresholds.value)) {
         if (threshold.active) {
-          return (
-            threshold.ratioChecker(result) || threshold.timeChecker(result)
-          );
+          if (threshold.ratioChecker(result) || threshold.timeChecker(result)) {
+            return true;
+          }
         }
       }
     })
