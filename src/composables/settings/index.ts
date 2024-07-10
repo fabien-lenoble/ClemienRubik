@@ -100,8 +100,14 @@ function import3BldCornerPairs() {
 
     const reader = new FileReader();
     reader.onload = (e) => {
+      if (
+        !confirm(
+          "This will overwrite your current 3BLD corner pairs. Continue?"
+        )
+      ) {
+        return;
+      }
       const text = e.target?.result;
-      console.log("File content:", text);
 
       if (!text || typeof text !== "string") {
         console.error("Invalid file content");
