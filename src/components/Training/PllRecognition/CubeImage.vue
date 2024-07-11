@@ -2,7 +2,7 @@
   <img
     v-show="shouldShowImage"
     :src="src"
-    @load="setLoader(false)"
+    @load="$emit('image-loaded')"
     :class="{
       'border-2': shouldShowBorder,
     }"
@@ -25,14 +25,8 @@ const props = defineProps<{
   yTurn: string;
 }>();
 
-const {
-  currentPllAlgorithm,
-  loader,
-  setLoader,
-  isPllSelected,
-  uTurns,
-  yTurns,
-} = useTraining();
+const { currentPllAlgorithm, loader, isPllSelected, uTurns, yTurns } =
+  useTraining();
 
 const shouldShowBorder = computed(() => {
   // the algorithm is based on the case uTurn = "" and yTurn = "".

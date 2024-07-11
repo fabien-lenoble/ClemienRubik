@@ -6,6 +6,7 @@
           :is-main-image="true"
           :u-turn="currentRandomUTurn"
           :y-turn="currentRandomYTurn"
+          @image-loaded="setLoader(false)"
         />
       </div>
       <div class="grow content-center">
@@ -53,6 +54,7 @@ const {
   chooseNextPll,
   selectPll,
   currentPllAlgorithm,
+  setLoader,
 } = useTraining();
 
 onMounted(() => {
