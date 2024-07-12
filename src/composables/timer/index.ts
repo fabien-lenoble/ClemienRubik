@@ -65,17 +65,23 @@ function getTimerDisplayValue(
   }
 
   const formattedSeconds = seconds.toFixed(decimalPlaces);
-
+  let displayValue = "";
   if (minutes < 1) {
     // For values less than 60 seconds, show with specified decimal places
-    return formattedSeconds;
+    displayValue = formattedSeconds;
   } else {
     // For values 60 seconds or more, convert to minutes and seconds
     // Pad the seconds part with a '0' if it's less than 10
     const paddedSeconds =
       seconds < 10 ? "0" + formattedSeconds : formattedSeconds;
-    return `${minutes}:${paddedSeconds}`;
+    displayValue = `${minutes}:${paddedSeconds}`;
   }
+
+  if (state === "+2") {
+    displayValue += "+";
+  }
+
+  return displayValue;
 }
 
 function incrementHoldTime() {

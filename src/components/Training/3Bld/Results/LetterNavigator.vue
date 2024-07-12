@@ -14,7 +14,7 @@
 </template>
 <script setup lang="ts">
 import { useTraining } from "@/composables/training";
-import { defineEmits, nextTick, onMounted, ref, watch } from "vue";
+import { nextTick, onMounted, ref, watch } from "vue";
 
 const emit = defineEmits(["clickLetter"]);
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
