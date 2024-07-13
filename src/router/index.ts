@@ -5,10 +5,11 @@ import { useSession } from "@/composables/session";
 import ScrambleView from "@/views/ScrambleView.vue";
 import SettingsView from "@/views/SettingsView.vue";
 import SolveHistoryView from "@/views/SolveHistoryView.vue";
+import Training3bldMemoCornersView from "@/views/Training/3bld/Memo/Corners.vue";
+import Training3bldMemoCornersResultsView from "@/views/Training/3bld/Memo/CornersResults.vue";
+import Training3bldRecognitionCornersResultsView from "@/views/Training/3bld/Recognition/Corners.vue";
+import TrainingPllRecognition from "@/views/Training/TrainingPllRecognition.vue";
 import TrainingView from "@/views/TrainingView.vue";
-import Training3bldView from "@/views/training/Training3bld.vue";
-import Training3bldResultsView from "@/views/training/Training3bldResults.vue";
-import TrainingPllRecognition from "@/views/training/TrainingPllRecognition.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -44,14 +45,19 @@ const router = createRouter({
       component: TrainingView,
     },
     {
-      path: "/training/3bld",
-      name: "training-3bld",
-      component: Training3bldView,
+      path: "/training/3bld/memo/corners",
+      name: "training-3bld-memo-corners",
+      component: Training3bldMemoCornersView,
     },
     {
-      path: "/training/3bld/results",
-      name: "training-3bld-results",
-      component: Training3bldResultsView,
+      path: "/training/3bld/memo/corners/results",
+      name: "training-3bld-memo-corners-results",
+      component: Training3bldMemoCornersResultsView,
+    },
+    {
+      path: "/training/3bld/recognition/corners",
+      name: "training-3bld-recognition-corners",
+      component: Training3bldRecognitionCornersResultsView,
     },
     {
       path: "/training/pll-recognition",

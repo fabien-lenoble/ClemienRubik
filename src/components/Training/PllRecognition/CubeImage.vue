@@ -3,9 +3,7 @@
     v-show="shouldShowImage"
     :src="src"
     @load="$emit('image-loaded')"
-    :class="{
-      'border-2': shouldShowBorder,
-    }"
+    class="m-auto"
   />
   <div
     v-show="isMainImage && loader"
@@ -19,26 +17,17 @@
 import { useTraining } from "@/composables/training";
 import { computed } from "vue";
 
+defineEmits<{
+  (e: "image-loaded"): void;
+}>();
+
 const props = defineProps<{
   isMainImage: boolean;
   uTurn: string;
   yTurn: string;
 }>();
 
-const { currentPllAlgorithm, loader, isPllSelected, uTurns, yTurns } =
-  useTraining();
-
-const shouldShowBorder = computed(() => {
-  // the algorithm is based on the case uTurn = "" and yTurn = "".
-  // but if we offset by one U, three Y, we get the same case.
-  // same for two U, two Y
-  // same for three U, one Y
-  // same for four U, zero Y
-  // so we can just check if the sum of the indexes is divisible by 4
-  const uTurnIndex = uTurns.indexOf(props.uTurn);
-  const yTurnIndex = yTurns.indexOf(props.yTurn);
-  return isPllSelected.value && (uTurnIndex + yTurnIndex) % 4 === 0;
-});
+const { currentPllAlgorithm, loader, isPllSelected } = useTraining();
 
 const shouldShowImage = computed(() => {
   if (props.isMainImage) {
@@ -49,7 +38,7 @@ const shouldShowImage = computed(() => {
 });
 
 const src = computed(() => {
-  const size = props.isMainImage ? 150 : 80;
+  const size = props.isMainImage ? 250 : 100;
   const fullAlgorithm = `${props.uTurn}${props.yTurn}${currentPllAlgorithm.value}`;
   return (
     `https://cube.rider.biz/visualcube.php?fmt=png&bg=t&r=y25x-34` +

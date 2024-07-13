@@ -30,7 +30,7 @@
       </div>
       <div class="flex basis-1/6">
         <button
-          @click="import3BldCornerPairs"
+          @click="import3bldCornerPairs"
           class="w-full bg-blue-500 text-white font-bold py-2 rounded-lg transition duration-150 ease-in-out"
         >
           <i class="fa-solid fa-upload"></i>
@@ -49,17 +49,17 @@
 </template>
 
 <script setup lang="ts">
-import Training3bldResultsLetterNavigator from "@/components/Training/3Bld/Results/LetterNavigator.vue";
-import Training3bldResultsLevels from "@/components/Training/3Bld/Results/Levels.vue";
-import Training3bldResultsTable from "@/components/Training/3Bld/Results/Table.vue";
-import Training3bldResultsViewModeToggle from "@/components/Training/3Bld/Results/ViewModeToggle.vue";
+import Training3bldResultsLetterNavigator from "@/components/Training/3bld/Memo/Corners/Results/LetterNavigator.vue";
+import Training3bldResultsLevels from "@/components/Training/3bld/Memo/Corners/Results/Levels.vue";
+import Training3bldResultsTable from "@/components/Training/3bld/Memo/Corners/Results/Table.vue";
+import Training3bldResultsViewModeToggle from "@/components/Training/3bld/Memo/Corners/Results/ViewModeToggle.vue";
 import { useSettings } from "@/composables/settings";
 import { useTraining } from "@/composables/training";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const { resetCornerMemoResults } = useTraining();
-const { import3BldCornerPairs } = useSettings();
+const { import3bldCornerPairs } = useSettings();
 
 const clickedLetter = ref<string>("");
 
@@ -69,6 +69,6 @@ function clickLetter(letter: string) {
 
 const router = useRouter();
 function goBack() {
-  router.push("/training/3bld");
+  router.push("/training/3bld/memo/corners");
 }
 </script>

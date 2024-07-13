@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import CubeImage from "@/components/CubeImage/index.vue";
 import { useScramble } from "@/composables/scramble";
 import { useSeed } from "@/composables/seed";
+import { useSettings } from "@/composables/settings";
 import { useTimer } from "@/composables/timer";
-import { useRouter } from "vue-router";
 import { computed } from "vue";
-import CubeImage from "./CubeImage/index.vue";
+import { useRouter } from "vue-router";
 import LastAverages from "./LastAverages/index.vue";
 import ScrambleInfo from "./ScrambleInfo/index.vue";
 import Timer from "./Timer.vue";
-import { useSettings } from "@/composables/settings";
 
 const { isTimerStarted } = useTimer();
 const router = useRouter();

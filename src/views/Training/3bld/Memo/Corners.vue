@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-full">
-    <settings-3-bld-training-select />
+    <settings-3bld-training-select />
     <hint-and-answer-reveal />
     <div class="shrink pb-12 text-center">
       <button
@@ -14,12 +14,12 @@
 </template>
 
 <script setup lang="ts">
+import Settings3bldTrainingSelect from "@/components/Settings/3bldTraining/Select.vue";
 import { useTraining } from "@/composables/training";
 import { onBeforeUnmount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
-import Settings3BldTrainingSelect from "@/components/Settings/3BldTraining/Select.vue";
-import HintAndAnswerReveal from "@/components/Training/3Bld/HintAndAnswerReveal.vue";
+import HintAndAnswerReveal from "@/components/Training/3bld/Memo/Corners/HintAndAnswerReveal.vue";
 
 const router = useRouter();
 const { isHiddenTextShown } = useTraining();
@@ -32,7 +32,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
 };
 
 function goToResults() {
-  router.push("/training/3bld/results");
+  router.push("/training/3bld/memo/corners/results");
 }
 
 onMounted(() => {

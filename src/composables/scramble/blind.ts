@@ -468,4 +468,5 @@ const cornerMemoMapping: Record<StickerValue, string[]> = {
 
 export default {
   generateMemo,
+  corners,
 };

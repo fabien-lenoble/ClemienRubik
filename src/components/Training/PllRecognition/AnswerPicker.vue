@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-wrap justify-center items-center h-full">
-    <div class="flex basis-full text-end gap-x-3 px-3">
+  <div class="grid grid-rows-4 grid-cols-7 gap-2 h-full">
+    <div class="flex col-span-7 text-end gap-x-3 px-3 justify-end">
       <template v-if="isEditingMode">
         <div v-if="temporarySelectablePlls.length < 2" class="grow">
           select at least 2 plls
@@ -9,7 +9,7 @@
           <button>
             <i
               @click="toggleAllPlls()"
-              class="fa-solid"
+              class="fa-solid fa-check-double"
               :class="
                 temporarySelectablePlls.length > 0
                   ? 'fa-square-check'
@@ -19,25 +19,26 @@
           </button>
         </div>
       </template>
-      <div class="m-auto content-end">
+      <div>
         <button>
           <i
             @click="toggleEditingMode"
             class="fa-solid"
-            :class="isEditingMode ? 'fa-check' : 'fa-edit'"
+            :class="isEditingMode ? 'fa-close' : 'fa-edit'"
           ></i>
         </button>
       </div>
     </div>
     <div
-      class="basis-1/3 relative"
+      class="relative"
       v-for="pll in pllCases"
       :key="pll.name"
       @click="handleClick(pll.name)"
     >
       <div
-        class="cursor-pointer text-center py-2 mx-1 border-2 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+        class="cursor-pointer p-1 text-center border-2 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
         :class="{
+          'border-yellow-500 ': isEditingMode && isPllSelectable(pll.name),
           'border-green-500 bg-green-100 text-black':
             isPllSelected && pll.name === currentPllName,
           'border-red-500 bg-red-100 text-black':
@@ -50,14 +51,6 @@
       >
         {{ pll.name }}
       </div>
-      <template v-if="isEditingMode">
-        <div class="absolute right-[16px] bottom-[8px]">
-          <i
-            class="fa-solid"
-            :class="isPllSelectable(pll.name) ? 'fa-square-check' : 'fa-square'"
-          />
-        </div>
-      </template>
     </div>
   </div>
 </template>

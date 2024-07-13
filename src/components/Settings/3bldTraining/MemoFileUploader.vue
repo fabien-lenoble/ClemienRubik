@@ -1,7 +1,7 @@
 <template>
   <div class="pt-2 flex items-center gap-2">
     <button
-      @click="import3BldCornerPairs"
+      @click="import3bldCornerPairs"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-1 rounded transition duration-150 ease-in-out transform"
     >
       <i class="fa-solid fa-upload"></i>
@@ -31,6 +31,6 @@
 import { useSettings } from "@/composables/settings";
 import { ref } from "vue";
 
-const { import3BldCornerPairs } = useSettings();
+const { import3bldCornerPairs } = useSettings();
 const showTooltip = ref(false);
 </script>

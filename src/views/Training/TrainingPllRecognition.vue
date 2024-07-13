@@ -1,24 +1,15 @@
 <template>
   <div class="flex flex-col h-full">
-    <div class="flex basis-1/4 self-center content-center w-full">
-      <div class="shrink content-center min-w-[150px]">
-        <pll-recognition-cube-image
-          :is-main-image="true"
-          :u-turn="currentRandomUTurn"
-          :y-turn="currentRandomYTurn"
-          @image-loaded="setLoader(false)"
-        />
-      </div>
-      <div class="grow content-center">
-        <div class="basis-1/2">
-          <pll-recognition-revealed-cube-images />
-        </div>
-        <div class="px-2" v-if="isPllSelected">
-          {{ currentPllAlgorithm }}
-        </div>
-      </div>
+    <div class="grow content-center">
+      <pll-recognition-cube-image
+        :is-main-image="true"
+        :u-turn="currentRandomUTurn"
+        :y-turn="currentRandomYTurn"
+        @image-loaded="setLoader(false)"
+      />
+      <pll-recognition-revealed-cube-images />
     </div>
-    <div class="grow">
+    <div>
       <pll-recognition-answer-picker @select-pll="selectPll($event)" />
     </div>
     <div class="flex flex-wrap justify-center items-center pt-4 pb-12">
@@ -53,7 +44,6 @@ const {
   pickNewRandomPll,
   chooseNextPll,
   selectPll,
-  currentPllAlgorithm,
   setLoader,
 } = useTraining();
 

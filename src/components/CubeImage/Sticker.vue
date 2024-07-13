@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import type { StickerValue } from "@/composables/scramble/types";
 
-defineProps<{
+const props = defineProps<{
   sticker: StickerValue;
+  isBig?: boolean;
 }>();
+
+const widthClass = props.isBig
+  ? "w-20 h-20"
+  : "w-3 h-3 md:w-4 md:h-4 xl:w-6 xl:h-6";
 </script>
 
 <template>
   <div
-    :class="sticker"
-    class="sticker w-3 h-3 md:w-4 md:h-4 xl:w-6 xl:h-6 border border-black text-black"
+    :class="`${sticker} ${widthClass}`"
+    class="sticker border border-black text-black"
   ></div>
 </template>
 
