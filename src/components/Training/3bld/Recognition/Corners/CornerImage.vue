@@ -1,19 +1,10 @@
 <template>
   <div>
     <div class="flex">
-      <sticker
-        :sticker="getStickerValue(0)"
-        :class="`w-[${size}px] h-[${size}px]`"
-      />
-      <sticker
-        :sticker="getStickerValue(1)"
-        :class="`w-[${size}px] h-[${size}px]`"
-      />
+      <sticker :sticker="getStickerValue(0)" :class="getClass()" />
+      <sticker :sticker="getStickerValue(1)" :class="getClass()" />
     </div>
-    <sticker
-      :sticker="getStickerValue(2)"
-      :class="`w-[${size}px] h-[${size}px]`"
-    />
+    <sticker :sticker="getStickerValue(2)" :class="getClass()" />
   </div>
 </template>
 
@@ -23,6 +14,10 @@ import type { StickerValue } from "@/composables/scramble/types";
 import { computed, type Ref } from "vue";
 
 import Sticker from "@/components/CubeImage/Sticker.vue";
+
+function getClass() {
+  return `w-[${props.size}px] h-[${props.size}px]`;
+}
 
 const { corners } = useScramble();
 const props = defineProps<{

@@ -32,5 +32,9 @@ module.exports = {
     {
       pattern: /bg-(red|green|blue|yellow|gray)-(100|200|300|400|500)/,
     },
+    "w-[28px]",
+    "h-[28px]",
+    "w-[80px]",
+    "h-[80px]",
   ],
 };
