@@ -26,7 +26,7 @@ import CornerImage from "@/components/Training/3bld/Recognition/Corners/CornerIm
     </router-link>
     <router-link
       class="rounded-lg flex justify-center items-center transition text-center bg-tertiary text-my-text-secondary flex-wrap"
-      to="/training/pll-recognition"
+      to="/training/pll-recognition/play"
     >
       <div class="self-center content-center">
         <img width="80" src="../assets/pll-recognition.png" />

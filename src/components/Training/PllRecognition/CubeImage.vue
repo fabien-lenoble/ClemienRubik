@@ -25,13 +25,15 @@ const props = defineProps<{
   isMainImage: boolean;
   uTurn: string;
   yTurn: string;
+  currentPllAlgorithm: string;
+  loader?: boolean;
 }>();
 
-const { currentPllAlgorithm, loader, isPllSelected } = useTraining();
+const { isPllSelected } = useTraining();
 
 const shouldShowImage = computed(() => {
   if (props.isMainImage) {
-    return !loader.value;
+    return !props.loader;
   } else {
     return isPllSelected.value;
   }
@@ -39,7 +41,7 @@ const shouldShowImage = computed(() => {
 
 const src = computed(() => {
   const size = props.isMainImage ? 250 : 100;
-  const fullAlgorithm = `${props.uTurn}${props.yTurn}${currentPllAlgorithm.value}`;
+  const fullAlgorithm = `${props.uTurn}${props.yTurn}${props.currentPllAlgorithm}`;
   return (
     `https://cube.rider.biz/visualcube.php?fmt=png&bg=t&r=y25x-34` +
     `&size=${size}` +

@@ -5,6 +5,7 @@
         :is-main-image="false"
         :y-turn="currentRandomYTurn"
         :u-turn="getUTurn(index)"
+        :current-pll-algorithm="currentPllAlgorithm"
       />
     </div>
   </div>
@@ -13,7 +14,12 @@
 <script setup lang="ts">
 import PllRecognitionCubeImage from "@/components/Training/PllRecognition/CubeImage.vue";
 import { useTraining } from "@/composables/training";
-const { currentRandomYTurn, currentRandomUTurnIndex, uTurns } = useTraining();
+const {
+  currentRandomYTurn,
+  currentRandomUTurnIndex,
+  uTurns,
+  currentPllAlgorithm,
+} = useTraining();
 
 function getUTurn(index: number) {
   return uTurns[(currentRandomUTurnIndex.value + index) % 4];
