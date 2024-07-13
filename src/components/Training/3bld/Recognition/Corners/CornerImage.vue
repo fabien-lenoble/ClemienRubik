@@ -1,10 +1,19 @@
 <template>
   <div>
     <div class="flex">
-      <sticker is-big :sticker="getStickerValue(0)" />
-      <sticker is-big :sticker="getStickerValue(1)" />
+      <sticker
+        :sticker="getStickerValue(0)"
+        :class="`w-[${size}px] h-[${size}px]`"
+      />
+      <sticker
+        :sticker="getStickerValue(1)"
+        :class="`w-[${size}px] h-[${size}px]`"
+      />
     </div>
-    <sticker is-big :sticker="getStickerValue(2)" />
+    <sticker
+      :sticker="getStickerValue(2)"
+      :class="`w-[${size}px] h-[${size}px]`"
+    />
   </div>
 </template>
 
@@ -18,6 +27,7 @@ import Sticker from "@/components/CubeImage/Sticker.vue";
 const { corners } = useScramble();
 const props = defineProps<{
   currentSticker: StickerValue;
+  size: number;
 }>();
 // get all corners except the buffer ones
 const noBufferCorners = corners.slice(0, corners.length - 1);

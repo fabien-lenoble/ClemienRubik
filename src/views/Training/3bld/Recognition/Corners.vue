@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-col h-full">
     <div class="grow self-center content-center">
-      <corner-image :current-sticker="currentSticker" :class="rotationClass" />
+      <corner-image
+        :current-sticker="currentSticker"
+        :class="rotationClass"
+        :size="80"
+      />
     </div>
     <div>
       <answer-picker
@@ -29,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed, type Ref } from "vue";
+import { computed, onMounted, ref, type Ref } from "vue";
 
 import AnswerPicker from "@/components/Training/3bld/Recognition/Corners/AnswerPicker.vue";
 import CornerImage from "@/components/Training/3bld/Recognition/Corners/CornerImage.vue";
