@@ -82,7 +82,7 @@ function isPllSelectable(name: string) {
 function handleClick(name: string) {
   if (isEditingMode.value) {
     updateTemporarySelectablePlls(name);
-  } else {
+  } else if (isPllSelectable(name)) {
     emit("select-pll", name);
   }
 }
