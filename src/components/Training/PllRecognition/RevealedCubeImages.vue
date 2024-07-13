@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row">
+  <div class="flex flex-row min-h-[100px]">
     <div class="basis-1/3" v-for="index in 3" :key="index">
       <pll-recognition-cube-image
         :is-main-image="false"

@@ -7,7 +7,7 @@ const props = defineProps<{
 }>();
 
 const widthClass = props.isBig
-  ? "w-9 h-9"
+  ? "w-20 h-20"
   : "w-3 h-3 md:w-4 md:h-4 xl:w-6 xl:h-6";
 </script>
 

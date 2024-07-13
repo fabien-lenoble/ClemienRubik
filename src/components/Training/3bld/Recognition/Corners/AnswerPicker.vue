@@ -1,13 +1,12 @@
 <template>
-  <div class="flex flex-wrap justify-center items-center h-full">
+  <div class="grid grid-rows-3 grid-cols-7 gap-2 h-full">
     <div
-      class="basis-1/3 relative"
       v-for="(sticker, index) in computedStickers"
       :key="index"
       @click="handleClick(sticker)"
     >
       <div
-        class="cursor-pointer text-center py-2 mx-1 border-2 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+        class="cursor-pointer text-center p-1 border-2 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
         :class="{
           'border-green-500 bg-green-100 text-black':
             isStickerSelected && sticker === currentSticker,

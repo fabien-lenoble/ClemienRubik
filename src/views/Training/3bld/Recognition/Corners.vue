@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col h-full">
     <div class="grow self-center content-center">
-      <corner-image :current-sticker="currentSticker" />
+      <corner-image :current-sticker="currentSticker" :class="rotationClass" />
     </div>
-    <div class="grow">
+    <div>
       <answer-picker
         :is-sticker-selected="isStickerSelected"
         :selected-sticker="selectedSticker"
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from "vue";
+import { onMounted, ref, computed, type Ref } from "vue";
 
 import AnswerPicker from "@/components/Training/3bld/Recognition/Corners/AnswerPicker.vue";
 import CornerImage from "@/components/Training/3bld/Recognition/Corners/CornerImage.vue";
@@ -40,6 +40,7 @@ const { corners } = useScramble();
 const isStickerSelected = ref(false);
 const selectedSticker = ref("");
 const currentSticker: Ref<StickerValue> = ref("B");
+const currentRotation = ref(0);
 const lastSticker = ref("");
 
 // get all corners except the buffer ones
@@ -52,8 +53,14 @@ function pickNewRandomSticker() {
       computedStickers[Math.floor(Math.random() * computedStickers.length)];
   } while (lastSticker.value === currentSticker.value);
 
+  currentRotation.value = Math.floor(Math.random() * 4);
   lastSticker.value = currentSticker.value;
 }
+
+const rotationClasses = ["rotate-0", "rotate-90", "rotate-180", "-rotate-90"];
+const rotationClass = computed(() => {
+  return rotationClasses[currentRotation.value];
+});
 
 function chooseNextSticker() {
   if (isStickerSelected.value === true) {

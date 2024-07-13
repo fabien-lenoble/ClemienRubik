@@ -1,9 +1,11 @@
 <template>
-  <div class="flex">
-    <sticker is-big :sticker="getStickerValue(0)" />
-    <sticker is-big :sticker="getStickerValue(1)" />
+  <div>
+    <div class="flex">
+      <sticker is-big :sticker="getStickerValue(0)" />
+      <sticker is-big :sticker="getStickerValue(1)" />
+    </div>
+    <sticker is-big :sticker="getStickerValue(2)" />
   </div>
-  <sticker is-big :sticker="getStickerValue(2)" />
 </template>
 
 <script setup lang="ts">
