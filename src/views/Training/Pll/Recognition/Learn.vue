@@ -3,12 +3,12 @@
     <div class="flex flex-wrap grow content-center">
       <div class="basis-1/2" v-for="i in 4" :key="i">
         <pll-recognition-cube-image
+          class="w-[170px] min-h-[170px]"
+          :sticker-size="34"
           :is-main-image="true"
           :u-turn="uTurns[i - 1]"
           :y-turn="currentYTurn"
           :current-pll-algorithm="currentPllAlgorithm"
-          :loader="loaders[i - 1]"
-          @image-loaded="loaders[i - 1] = false"
         />
       </div>
     </div>
@@ -16,9 +16,9 @@
       class="flex flex-wrap grow content-center min-w-[100px] m-auto justify-center gap-2"
     >
       <sticker sticker="L" class="w-8 h-8" @click="selectYTurn(0)"></sticker>
-      <sticker sticker="H" class="w-8 h-8" @click="selectYTurn(1)"></sticker>
+      <sticker sticker="P" class="w-8 h-8" @click="selectYTurn(1)"></sticker>
       <sticker sticker="T" class="w-8 h-8" @click="selectYTurn(2)"></sticker>
-      <sticker sticker="P" class="w-8 h-8" @click="selectYTurn(3)"></sticker>
+      <sticker sticker="H" class="w-8 h-8" @click="selectYTurn(3)"></sticker>
     </div>
     <div>
       <pll-recognition-learn-pll-picker
@@ -56,11 +56,8 @@ function selectYTurn(index: number) {
   if (currentYTurn.value === yTurns[index]) {
     return;
   }
-  resetLoaders();
   currentYTurn.value = yTurns[index];
 }
-
-const loaders = ref<boolean[]>([true, true, true, true]);
 
 const currentPllName = ref<string>("Aa");
 
@@ -75,11 +72,6 @@ function goToPlayView() {
 }
 
 function selectPll(name: string) {
-  resetLoaders();
   currentPllName.value = name;
-}
-
-function resetLoaders() {
-  loaders.value = [true, true, true, true];
 }
 </script>

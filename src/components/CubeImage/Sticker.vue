@@ -9,7 +9,7 @@ defineProps<{
 <template>
   <div
     :class="sticker"
-    class="sticker border border-black text-white text-center content-center text-5xl w-3 h-3 md:w-4 md:h-4 xl:w-6 xl:h-6"
+    class="sticker border border-black text-black text-center content-center text-sm w-3 h-3"
   ></div>
 </template>
 
@@ -25,31 +25,31 @@ defineProps<{
   &.F,
   &.G,
   &.H {
-    background-color: #b71234;
+    background-color: #ef0000;
   }
   &.Q,
   &.R,
   &.S,
   &.T {
-    background-color: #009b48;
+    background-color: #00d900;
   }
   &.M,
   &.N,
   &.O,
   &.P {
-    background-color: #ff5800;
+    background-color: #ffa200;
   }
   &.I,
   &.J,
   &.K,
   &.L {
-    background-color: #0046ad;
+    background-color: #0000f2;
   }
   &.U,
   &.V,
   &.W,
   &.X {
-    background-color: #ffd500;
+    background-color: #fefe00;
   }
 }
 </style>
