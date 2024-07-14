@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CubeImage from "@/components/CubeImage/index.vue";
+import CubeImage2d from "@/components/CubeImage2d/index.vue";
 import { useScramble } from "@/composables/scramble";
 import { useSession } from "@/composables/session";
 import type { SavedSolve } from "@/composables/session/types";
@@ -73,7 +73,7 @@ const blindMemo = computed(() =>
       </button>
     </div>
     <div class="flex row-span-3 pb-3">
-      <cube-image :scramble="solve.scramble" />
+      <cube-image-2d :scramble="solve.scramble" />
     </div>
   </div>
 </template>

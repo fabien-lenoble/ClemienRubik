@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CubeImage from "@/components/CubeImage/index.vue";
+import CubeImage2d from "@/components/CubeImage2d/index.vue";
 import { useScramble } from "@/composables/scramble";
 import { useSeed } from "@/composables/seed";
 import { useSettings } from "@/composables/settings";
@@ -58,7 +58,7 @@ function goToSolves() {
     Corners: {{ blindMemo.cornerMemo }}
   </div>
   <div class="z-[1] flex gap-x-3 md:px-3 pb-12" v-if="!isTimerStarted">
-    <cube-image :scramble="currentScramble" />
+    <cube-image-2d :scramble="currentScramble" />
     <div class="flex-grow text-center" @click="goToSolves">
       <last-averages />
     </div>

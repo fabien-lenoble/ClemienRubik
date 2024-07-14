@@ -26,12 +26,13 @@
       class="rounded-lg flex justify-center items-center transition text-center bg-tertiary text-my-text-secondary flex-wrap"
       to="/training/pll-recognition/play"
     >
-      <pll-recognition-cube-image
+      <cube-image-3d
         :is-main-image="true"
         y-turn="y2"
         u-turn="U2"
-        :current-pll-algorithm="pllCases[7].algorithm"
+        :case="pllCases[7].algorithm"
         :stickerSize="20"
+        ufr-colors="YBR"
         class="w-[100px] scale-75 h-20"
       />
       <div>PLL recognition</div>
@@ -40,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import CubeImage3d from "@/components/CubeImage3d.vue";
 import CornerImage from "@/components/Training/3bld/Recognition/Corners/CornerImage.vue";
-import PllRecognitionCubeImage from "@/components/Training/PllRecognition/CubeImage.vue";
 import { pllCases } from "@/composables/training/constants";
 </script>

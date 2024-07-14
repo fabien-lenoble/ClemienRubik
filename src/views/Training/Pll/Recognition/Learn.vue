@@ -2,13 +2,13 @@
   <div class="flex flex-col h-full">
     <div class="flex flex-wrap grow content-center">
       <div class="basis-1/2" v-for="i in 4" :key="i">
-        <pll-recognition-cube-image
+        <cube-image-3d
           class="w-[170px] min-h-[170px]"
           :sticker-size="34"
-          :is-main-image="true"
           :u-turn="uTurns[i - 1]"
           :y-turn="currentYTurn"
-          :current-pll-algorithm="currentPllAlgorithm"
+          ufr-colors="YBR"
+          :case="currentPllAlgorithm"
         />
       </div>
     </div>
@@ -40,16 +40,12 @@
 </template>
 
 <script setup lang="ts">
-import { useTraining } from "@/composables/training";
-import { useRouter } from "vue-router";
-
-import Sticker from "@/components/CubeImage/Sticker.vue";
-import PllRecognitionCubeImage from "@/components/Training/PllRecognition/CubeImage.vue";
+import Sticker from "@/components/CubeImage2d/Sticker.vue";
+import CubeImage3d from "@/components/CubeImage3d.vue";
 import PllRecognitionLearnPllPicker from "@/components/Training/PllRecognition/Learn/PllPicker.vue";
-import { pllCases } from "@/composables/training/constants";
+import { pllCases, uTurns, yTurns } from "@/composables/training/constants";
 import { computed, ref } from "vue";
-
-const { uTurns, yTurns } = useTraining();
+import { useRouter } from "vue-router";
 
 const currentYTurn = ref<string>("");
 function selectYTurn(index: number) {

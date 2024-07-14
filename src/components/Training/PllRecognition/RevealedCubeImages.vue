@@ -1,12 +1,13 @@
 <template>
   <div class="flex flex-row">
     <div class="basis-1/3 min-h-[115px]" v-for="index in 3" :key="index">
-      <pll-recognition-cube-image
-        :is-main-image="false"
+      <cube-image-3d
+        v-if="isPllSelected"
         :y-turn="currentRandomYTurn"
         :u-turn="getUTurn(index)"
-        :current-pll-algorithm="currentPllAlgorithm"
+        :case="currentPllAlgorithm"
         :stickerSize="20"
+        ufr-colors="YBR"
         class="w-[115px] min-h-[115px]"
       />
     </div>
@@ -14,13 +15,14 @@
 </template>
 
 <script setup lang="ts">
-import PllRecognitionCubeImage from "@/components/Training/PllRecognition/CubeImage.vue";
+import CubeImage3d from "@/components/CubeImage3d.vue";
 import { useTraining } from "@/composables/training";
+import { uTurns } from "@/composables/training/constants";
 const {
   currentRandomYTurn,
   currentRandomUTurnIndex,
-  uTurns,
   currentPllAlgorithm,
+  isPllSelected,
 } = useTraining();
 
 function getUTurn(index: number) {

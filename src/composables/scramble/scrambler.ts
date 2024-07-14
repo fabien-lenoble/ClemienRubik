@@ -3,6 +3,8 @@ import type { SavedSolve } from "@/composables/session/types";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { cornerColors } from "../training/constants";
+import type { CornerColors } from "../training/types";
 import type { DisplayScramble, MoveSet, Scramble, SubMoveSet } from "./types";
 
 const {
@@ -209,6 +211,14 @@ function testScramblesRandomness() {
   return repartitionPercentage;
 }
 
+function getInitialRotation(ufrColors: CornerColors) {
+  const ufr = cornerColors.find((corner) => corner.ufr === ufrColors);
+  if (ufr) {
+    return ufr.rotation;
+  }
+  return [];
+}
+
 export default {
   numberOfMoves,
   initScrambleValues,
@@ -220,4 +230,5 @@ export default {
   scramblesHistory,
   lastNScrambles,
   testScramblesRandomness,
+  getInitialRotation,
 };

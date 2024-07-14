@@ -13,7 +13,7 @@ import { useScramble } from "@/composables/scramble";
 import type { StickerValue } from "@/composables/scramble/types";
 import { computed, type Ref } from "vue";
 
-import Sticker from "@/components/CubeImage/Sticker.vue";
+import Sticker from "@/components/CubeImage2d/Sticker.vue";
 
 function getClass() {
   return `w-[${props.size}px] h-[${props.size}px]`;

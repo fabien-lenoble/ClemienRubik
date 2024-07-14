@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col h-full">
     <div class="grow content-center">
-      <pll-recognition-cube-image
-        :is-main-image="true"
+      <cube-image-3d
         :u-turn="currentRandomUTurn"
         :y-turn="currentRandomYTurn"
-        :current-pll-algorithm="currentPllAlgorithm"
+        :case="currentPllAlgorithm"
         :sticker-size="50"
+        ufr-colors="YBR"
         class="w-[250px] min-h-[250px] m-auto"
       />
       <pll-recognition-revealed-cube-images />
@@ -46,8 +46,8 @@ import { useTraining } from "@/composables/training";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 
+import CubeImage3d from "@/components/CubeImage3d.vue";
 import PllRecognitionAnswerPicker from "@/components/Training/PllRecognition/AnswerPicker.vue";
-import PllRecognitionCubeImage from "@/components/Training/PllRecognition/CubeImage.vue";
 import PllRecognitionRevealedCubeImages from "@/components/Training/PllRecognition/RevealedCubeImages.vue";
 
 const {
