@@ -8,7 +8,8 @@ import SolveHistoryView from "@/views/SolveHistoryView.vue";
 import Training3bldMemoCornersView from "@/views/Training/3bld/Memo/Corners.vue";
 import Training3bldMemoCornersResultsView from "@/views/Training/3bld/Memo/CornersResults.vue";
 import Training3bldRecognitionCornersResultsView from "@/views/Training/3bld/Recognition/Corners.vue";
-import TrainingPllRecognition from "@/views/Training/TrainingPllRecognition.vue";
+import TrainingPllRecognitionLearn from "@/views/Training/Pll/Recognition/Learn.vue";
+import TrainingPllRecognitionPlay from "@/views/Training/Pll/Recognition/Play.vue";
 import TrainingView from "@/views/TrainingView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -60,9 +61,14 @@ const router = createRouter({
       component: Training3bldRecognitionCornersResultsView,
     },
     {
-      path: "/training/pll-recognition",
-      name: "training-pll-recognition",
-      component: TrainingPllRecognition,
+      path: "/training/pll-recognition/play",
+      name: "training-pll-recognition-play",
+      component: TrainingPllRecognitionPlay,
+    },
+    {
+      path: "/training/pll-recognition/learn",
+      name: "training-pll-recognition-learn",
+      component: TrainingPllRecognitionLearn,
     },
   ],
 });

@@ -22,10 +22,10 @@
     <div class="flex justify-center gap-1">
       <div class="flex grow">
         <button
-          @click="goBack"
+          @click="goToPlayView"
           class="w-full text-white px-6 py-2 font-semibold rounded-lg shadow border-2"
         >
-          back
+          play
         </button>
       </div>
       <div class="flex basis-1/6">
@@ -68,7 +68,7 @@ function clickLetter(letter: string) {
 }
 
 const router = useRouter();
-function goBack() {
+function goToPlayView() {
   router.push("/training/3bld/memo/corners");
 }
 </script>
