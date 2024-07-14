@@ -44,20 +44,77 @@ function getScrambledImage(scramble: Scramble): CubeImage {
       case "U":
         cube = turnUpFace(cube);
         break;
+      case "u":
+        cube = rotateYAxis(cube);
+        cube = turnDownFace(cube);
+        cube = turnDownFace(cube);
+        cube = turnDownFace(cube);
+        break;
       case "L":
         cube = turnLeftFace(cube);
+        break;
+      case "l":
+        cube = rotateXAxis(cube);
+        cube = rotateXAxis(cube);
+        cube = rotateXAxis(cube);
+        cube = turnRightFace(cube);
         break;
       case "F":
         cube = turnFrontFace(cube);
         break;
+      case "f":
+        cube = rotateZAxis(cube);
+        cube = turnBackFace(cube);
+        break;
       case "R":
         cube = turnRightFace(cube);
+        break;
+      case "r":
+        cube = rotateXAxis(cube);
+        cube = turnLeftFace(cube);
         break;
       case "B":
         cube = turnBackFace(cube);
         break;
+      case "b":
+        cube = rotateZAxis(cube);
+        cube = rotateZAxis(cube);
+        cube = rotateZAxis(cube);
+        cube = turnFrontFace(cube);
+        break;
       case "D":
         cube = turnDownFace(cube);
+        break;
+      case "d":
+        cube = rotateYAxis(cube);
+        cube = rotateYAxis(cube);
+        cube = rotateYAxis(cube);
+        cube = turnUpFace(cube);
+        break;
+      case "M":
+        cube = rotateXAxis(cube);
+        cube = rotateXAxis(cube);
+        cube = rotateXAxis(cube);
+        cube = turnLeftFace(cube);
+        cube = turnLeftFace(cube);
+        cube = turnLeftFace(cube);
+        cube = turnRightFace(cube);
+        break;
+      case "E":
+        cube = rotateYAxis(cube);
+        cube = rotateYAxis(cube);
+        cube = rotateYAxis(cube);
+        cube = turnDownFace(cube);
+        cube = turnDownFace(cube);
+        cube = turnDownFace(cube);
+        cube = turnUpFace(cube);
+        break;
+      case "S":
+        cube = rotateZAxis(cube);
+        cube = turnFrontFace(cube);
+        cube = turnFrontFace(cube);
+        cube = turnFrontFace(cube);
+        cube = turnBackFace(cube);
         break;
       case "x":
         cube = rotateXAxis(cube);

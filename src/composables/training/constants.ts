@@ -67,11 +67,11 @@ const pllCases: Array<PllCase> = [
   },
   {
     name: "Ua",
-    algorithm: "R U' R U R U R U' R' U' R2",
+    algorithm: "M2 U M U2 M' U M2",
   },
   {
     name: "Ub",
-    algorithm: "R2 U R U R' U' R' U' R' U R'",
+    algorithm: "M2 U' M U2 M' U' M2",
   },
   {
     name: "V",
@@ -83,7 +83,7 @@ const pllCases: Array<PllCase> = [
   },
   {
     name: "Z",
-    algorithm: "R' U' R U' R U R U' R' U R U R2 U' R' U2",
+    algorithm: "M' U M2 U M2 U M' U2 M2",
   },
 ];
 
