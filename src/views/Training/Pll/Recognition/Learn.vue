@@ -53,6 +53,9 @@ const { uTurns, yTurns } = useTraining();
 
 const currentYTurn = ref<string>("");
 function selectYTurn(index: number) {
+  if (currentYTurn.value === yTurns[index]) {
+    return;
+  }
   resetLoaders();
   currentYTurn.value = yTurns[index];
 }

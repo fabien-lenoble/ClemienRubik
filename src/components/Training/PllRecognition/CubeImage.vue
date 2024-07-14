@@ -4,6 +4,7 @@
     :src="src"
     @load="$emit('image-loaded')"
     class="m-auto"
+    :height="size"
   />
   <div
     v-show="isMainImage && loader"
@@ -39,8 +40,9 @@ const shouldShowImage = computed(() => {
   }
 });
 
+const size = props.isMainImage ? 250 : 100;
+
 const src = computed(() => {
-  const size = props.isMainImage ? 250 : 100;
   const fullAlgorithm = `${props.uTurn}${props.yTurn}${props.currentPllAlgorithm}`;
   return (
     `https://cube.rider.biz/visualcube.php?fmt=png&bg=t&r=y25x-34` +
