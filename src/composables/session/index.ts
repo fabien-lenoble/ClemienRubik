@@ -221,5 +221,6 @@ export function useSession() {
     lastAo100,
     bestAoNIndex,
     mean,
+    setSessionSolves,
   };
 }

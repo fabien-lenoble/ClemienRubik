@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Settings3bldTrainingMemoFileUploader from "@/components/Settings/3bldTraining/MemoFileUploader.vue";
 import Settings3bldTrainingSelect from "@/components/Settings/3bldTraining/Select.vue";
+import SettingsBottomButtons from "@/components/Settings/BottomButtons.vue";
 import SettingsFooter from "@/components/Settings/Footer.vue";
 import SettingsThemes from "@/components/Settings/Themes.vue";
 import SettingsTimerFormat from "@/components/Settings/TimerFormat.vue";
@@ -32,6 +33,7 @@ function test() {
       <settings-3bld-training-memo-file-uploader />
     </div>
     <div class="grow"></div>
+    <settings-bottom-buttons />
     <div class="pb-12 text-xs">
       <settings-footer />
     </div>

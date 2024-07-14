@@ -272,21 +272,31 @@ function selectNextPair() {
 }
 
 function weightedRandomTester() {
-  const res: Record<string, number> = {};
+  const res: Record<string, { total: number; percent: string }> = {};
   const n = 100000;
   for (let i = 0; i < n; i++) {
     selectNextPair();
-    res[currentHintText.value] = (res[currentHintText.value] || 0) + 1;
+    if (!res[currentHintText.value]) {
+      res[currentHintText.value] = { total: 0, percent: "" };
+    }
+    res[currentHintText.value].total =
+      (res[currentHintText.value].total || 0) + 1;
   }
   // log the percentage of each hint text
   for (const key in res) {
-    res[key] = (res[key] / n) * 100;
+    res[key].percent = ((res[key]?.total / n) * 100).toFixed(2);
   }
-  console.log(res);
+
+  // order the results by percentage
+  const orderedRes = Object.entries(res).sort(
+    (a, b) => Number(b[1].percent) - Number(a[1].percent)
+  );
+
+  console.log(orderedRes);
 }
 
 // uncomment to test the weighted random function
-// weightedRandomTester();
+weightedRandomTester();
 
 function handleResult(result: "right" | "wrong" | "skip") {
   if (
@@ -358,4 +368,5 @@ export default {
   pairs,
   thresholdLevels,
   thresholds,
+  cornerMemoResults,
 };
