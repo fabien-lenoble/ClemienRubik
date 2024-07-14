@@ -5,9 +5,9 @@
         :is-main-image="true"
         :u-turn="currentRandomUTurn"
         :y-turn="currentRandomYTurn"
-        @image-loaded="setLoader(false)"
         :current-pll-algorithm="currentPllAlgorithm"
-        :loader="loader"
+        :sticker-size="50"
+        class="w-[250px] min-h-[250px] m-auto"
       />
       <pll-recognition-revealed-cube-images />
     </div>
@@ -57,9 +57,7 @@ const {
   pickNewRandomPll,
   chooseNextPll,
   selectPll,
-  setLoader,
   currentPllAlgorithm,
-  loader,
 } = useTraining();
 
 onMounted(() => {

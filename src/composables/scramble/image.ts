@@ -44,20 +44,86 @@ function getScrambledImage(scramble: Scramble): CubeImage {
       case "U":
         cube = turnUpFace(cube);
         break;
+      case "u":
+        cube = rotateYAxis(cube);
+        cube = turnDownFace(cube);
+        cube = turnDownFace(cube);
+        cube = turnDownFace(cube);
+        break;
       case "L":
         cube = turnLeftFace(cube);
+        break;
+      case "l":
+        cube = rotateXAxis(cube);
+        cube = rotateXAxis(cube);
+        cube = rotateXAxis(cube);
+        cube = turnRightFace(cube);
         break;
       case "F":
         cube = turnFrontFace(cube);
         break;
+      case "f":
+        cube = rotateZAxis(cube);
+        cube = turnBackFace(cube);
+        break;
       case "R":
         cube = turnRightFace(cube);
+        break;
+      case "r":
+        cube = rotateXAxis(cube);
+        cube = turnLeftFace(cube);
         break;
       case "B":
         cube = turnBackFace(cube);
         break;
+      case "b":
+        cube = rotateZAxis(cube);
+        cube = rotateZAxis(cube);
+        cube = rotateZAxis(cube);
+        cube = turnFrontFace(cube);
+        break;
       case "D":
         cube = turnDownFace(cube);
+        break;
+      case "d":
+        cube = rotateYAxis(cube);
+        cube = rotateYAxis(cube);
+        cube = rotateYAxis(cube);
+        cube = turnUpFace(cube);
+        break;
+      case "M":
+        cube = rotateXAxis(cube);
+        cube = rotateXAxis(cube);
+        cube = rotateXAxis(cube);
+        cube = turnLeftFace(cube);
+        cube = turnLeftFace(cube);
+        cube = turnLeftFace(cube);
+        cube = turnRightFace(cube);
+        break;
+      case "E":
+        cube = rotateYAxis(cube);
+        cube = rotateYAxis(cube);
+        cube = rotateYAxis(cube);
+        cube = turnDownFace(cube);
+        cube = turnDownFace(cube);
+        cube = turnDownFace(cube);
+        cube = turnUpFace(cube);
+        break;
+      case "S":
+        cube = rotateZAxis(cube);
+        cube = turnFrontFace(cube);
+        cube = turnFrontFace(cube);
+        cube = turnFrontFace(cube);
+        cube = turnBackFace(cube);
+        break;
+      case "x":
+        cube = rotateXAxis(cube);
+        break;
+      case "y":
+        cube = rotateYAxis(cube);
+        break;
+      case "z":
+        cube = rotateZAxis(cube);
         break;
     }
   });
@@ -175,8 +241,75 @@ function turnDownFace(cube: CubeImage): CubeImage {
   cube = setFaceLine(cube, "B", "row", "bottom", rightFaceBottomRow);
   return cube;
 }
+
+function rotateXAxis(cube: CubeImage): CubeImage {
+  const topFace = cube[0];
+  const frontFace = cube[2];
+  const backFace = cube[4];
+  const bottomFace = cube[5];
+
+  cube[0] = frontFace;
+  cube[2] = bottomFace;
+  cube[4] = topFace;
+  cube[5] = backFace;
+
+  cube = faceQuarterTurn(cube, "R");
+  cube = faceQuarterTurn(cube, "B");
+  cube = faceQuarterTurn(cube, "B");
+  cube = faceQuarterTurn(cube, "D");
+  cube = faceQuarterTurn(cube, "D");
+  cube = faceQuarterTurn(cube, "L");
+  cube = faceQuarterTurn(cube, "L");
+  cube = faceQuarterTurn(cube, "L");
+
+  return cube;
+}
+
+function rotateYAxis(cube: CubeImage): CubeImage {
+  const leftFace = cube[1];
+  const frontFace = cube[2];
+  const rightFace = cube[3];
+  const backFace = cube[4];
+
+  cube[1] = frontFace;
+  cube[2] = rightFace;
+  cube[3] = backFace;
+  cube[4] = leftFace;
+
+  cube = faceQuarterTurn(cube, "U");
+  cube = faceQuarterTurn(cube, "D");
+  cube = faceQuarterTurn(cube, "D");
+  cube = faceQuarterTurn(cube, "D");
+
+  return cube;
+}
+
+function rotateZAxis(cube: CubeImage): CubeImage {
+  const topFace = cube[0];
+  const leftFace = cube[1];
+  const rightFace = cube[3];
+  const bottomFace = cube[5];
+
+  cube[0] = leftFace;
+  cube[1] = bottomFace;
+  cube[3] = topFace;
+  cube[5] = rightFace;
+
+  cube = faceQuarterTurn(cube, "F");
+  cube = faceQuarterTurn(cube, "U");
+  cube = faceQuarterTurn(cube, "D");
+  cube = faceQuarterTurn(cube, "R");
+  cube = faceQuarterTurn(cube, "L");
+  cube = faceQuarterTurn(cube, "B");
+  cube = faceQuarterTurn(cube, "B");
+  cube = faceQuarterTurn(cube, "B");
+
+  return cube;
+}
+
 function faceQuarterTurn(cube: CubeImage, faceInitial: FaceInitial): CubeImage {
   const faceIndex = getFaceIndexFromFaceInitial(faceInitial);
+
   const face = cube[faceIndex];
 
   const topRowCopy = getFaceTopRow(face);

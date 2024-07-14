@@ -19,7 +19,6 @@ const currentRandomUTurn = computed(
 const currentRandomYTurn = computed(
   () => yTurns[currentRandomYTurnIndex.value]
 );
-const loader = ref(false);
 
 const filteredPllCases = computed(() =>
   pllCases.filter((pll) =>
@@ -28,7 +27,6 @@ const filteredPllCases = computed(() =>
 );
 
 function pickNewRandomPll() {
-  loader.value = true;
   do {
     currentPllIndex.value = Math.floor(
       Math.random() * filteredPllCases.value.length
@@ -61,10 +59,6 @@ const currentPllAlgorithm = computed(() => {
   return filteredPllCases.value[currentPllIndex.value].algorithm;
 });
 
-function setLoader(value: boolean) {
-  loader.value = value;
-}
-
 export default {
   currentPllIndex,
   lastPllIndex,
@@ -74,7 +68,6 @@ export default {
   currentRandomYTurn,
   currentRandomUTurnIndex,
   currentRandomYTurnIndex,
-  loader,
   uTurns,
   yTurns,
   pickNewRandomPll,
@@ -82,6 +75,5 @@ export default {
   selectPll,
   currentPllAlgorithm,
   currentPllName,
-  setLoader,
   filteredPllCases,
 };
