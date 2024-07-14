@@ -42,7 +42,16 @@ export type Move =
   | "B2"
   | "D"
   | "D'"
-  | "D2";
+  | "D2"
+  | "x"
+  | "x'"
+  | "x2"
+  | "y"
+  | "y'"
+  | "y2"
+  | "z"
+  | "z'"
+  | "z2";
 
 export type SubMoveSet = Move[];
 
