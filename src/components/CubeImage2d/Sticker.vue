@@ -1,16 +1,28 @@
 <script setup lang="ts">
 import type { StickerValue } from "@/composables/scramble/types";
+import { computed } from "vue";
 
-defineProps<{
+const props = defineProps<{
   sticker: StickerValue;
+  showContent?: boolean;
+  isHint?: boolean;
 }>();
+
+const stickerContent = computed(() => {
+  if (props.showContent) {
+    return props.isHint ? "?" : props.sticker;
+  }
+  return "";
+});
 </script>
 
 <template>
   <div
     :class="sticker"
-    class="sticker border border-black text-black text-center content-center text-sm w-3 h-3"
-  ></div>
+    class="sticker border border-black text-white text-center font-semibold content-center text-2xl w-3 h-3"
+  >
+    {{ stickerContent }}
+  </div>
 </template>
 
 <style lang="scss">
@@ -19,6 +31,7 @@ defineProps<{
   &.B,
   &.C,
   &.D {
+    color: black;
     background-color: #ffffff;
   }
   &.E,
@@ -31,12 +44,14 @@ defineProps<{
   &.R,
   &.S,
   &.T {
+    color: black;
     background-color: #00d900;
   }
   &.M,
   &.N,
   &.O,
   &.P {
+    color: black;
     background-color: #ffa200;
   }
   &.I,
@@ -49,7 +64,11 @@ defineProps<{
   &.V,
   &.W,
   &.X {
+    color: black;
     background-color: #fefe00;
+  }
+  &.z {
+    background-color: #222222;
   }
 }
 </style>

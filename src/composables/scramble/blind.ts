@@ -236,23 +236,6 @@ function generateCornerFlip(
   cycleCornerPositionsMemoed: number[]
 ) {
   if (currentBufferValuePosition !== corners.length - 1) {
-    const letterFlippingIndex = corners[currentBufferValuePosition].findIndex(
-      (cornerValue) => cornerValue === currentBufferValue
-    );
-
-    // TODO: remove story code
-    const characterFlipping =
-      cornerMemoMapping[corners[currentBufferValuePosition][0]][0];
-    switch (letterFlippingIndex) {
-      case 0:
-        break;
-      case 1:
-        cornerFlipMemo.push(`${currentBufferValue}-flip`);
-        break;
-      case 2:
-        cornerFlipMemo.push(`${currentBufferValue}-planche`);
-        break;
-    }
     cornerPositionsMemoed = cornerPositionsMemoed.concat(
       cycleCornerPositionsMemoed
     );
@@ -341,6 +324,8 @@ const edgeLetters: Record<StickerValue, [number, number, number]> = {
   V: [5, 2, 1],
   W: [5, 1, 0],
   X: [5, 0, 1],
+
+  z: [6, 6, 6],
 };
 
 const cornerLetters: Record<StickerValue, [number, number, number]> = {
@@ -373,6 +358,8 @@ const cornerLetters: Record<StickerValue, [number, number, number]> = {
   V: [5, 2, 2],
   W: [5, 2, 0],
   X: [5, 0, 0],
+
+  z: [6, 6, 6],
 };
 
 const edgeBuffer = edgeLetters.B;
@@ -403,68 +390,6 @@ const edges: StickerValue[][] = [
   ["J", "P"],
   ["B", "I"],
 ];
-
-const cornerMemoMapping: Record<StickerValue, string[]> = {
-  A: [""],
-  B: ["Nemo", "qui nage", "avec sa nageoire", "dans l'eau"],
-  C: ["Une infirmière", "qui se pique", "avec une seringue", "à l'hopital"],
-  D: [
-    "Un japonais",
-    "qui mange des sushis",
-    "avec des baguettes",
-    "sous un arbre",
-  ],
-  E: ["Un irlandais", "qui boit une bière", "avec une bière", "dans un bar"],
-  F: [
-    "Voltorbe",
-    "qui lance une poké ball",
-    "avec une poké ball",
-    "dans une poke ball",
-  ],
-  G: ["Mario", "qui saute", "avec une pièce", "dans un tuyau"],
-  H: [
-    "Clover",
-    "qui utilise un com poudrier",
-    "avec un com poudrier",
-    "derrière un mur",
-  ],
-  I: ["Superman", "qui vole", "avec une cape", "dans les airs"],
-  J: ["Yuna", "qui invoque une chimère", "avec une chimère", "à Zanarkand"],
-  K: ["Gordon", "qui tire un portail", "avec un gun", "dans un portail"],
-  L: [
-    "Blanche Neige",
-    "qui croque une pomme",
-    "avec une pomme",
-    "chez les nains",
-  ],
-  M: [
-    "San Goku",
-    "qui lance un kamehameha",
-    "avec une boule de cristal",
-    "dans l'arène",
-  ],
-  N: [""],
-  O: ["Scooby Doo", "qui pisse", "avec une laisse", "dans un hangar"],
-  P: ["Naruto", "qui lance un razengan", "avec un shuriken", "à Konoha"],
-  Q: [""],
-  R: ["Link", "qui coupe", "avec une épée", "dans un enclos"],
-  S: ["Kermit", "qui applaudit", "avec une marionnette", "à un spectacle"],
-  T: [
-    "Une tortue ninja",
-    "qui mange une pizza",
-    "avec une pizza",
-    "dans les égouts",
-  ],
-  U: [
-    "Ronaldinho",
-    "qui joue au foot",
-    "avec un ballon",
-    "sur un terrain de foot",
-  ],
-  V: ["Un clown", "qui mange un burger", "avec un burger", "au McDo"],
-  W: ["Un facteur", "qui poste", "avec une lettre", "à la poste"],
-  X: ["Lisa", "qui joue du saxophone", "avec un saxophone", "dans un buisson"],
-};
 
 export default {
   generateMemo,

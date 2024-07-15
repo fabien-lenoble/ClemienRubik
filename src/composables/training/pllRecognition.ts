@@ -1,11 +1,8 @@
-import { pllCases } from "@/composables/training/constants";
+import { pllCases, uTurns, yTurns } from "@/composables/training/constants";
 import { computed, ref } from "vue";
 import { useSettings } from "../settings";
 
 const { settings } = useSettings();
-
-const uTurns = ["", "U'", "U2", "U"];
-const yTurns = ["", "y'", "y2", "y"];
 
 const currentPllIndex = ref(0);
 const lastPllIndex = ref(0);
@@ -68,8 +65,6 @@ export default {
   currentRandomYTurn,
   currentRandomUTurnIndex,
   currentRandomYTurnIndex,
-  uTurns,
-  yTurns,
   pickNewRandomPll,
   chooseNextPll,
   selectPll,

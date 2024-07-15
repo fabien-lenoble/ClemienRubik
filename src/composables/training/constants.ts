@@ -1,4 +1,107 @@
-import type { PllCase } from "./types";
+import type { Move } from "@/composables/scramble/types";
+import type { CornerColors, PllCase } from "./types";
+
+export const uTurns = ["", "U'", "U2", "U"];
+export const yTurns = ["", "y'", "y2", "y"];
+
+export const cornerColors: Array<{ ufr: CornerColors; rotation: Move[] }> = [
+  {
+    ufr: "WGR",
+    rotation: [],
+  },
+  {
+    ufr: "WRB",
+    rotation: ["y"],
+  },
+  {
+    ufr: "WBO",
+    rotation: ["y2"],
+  },
+  {
+    ufr: "WOG",
+    rotation: ["y'"],
+  },
+  {
+    ufr: "GYR",
+    rotation: ["x"],
+  },
+  {
+    ufr: "GRW",
+    rotation: ["x", "y"],
+  },
+  {
+    ufr: "GWO",
+    rotation: ["x", "y2"],
+  },
+  {
+    ufr: "GOY",
+    rotation: ["x", "y'"],
+  },
+  {
+    ufr: "YBR",
+    rotation: ["x2"],
+  },
+  {
+    ufr: "YRG",
+    rotation: ["x2", "y"],
+  },
+  {
+    ufr: "YGO",
+    rotation: ["x2", "y2"],
+  },
+  {
+    ufr: "YOB",
+    rotation: ["x2", "y'"],
+  },
+  {
+    ufr: "BWR",
+    rotation: ["x'"],
+  },
+  {
+    ufr: "BRY",
+    rotation: ["x'", "y"],
+  },
+  {
+    ufr: "BYO",
+    rotation: ["x'", "y2"],
+  },
+  {
+    ufr: "BOW",
+    rotation: ["x'", "y'"],
+  },
+  {
+    ufr: "OGW",
+    rotation: ["z"],
+  },
+  {
+    ufr: "OWB",
+    rotation: ["z", "y"],
+  },
+  {
+    ufr: "OBY",
+    rotation: ["z", "y2"],
+  },
+  {
+    ufr: "OYG",
+    rotation: ["z", "y'"],
+  },
+  {
+    ufr: "RGY",
+    rotation: ["z'"],
+  },
+  {
+    ufr: "RYB",
+    rotation: ["z'", "y"],
+  },
+  {
+    ufr: "RBW",
+    rotation: ["z'", "y2"],
+  },
+  {
+    ufr: "RWG",
+    rotation: ["z'", "y'"],
+  },
+];
 
 const pllCases: Array<PllCase> = [
   {

@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap" v-show="shouldShowImage">
+  <div class="wrap">
     <div class="cube" :class="cubeClass">
       <face
         class="top"
@@ -7,6 +7,8 @@
         :sticker-class="stickerClass"
         :face="cube[0]"
         :face-index="0"
+        :revealed-sticker-values="revealedStickerValues"
+        :hint-sticker-values="hintStickerValues"
       />
       <face
         class="left"
@@ -14,6 +16,8 @@
         :sticker-class="stickerClass"
         :face="cube[1]"
         :face-index="1"
+        :revealed-sticker-values="revealedStickerValues"
+        :hint-sticker-values="hintStickerValues"
       />
       <face
         class="front"
@@ -21,6 +25,8 @@
         :sticker-class="stickerClass"
         :face="cube[2]"
         :face-index="2"
+        :revealed-sticker-values="revealedStickerValues"
+        :hint-sticker-values="hintStickerValues"
       />
       <face
         class="right"
@@ -28,6 +34,8 @@
         :sticker-class="stickerClass"
         :face="cube[3]"
         :face-index="3"
+        :revealed-sticker-values="revealedStickerValues"
+        :hint-sticker-values="hintStickerValues"
       />
       <face
         class="back"
@@ -35,6 +43,8 @@
         :sticker-class="stickerClass"
         :face="cube[4]"
         :face-index="4"
+        :revealed-sticker-values="revealedStickerValues"
+        :hint-sticker-values="hintStickerValues"
       />
       <face
         class="bottom"
@@ -42,26 +52,32 @@
         :sticker-class="stickerClass"
         :face="cube[5]"
         :face-index="5"
+        :revealed-sticker-values="revealedStickerValues"
+        :hint-sticker-values="hintStickerValues"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Face from "@/components/CubeImage/Face.vue";
+import Face from "@/components/CubeImage2d/Face.vue";
 import { useScramble } from "@/composables/scramble";
 import type { Move, Scramble } from "@/composables/scramble/types";
-import { useTraining } from "@/composables/training";
+import type { CornerColors } from "@/composables/training/types";
 import { computed } from "vue";
 
-const { getScrambledImage } = useScramble();
+const { getScrambledImage, getInitialRotation } = useScramble();
 
 const props = defineProps<{
-  isMainImage: boolean;
-  uTurn: string;
-  yTurn: string;
-  currentPllAlgorithm: string;
+  uTurn?: string;
+  yTurn?: string;
+  ufrColors?: CornerColors;
+  case?: string;
+  algorithm?: string;
   stickerSize: number;
+  revealedStickerColors?: [number, number, number][];
+  revealedStickerValues?: [number, number, number];
+  hintStickerValues?: [number, number, number];
 }>();
 
 const isSmall = computed(() => props.stickerSize < 30);
@@ -90,37 +106,66 @@ const stickerClass = computed(() => {
   return `w-[${props.stickerSize}px] h-[${props.stickerSize}px] border-[${borderSize}px]`;
 });
 
-const reversedPllAlgorithm = computed(
-  () =>
-    props.currentPllAlgorithm
-      .split(" ")
-      .reverse()
-      .map((move) => {
-        if (move.includes("'")) {
-          return move.replace("'", "");
-        } else {
-          return `${move}'`;
-        }
-      }) as Scramble
-);
-
-const cube = computed(() => {
-  return getScrambledImage(
-    ["x2" as Move]
-      .concat(reversedPllAlgorithm.value)
-      .concat([props.uTurn as Move])
-      .concat([props.yTurn as Move])
-  );
+const computedCase = computed(() => {
+  if (!props.case) {
+    return [];
+  }
+  return props.case
+    .split(" ")
+    .reverse()
+    .map((move) => {
+      if (move.includes("'")) {
+        return move.replace("'", "");
+      } else if (!move.includes("2")) {
+        return `${move}'`;
+      } else {
+        return move;
+      }
+    }) as Scramble;
 });
 
-const { isPllSelected } = useTraining();
-
-const shouldShowImage = computed(() => {
-  if (props.isMainImage) {
-    return true;
-  } else {
-    return isPllSelected.value;
+const computedAlgorithm = computed(() => {
+  if (!props.algorithm) {
+    return [];
   }
+  return props.algorithm.split(" ") as Scramble;
+});
+
+const cube = computed(() => {
+  const scramble = props.algorithm
+    ? computedAlgorithm.value
+    : computedCase.value;
+
+  let initialRotation: Move[] = [];
+  if (props.ufrColors) {
+    initialRotation = getInitialRotation(props.ufrColors);
+  }
+
+  const computedCube = getScrambledImage(
+    initialRotation
+      .concat(scramble)
+      .concat([(props.uTurn || "") as Move])
+      .concat([(props.yTurn || "") as Move])
+  );
+
+  if (props.revealedStickerColors) {
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 3; j++) {
+        for (let k = 0; k < 3; k++) {
+          if (
+            !props.revealedStickerColors.some(
+              (sticker) =>
+                sticker[0] === i && sticker[1] === j && sticker[2] === k
+            )
+          ) {
+            computedCube[i][j][k] = "z";
+          }
+        }
+      }
+    }
+  }
+
+  return computedCube;
 });
 </script>
 
