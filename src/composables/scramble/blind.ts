@@ -394,4 +394,5 @@ const edges: StickerValue[][] = [
 export default {
   generateMemo,
   corners,
+  edges,
 };
