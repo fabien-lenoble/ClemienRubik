@@ -4,6 +4,7 @@ import { computed } from "vue";
 
 const props = defineProps<{
   sticker: StickerValue;
+  stickerClass?: string;
   showContent?: boolean;
   isHint?: boolean;
 }>();
@@ -18,8 +19,8 @@ const stickerContent = computed(() => {
 
 <template>
   <div
-    :class="sticker"
-    class="sticker border border-black text-white text-center font-semibold content-center text-2xl w-3 h-3"
+    :class="sticker + ' ' + stickerClass"
+    class="sticker border border-black text-white text-center font-semibold content-center w-3 h-3"
   >
     {{ stickerContent }}
   </div>
