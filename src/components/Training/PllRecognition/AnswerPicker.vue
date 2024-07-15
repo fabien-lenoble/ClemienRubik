@@ -2,7 +2,7 @@
   <div class="grid grid-rows-4 grid-cols-7 gap-2 h-full">
     <div class="flex col-span-7 text-end gap-x-3 px-3 justify-end">
       <template v-if="isEditingMode">
-        <div v-if="temporarySelectablePlls.length < 2" class="grow">
+        <div v-if="temporaryPllPool.length < 2" class="grow">
           select at least 2 plls
         </div>
         <div class="grow">
@@ -11,9 +11,7 @@
               @click="toggleAllPlls()"
               class="fa-solid fa-check-double"
               :class="
-                temporarySelectablePlls.length > 0
-                  ? 'fa-square-check'
-                  : 'fa-square'
+                temporaryPllPool.length > 0 ? 'fa-square-check' : 'fa-square'
               "
             ></i>
           </button>
@@ -71,12 +69,10 @@ const emit = defineEmits<{
   (e: "select-pll", name: string): void;
 }>();
 
-const temporarySelectablePlls = ref(
-  settings.value.pllRecognition.selectablePlls
-);
+const temporaryPllPool = ref(settings.value.pllRecognition.pllPool);
 
 function isPllSelectable(name: string) {
-  return temporarySelectablePlls.value.includes(name);
+  return temporaryPllPool.value.includes(name);
 }
 
 function handleClick(name: string) {
@@ -88,20 +84,20 @@ function handleClick(name: string) {
 }
 
 function updateTemporarySelectablePlls(name: string) {
-  if (temporarySelectablePlls.value.includes(name)) {
-    temporarySelectablePlls.value = temporarySelectablePlls.value.filter(
+  if (temporaryPllPool.value.includes(name)) {
+    temporaryPllPool.value = temporaryPllPool.value.filter(
       (pll) => pll !== name
     );
   } else {
-    temporarySelectablePlls.value = [...temporarySelectablePlls.value, name];
+    temporaryPllPool.value = [...temporaryPllPool.value, name];
   }
 }
 
 function toggleAllPlls() {
-  if (temporarySelectablePlls.value.length > 0) {
-    temporarySelectablePlls.value = [];
+  if (temporaryPllPool.value.length > 0) {
+    temporaryPllPool.value = [];
   } else {
-    temporarySelectablePlls.value = pllCases.map((pll) => pll.name);
+    temporaryPllPool.value = pllCases.map((pll) => pll.name);
   }
 }
 
@@ -111,10 +107,10 @@ function toggleEditingMode() {
   }
   if (isEditingMode.value) {
     // Ensure at least 2 PLLs are selectable
-    if (temporarySelectablePlls.value.length <= 2) {
+    if (temporaryPllPool.value.length < 2) {
       return;
     }
-    setPllRecognition({ selectablePlls: temporarySelectablePlls.value });
+    setPllRecognition({ pllPool: temporaryPllPool.value });
     pickNewRandomPll();
   }
   isEditingMode.value = !isEditingMode.value;

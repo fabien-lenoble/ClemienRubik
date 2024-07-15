@@ -4,7 +4,7 @@
       <cube-image-3d
         v-if="isPllSelected"
         :y-turn="currentRandomYTurn"
-        :u-turn="getUTurn(index)"
+        :u-turn="getUTurn(index + 2)"
         :case="currentPllAlgorithm"
         :stickerSize="20"
         ufr-colors="YBR"
@@ -17,15 +17,15 @@
 <script setup lang="ts">
 import CubeImage3d from "@/components/CubeImage3d.vue";
 import { useTraining } from "@/composables/training";
-import { uTurns } from "@/composables/training/constants";
+import { clockWiseUTurns } from "@/composables/training/constants";
 const {
   currentRandomYTurn,
-  currentRandomUTurnIndex,
+  currentRandomAufUTurnIndex,
   currentPllAlgorithm,
   isPllSelected,
 } = useTraining();
 
 function getUTurn(index: number) {
-  return uTurns[(currentRandomUTurnIndex.value + index) % 4];
+  return clockWiseUTurns[(currentRandomAufUTurnIndex.value + index) % 4];
 }
 </script>

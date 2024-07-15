@@ -20,7 +20,7 @@ const defaultSettings: Settings = {
     threeBldCornerPairs,
   },
   pllRecognition: {
-    selectablePlls: pllCases.map((pll) => pll.name),
+    pllPool: pllCases.map((pll) => pll.name),
   },
 };
 
@@ -35,6 +35,10 @@ const settings: Ref<Settings> = ref({
   blindfoldedTraining: {
     ...defaultSettings.blindfoldedTraining,
     ...storedSettings.blindfoldedTraining,
+  },
+  pllRecognition: {
+    ...defaultSettings.pllRecognition,
+    ...storedSettings.pllRecognition,
   },
 });
 
