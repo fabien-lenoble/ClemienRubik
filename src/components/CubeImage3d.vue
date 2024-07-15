@@ -97,13 +97,16 @@ const cubeClass = computed(
 );
 
 const stickerClass = computed(() => {
+  let textSize = "base";
   let borderSize = 3;
   if (isSmall.value) {
     borderSize = 2;
+    textSize = "xs";
   } else if (isBig.value) {
     borderSize = 4;
+    textSize = "2xl";
   }
-  return `w-[${props.stickerSize}px] h-[${props.stickerSize}px] border-[${borderSize}px]`;
+  return `w-[${props.stickerSize}px] h-[${props.stickerSize}px] border-[${borderSize}px] text-${textSize}`;
 });
 
 const computedCase = computed(() => {
