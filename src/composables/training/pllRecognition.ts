@@ -1,4 +1,8 @@
-import { pllCases, uTurns, yTurns } from "@/composables/training/constants";
+import {
+  antiClockWiseUTurns,
+  antiClockWiseYTurns,
+  pllCases,
+} from "@/composables/training/constants";
 import { computed, ref } from "vue";
 import { useSettings } from "../settings";
 
@@ -9,17 +13,21 @@ const lastPllIndex = ref(0);
 const isPllSelected = ref(false);
 const selectedPllName = ref("");
 const currentRandomUTurnIndex = ref(0);
+const currentRandomAufUTurnIndex = ref(0);
 const currentRandomYTurnIndex = ref(0);
 const currentRandomUTurn = computed(
-  () => uTurns[currentRandomUTurnIndex.value]
+  () => antiClockWiseUTurns[currentRandomUTurnIndex.value]
+);
+const currentRandomAufUTurn = computed(
+  () => antiClockWiseUTurns[currentRandomAufUTurnIndex.value]
 );
 const currentRandomYTurn = computed(
-  () => yTurns[currentRandomYTurnIndex.value]
+  () => antiClockWiseYTurns[currentRandomYTurnIndex.value]
 );
 
 const filteredPllCases = computed(() =>
   pllCases.filter((pll) =>
-    settings.value.pllRecognition.selectablePlls.includes(pll.name)
+    settings.value.pllRecognition.pllPool.includes(pll.name)
   )
 );
 
@@ -30,8 +38,15 @@ function pickNewRandomPll() {
     );
   } while (lastPllIndex.value === currentPllIndex.value);
 
-  currentRandomUTurnIndex.value = Math.floor(Math.random() * uTurns.length);
-  currentRandomYTurnIndex.value = Math.floor(Math.random() * yTurns.length);
+  currentRandomAufUTurnIndex.value = Math.floor(
+    Math.random() * antiClockWiseUTurns.length
+  );
+  currentRandomUTurnIndex.value = Math.floor(
+    Math.random() * antiClockWiseUTurns.length
+  );
+  currentRandomYTurnIndex.value = Math.floor(
+    Math.random() * antiClockWiseYTurns.length
+  );
   lastPllIndex.value = currentPllIndex.value;
 }
 
@@ -53,7 +68,11 @@ const currentPllName = computed(() => {
 });
 
 const currentPllAlgorithm = computed(() => {
-  return filteredPllCases.value[currentPllIndex.value].algorithm;
+  return (
+    filteredPllCases.value[currentPllIndex.value].algorithm +
+    " " +
+    currentRandomUTurn.value
+  );
 });
 
 export default {
@@ -61,9 +80,9 @@ export default {
   lastPllIndex,
   isPllSelected,
   selectedPllName,
-  currentRandomUTurn,
+  currentRandomAufUTurn,
   currentRandomYTurn,
-  currentRandomUTurnIndex,
+  currentRandomAufUTurnIndex,
   currentRandomYTurnIndex,
   pickNewRandomPll,
   chooseNextPll,

@@ -2,7 +2,7 @@
   <div class="flex flex-col h-full">
     <div class="grow content-center">
       <cube-image-3d
-        :u-turn="currentRandomUTurn"
+        :u-turn="currentRandomAufUTurn"
         :y-turn="currentRandomYTurn"
         :case="currentPllAlgorithm"
         :sticker-size="50"
@@ -52,7 +52,7 @@ import PllRecognitionRevealedCubeImages from "@/components/Training/PllRecogniti
 
 const {
   isPllSelected,
-  currentRandomUTurn,
+  currentRandomAufUTurn,
   currentRandomYTurn,
   pickNewRandomPll,
   chooseNextPll,

@@ -1,8 +1,10 @@
 import type { Move } from "@/composables/scramble/types";
 import type { CornerColors, PllCase } from "./types";
 
-export const uTurns = ["", "U'", "U2", "U"];
-export const yTurns = ["", "y'", "y2", "y"];
+export const clockWiseUTurns = ["", "U", "U2", "U'"];
+export const antiClockWiseUTurns = ["", "U'", "U2", "U"];
+export const clockWiseYTurns = ["", "y", "y2", "y'"];
+export const antiClockWiseYTurns = ["", "y'", "y2", "y"];
 
 export const cornerColors: Array<{ ufr: CornerColors; rotation: Move[] }> = [
   {

@@ -8,7 +8,7 @@ export type Settings = {
     threeBldCornerPairs: Record<string, string>;
   };
   pllRecognition: {
-    selectablePlls: string[];
+    pllPool: string[];
   };
   timerFormat: "none" | "rounded" | "1decimal" | "2decimals" | "3decimals";
 };

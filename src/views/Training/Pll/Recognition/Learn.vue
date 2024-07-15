@@ -5,20 +5,50 @@
         <cube-image-3d
           class="w-[170px] min-h-[170px]"
           :sticker-size="34"
-          :u-turn="uTurns[i - 1]"
+          :u-turn="computeUTurn(i - 1)"
           :y-turn="currentYTurn"
           ufr-colors="YBR"
           :case="currentPllAlgorithm"
         />
       </div>
     </div>
+    <div class="flex flex-wrap content-center justify-center gap-2">
+      <div
+        class="sticker border border-black bg-white text-black text-center font-semibold text-2xl w-8 h-8"
+        @click="currentUTurnIndex += 1"
+      >
+        &lt;
+      </div>
+      <div
+        class="sticker border border-black bg-white text-black text-center font-semibold text-2xl w-8 h-8"
+        @click="currentUTurnIndex += 3"
+      >
+        &gt;
+      </div>
+    </div>
     <div
       class="flex flex-wrap grow content-center min-w-[100px] m-auto justify-center gap-2"
     >
-      <sticker sticker="L" class="w-8 h-8" @click="selectYTurn(0)"></sticker>
-      <sticker sticker="P" class="w-8 h-8" @click="selectYTurn(1)"></sticker>
-      <sticker sticker="T" class="w-8 h-8" @click="selectYTurn(2)"></sticker>
-      <sticker sticker="H" class="w-8 h-8" @click="selectYTurn(3)"></sticker>
+      <sticker
+        sticker="L"
+        class="w-8 h-8"
+        @click="currentYTurnIndex = 0"
+      ></sticker>
+      <sticker
+        sticker="P"
+        class="w-8 h-8"
+        @click="currentYTurnIndex = 1"
+      ></sticker>
+      <sticker
+        sticker="T"
+        class="w-8 h-8"
+        @click="currentYTurnIndex = 2"
+      ></sticker>
+      <sticker
+        sticker="H"
+        class="w-8 h-8"
+        @click="currentYTurnIndex = 3"
+      ></sticker>
     </div>
     <div>
       <pll-recognition-learn-pll-picker
@@ -43,23 +73,34 @@
 import Sticker from "@/components/CubeImage2d/Sticker.vue";
 import CubeImage3d from "@/components/CubeImage3d.vue";
 import PllRecognitionLearnPllPicker from "@/components/Training/PllRecognition/Learn/PllPicker.vue";
-import { pllCases, uTurns, yTurns } from "@/composables/training/constants";
+import {
+  antiClockWiseUTurns,
+  antiClockWiseYTurns,
+  clockWiseUTurns,
+  pllCases,
+} from "@/composables/training/constants";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 
-const currentYTurn = ref<string>("");
-function selectYTurn(index: number) {
-  if (currentYTurn.value === yTurns[index]) {
-    return;
-  }
-  currentYTurn.value = yTurns[index];
+const currentUTurnIndex = ref<number>(0);
+const currentUTurn = computed(
+  () => antiClockWiseUTurns[currentUTurnIndex.value % 4]
+);
+
+const currentYTurnIndex = ref<number>(0);
+const currentYTurn = computed(
+  () => antiClockWiseYTurns[currentYTurnIndex.value % 4]
+);
+
+function computeUTurn(index: number) {
+  return clockWiseUTurns[(currentYTurnIndex.value + index) % 4];
 }
 
 const currentPllName = ref<string>("Aa");
 
 const currentPllAlgorithm = computed(() => {
   const pll = pllCases.find((pll) => pll.name === currentPllName.value);
-  return pll?.algorithm as string;
+  return (pll?.algorithm + " " + currentUTurn.value) as string;
 });
 
 const router = useRouter();
