@@ -1,3 +1,4 @@
+// import { EdgePosition, CornerPosition } from "@/composables/training/types";
 import type { CubeImage, StickerValue } from "./types";
 
 function generateMemo(cube: CubeImage) {
@@ -204,7 +205,6 @@ function generateCornerCycle(
     return {
       cornerPositionMemo,
       ...generateCornerFlip(
-        currentBufferValue,
         currentBufferValuePosition,
         cornerFlipMemo,
         cornerPositionsMemoed,
@@ -229,7 +229,6 @@ function generateCornerCycle(
 }
 
 function generateCornerFlip(
-  currentBufferValue: StickerValue,
   currentBufferValuePosition: number,
   cornerFlipMemo: string[],
   cornerPositionsMemoed: number[],
@@ -364,6 +363,9 @@ const cornerLetters: Record<StickerValue, [number, number, number]> = {
 
 const edgeBuffer = edgeLetters.B;
 const cornerBuffer = cornerLetters.A;
+
+// const edgeBuffer = edgePositionIndexes.UR;
+// const cornerBuffer = cornerPositionIndexes.ULB;
 
 const corners: StickerValue[][] = [
   ["C", "I", "F"], // infirmiere

@@ -27,7 +27,7 @@ export type PllCase = {
   algorithm: string;
 };
 
-export type CornerColors =
+export type CornerColor =
   | "WGR"
   | "WRB"
   | "WBO"
@@ -52,3 +52,55 @@ export type CornerColors =
   | "RYB"
   | "RBW"
   | "RWG";
+
+export type CornerPosition =
+  | "ULB"
+  | "UBR"
+  | "URF"
+  | "UFL"
+  | "FLU"
+  | "FUR"
+  | "FRD"
+  | "FDL"
+  | "RFU"
+  | "RUB"
+  | "RBD"
+  | "RDF"
+  | "BRU"
+  | "BUL"
+  | "BLD"
+  | "BDR"
+  | "LBU"
+  | "LUF"
+  | "LFD"
+  | "LDB"
+  | "DLF"
+  | "DFR"
+  | "DRB"
+  | "DBL";
+
+export type EdgePosition =
+  | "UB"
+  | "UR"
+  | "UF"
+  | "UL"
+  | "FU"
+  | "FR"
+  | "FD"
+  | "FL"
+  | "RU"
+  | "RB"
+  | "RD"
+  | "RF"
+  | "BU"
+  | "BL"
+  | "BD"
+  | "BR"
+  | "LU"
+  | "LF"
+  | "LD"
+  | "LB"
+  | "DF"
+  | "DR"
+  | "DB"
+  | "DL";

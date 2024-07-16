@@ -56,8 +56,10 @@
 <script setup lang="ts">
 import { useSettings } from "@/composables/settings";
 import { useTraining } from "@/composables/training";
-import { pllCases } from "@/composables/training/constants";
+import constants from "@/constants";
 import { ref } from "vue";
+
+const { pllCases } = constants;
 
 const isEditingMode = ref(false);
 

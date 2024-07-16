@@ -17,7 +17,8 @@
 <script setup lang="ts">
 import CubeImage3d from "@/components/CubeImage3d.vue";
 import { useTraining } from "@/composables/training";
-import { clockWiseUTurns } from "@/composables/training/constants";
+import constants from "@/constants";
+const { clockWiseUTurns } = constants;
 const {
   currentRandomYTurn,
   currentRandomAufUTurnIndex,

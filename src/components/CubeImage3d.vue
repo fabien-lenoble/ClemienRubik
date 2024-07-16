@@ -63,7 +63,7 @@
 import Face from "@/components/CubeImage2d/Face.vue";
 import { useScramble } from "@/composables/scramble";
 import type { Move, Scramble } from "@/composables/scramble/types";
-import type { CornerColors } from "@/composables/training/types";
+import type { CornerColor } from "@/composables/training/types";
 import { computed } from "vue";
 
 const { getScrambledImage, getInitialRotation } = useScramble();
@@ -71,7 +71,7 @@ const { getScrambledImage, getInitialRotation } = useScramble();
 const props = defineProps<{
   uTurn?: string;
   yTurn?: string;
-  ufrColors?: CornerColors;
+  ufrColors?: CornerColor;
   case?: string;
   algorithm?: string;
   stickerSize: number;
