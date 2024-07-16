@@ -1,8 +1,9 @@
 import { useScramble } from "@/composables/scramble";
 import type { StickerValue } from "@/composables/scramble/types";
-import { cornerColors } from "@/composables/training/constants";
-import type { CornerColors } from "@/composables/training/types";
+import type { CornerColor } from "@/composables/training/types";
+import constants from "@/constants";
 import { computed, ref, type Ref } from "vue";
+const { cornerColors } = constants;
 
 const { edges, corners, getInitialRotation, getScrambledImage } = useScramble();
 
@@ -57,7 +58,7 @@ const currentSelectedStickerValue: Ref<StickerValue> = computed(() => {
   ];
 });
 const lastSelectedStickerValue = ref("");
-const currentUfrColors: Ref<CornerColors> = ref("WGR");
+const currentUfrColors: Ref<CornerColor> = ref("WGR");
 
 const currentRotation = computed(() => {
   return getInitialRotation(currentUfrColors.value);

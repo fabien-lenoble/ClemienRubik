@@ -1,10 +1,8 @@
-import {
-  pllCases,
-  threeBldCornerPairs,
-} from "@/composables/training/constants";
+import constants from "@/constants";
 import type { Ref } from "vue";
 import { computed, ref } from "vue";
 import type { Settings, Theme } from "./types";
+const { pllCases, threeBldCornerPairs } = constants;
 
 const themes: Theme[] = ["bi", "sexy", "nb"];
 

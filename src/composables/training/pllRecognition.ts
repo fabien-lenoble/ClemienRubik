@@ -1,10 +1,7 @@
-import {
-  antiClockWiseUTurns,
-  antiClockWiseYTurns,
-  pllCases,
-} from "@/composables/training/constants";
+import constants from "@/constants";
 import { computed, ref } from "vue";
 import { useSettings } from "../settings";
+const { antiClockWiseUTurns, antiClockWiseYTurns, pllCases } = constants;
 
 const { settings } = useSettings();
 

@@ -20,7 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { pllCases } from "@/composables/training/constants";
+import constants from "@/constants";
+const { pllCases } = constants;
 
 defineProps<{
   currentPllName: string;
