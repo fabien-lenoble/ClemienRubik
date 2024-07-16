@@ -1,10 +1,10 @@
 import { useSettings } from "@/composables/settings";
-import { computed, ref, type Ref } from "vue";
 import type {
   ComputedCornerMemoResult,
   CornerMemoResult,
   Threshold,
-} from "./types";
+} from "@/composables/training/types";
+import { computed, ref, type Ref } from "vue";
 
 const { settings, hasMaximumRecognitionTime } = useSettings();
 

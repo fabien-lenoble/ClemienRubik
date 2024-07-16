@@ -4,22 +4,27 @@
   >
     <router-link
       class="rounded-lg flex justify-center items-center transition text-center bg-tertiary text-my-text-secondary flex-wrap"
-      to="/training/3bld/memo/corners"
+      to="/training/3bld/recognition/edges"
     >
-      <div class="self-center content-center h-20 text-xl">
-        <div>KG</div>
-        <div>=</div>
-        <div>KanGaroo</div>
-      </div>
-      <div>3bld corners memo</div>
-    </router-link>
-    <router-link
+      <cube-image-3d
+        :sticker-size="20"
+        ufr-colors="GRW"
+        class="w-[100px] scale-75 h-20"
+        :revealed-sticker-colors="[
+          [0, 2, 1],
+          [2, 0, 1],
+        ]"
+        :hint-sticker-values="[2, 0, 1]"
+        :revealed-sticker-values="[2, 0, 1]"
+      />
+      <div>3bld edges recognition</div> </router-link
+    ><router-link
       class="rounded-lg flex justify-center items-center transition text-center bg-tertiary text-my-text-secondary flex-wrap"
       to="/training/3bld/recognition/corners"
     >
       <cube-image-3d
         :sticker-size="20"
-        ufr-colors="OWB"
+        ufr-colors="RBW"
         class="w-[100px] scale-75 h-20"
         :revealed-sticker-colors="[
           [0, 2, 2],
@@ -30,6 +35,17 @@
         :revealed-sticker-values="[2, 0, 2]"
       />
       <div>3bld corners recognition</div>
+    </router-link>
+    <router-link
+      class="rounded-lg flex justify-center items-center transition text-center bg-tertiary text-my-text-secondary flex-wrap"
+      to="/training/3bld/memo/corners"
+    >
+      <div class="self-center content-center h-20 text-xl">
+        <div>KG</div>
+        <div>=</div>
+        <div>KanGaroo</div>
+      </div>
+      <div>3bld corners memo</div>
     </router-link>
     <router-link
       class="rounded-lg flex justify-center items-center transition text-center bg-tertiary text-my-text-secondary flex-wrap"

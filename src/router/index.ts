@@ -7,7 +7,7 @@ import SettingsView from "@/views/SettingsView.vue";
 import SolveHistoryView from "@/views/SolveHistoryView.vue";
 import Training3bldMemoCornersView from "@/views/Training/3bld/Memo/Corners.vue";
 import Training3bldMemoCornersResultsView from "@/views/Training/3bld/Memo/CornersResults.vue";
-import Training3bldRecognitionCornersResultsView from "@/views/Training/3bld/Recognition/Corners.vue";
+import Training3bldRecognitionView from "@/views/Training/3bld/Recognition/index.vue";
 import TrainingPllRecognitionLearn from "@/views/Training/Pll/Recognition/Learn.vue";
 import TrainingPllRecognitionPlay from "@/views/Training/Pll/Recognition/Play.vue";
 import TrainingView from "@/views/TrainingView.vue";
@@ -58,7 +58,14 @@ const router = createRouter({
     {
       path: "/training/3bld/recognition/corners",
       name: "training-3bld-recognition-corners",
-      component: Training3bldRecognitionCornersResultsView,
+      component: Training3bldRecognitionView,
+      props: { poolType: "corners" },
+    },
+    {
+      path: "/training/3bld/recognition/edges",
+      name: "training-3bld-recognition-edges",
+      component: Training3bldRecognitionView,
+      props: { poolType: "edges" },
     },
     {
       path: "/training/pll-recognition/play",
