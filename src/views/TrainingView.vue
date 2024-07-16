@@ -66,5 +66,6 @@
 
 <script setup lang="ts">
 import CubeImage3d from "@/components/CubeImage3d.vue";
-import { pllCases } from "@/composables/training/constants";
+import constants from "@/constants";
+const { pllCases } = constants;
 </script>

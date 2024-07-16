@@ -73,14 +73,11 @@
 import Sticker from "@/components/CubeImage2d/Sticker.vue";
 import CubeImage3d from "@/components/CubeImage3d.vue";
 import PllRecognitionLearnPllPicker from "@/components/Training/PllRecognition/Learn/PllPicker.vue";
-import {
-  antiClockWiseUTurns,
-  antiClockWiseYTurns,
-  clockWiseUTurns,
-  pllCases,
-} from "@/composables/training/constants";
+import constants from "@/constants";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+const { clockWiseUTurns, antiClockWiseUTurns, antiClockWiseYTurns, pllCases } =
+  constants;
 
 const currentUTurnIndex = ref<number>(0);
 const currentUTurn = computed(

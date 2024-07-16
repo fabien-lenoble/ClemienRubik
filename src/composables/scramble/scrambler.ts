@@ -1,11 +1,12 @@
 import { useSeed } from "@/composables/seed";
 import type { SavedSolve } from "@/composables/session/types";
+import constants from "@/constants";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { cornerColors } from "../training/constants";
-import type { CornerColors } from "../training/types";
+import type { CornerColor } from "../training/types";
 import type { DisplayScramble, MoveSet, Scramble, SubMoveSet } from "./types";
+const { cornerColors } = constants;
 
 const {
   baseSessionSeed,
@@ -211,7 +212,7 @@ function testScramblesRandomness() {
   return repartitionPercentage;
 }
 
-function getInitialRotation(ufrColors: CornerColors) {
+function getInitialRotation(ufrColors: CornerColor) {
   const ufr = cornerColors.find((corner) => corner.ufr === ufrColors);
   if (ufr) {
     return ufr.rotation;
