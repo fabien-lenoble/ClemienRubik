@@ -1,5 +1,9 @@
 // import { EdgePosition, CornerPosition } from "@/composables/training/types";
+import { computed } from "vue";
 import type { CubeImage, StickerValue } from "./types";
+
+import { useSettings } from "@/composables/settings";
+const { computedLetterScheme } = useSettings();
 
 function generateMemo(cube: CubeImage) {
   const edgesMemo = generateEdgesMemo(cube);
@@ -12,7 +16,10 @@ function generateEdgesMemo(cube: CubeImage) {
   let edgePositionMemo: StickerValue[] = [];
   let edgeFlipMemo: string[] = [];
   let edgePositionsMemoed: number[] = [];
-  let edgeBufferValue = cube[edgeBuffer[0]][edgeBuffer[1]][edgeBuffer[2]];
+  let edgeBufferValue =
+    cube[edgeBufferPosition.value[0]][edgeBufferPosition.value[1]][
+      edgeBufferPosition.value[2]
+    ];
 
   while ([...new Set(edgePositionsMemoed)].length < edges.length - 1) {
     ({ edgePositionMemo, edgeFlipMemo, edgePositionsMemoed } =
@@ -43,7 +50,9 @@ function generateCornerMemo(cube: CubeImage) {
   let cornerFlipMemo: string[] = [];
   let cornerPositionsMemoed: number[] = [];
   let cornerBufferValue =
-    cube[cornerBuffer[0]][cornerBuffer[1]][cornerBuffer[2]];
+    cube[cornerBufferPosition.value[0]][cornerBufferPosition.value[1]][
+      cornerBufferPosition.value[2]
+    ];
 
   // get all corner positions memoed & filter duplicates. Check that we have all of them except the buffer one (so n-1) which we don't memo
   while ([...new Set(cornerPositionsMemoed)].length < corners.length - 1) {
@@ -281,7 +290,7 @@ function getNextEdgeBufferValue(
   cube: CubeImage,
   currentBufferValue: StickerValue
 ) {
-  const newBuffer = edgeLetters[currentBufferValue];
+  const newBuffer = edgeLetters.value[currentBufferValue];
   return cube[newBuffer[0]][newBuffer[1]][newBuffer[2]];
 }
 
@@ -289,93 +298,88 @@ function getNextCornerBufferValue(
   cube: CubeImage,
   currentBufferValue: StickerValue
 ) {
-  const newBuffer = cornerLetters[currentBufferValue];
+  const newBuffer = cornerLetters.value[currentBufferValue];
   return cube[newBuffer[0]][newBuffer[1]][newBuffer[2]];
 }
+const edgeLetters = computed(() => {
+  return Object.fromEntries(
+    Object.values(computedLetterScheme.value)
+      .filter((value) => value.type === "edge")
+      .map((value) => {
+        return [value.letter, value.position];
+      })
+  ) as Record<StickerValue, [number, number, number]>;
+});
 
-const edgeLetters: Record<StickerValue, [number, number, number]> = {
-  A: [0, 1, 0],
-  B: [0, 0, 1],
-  C: [0, 1, 2],
-  D: [0, 2, 1],
+const cornerLetters = computed(() => {
+  return Object.fromEntries(
+    Object.values(computedLetterScheme.value)
+      .filter((value) => value.type === "corner")
+      .map((value) => {
+        return [value.letter, value.position];
+      })
+  ) as Record<StickerValue, [number, number, number]>;
+});
 
-  E: [3, 0, 1],
-  F: [3, 1, 2],
-  G: [3, 2, 1],
-  H: [3, 1, 0],
+const edgeBuffer = computed(() => computedLetterScheme.value.UR);
+const cornerBuffer = computed(() => computedLetterScheme.value.UFL);
 
-  I: [4, 0, 1],
-  J: [4, 1, 2],
-  K: [4, 2, 1],
-  L: [4, 1, 0],
-
-  M: [1, 0, 1],
-  N: [1, 1, 2],
-  O: [1, 2, 1],
-  P: [1, 1, 0],
-
-  Q: [2, 0, 1],
-  R: [2, 1, 2],
-  S: [2, 2, 1],
-  T: [2, 1, 0],
-
-  U: [5, 1, 2],
-  V: [5, 2, 1],
-  W: [5, 1, 0],
-  X: [5, 0, 1],
-
-  z: [6, 6, 6],
-};
-
-const cornerLetters: Record<StickerValue, [number, number, number]> = {
-  A: [0, 2, 0],
-  B: [0, 0, 0],
-  C: [0, 0, 2],
-  D: [0, 2, 2],
-
-  E: [3, 0, 0],
-  F: [3, 0, 2],
-  G: [3, 2, 2],
-  H: [3, 2, 0],
-
-  I: [4, 0, 0],
-  J: [4, 0, 2],
-  K: [4, 2, 2],
-  L: [4, 2, 0],
-
-  M: [1, 0, 0],
-  N: [1, 0, 2],
-  O: [1, 2, 2],
-  P: [1, 2, 0],
-
-  Q: [2, 0, 0],
-  R: [2, 0, 2],
-  S: [2, 2, 2],
-  T: [2, 2, 0],
-
-  U: [5, 0, 2],
-  V: [5, 2, 2],
-  W: [5, 2, 0],
-  X: [5, 0, 0],
-
-  z: [6, 6, 6],
-};
-
-const edgeBuffer = edgeLetters.B;
-const cornerBuffer = cornerLetters.A;
-
-// const edgeBuffer = edgePositionIndexes.UR;
-// const cornerBuffer = cornerPositionIndexes.ULB;
+const edgeBufferPosition = computed(
+  () => edgeLetters.value[edgeBuffer.value.letter]
+);
+const cornerBufferPosition = computed(
+  () => cornerLetters.value[cornerBuffer.value.letter]
+);
 
 const corners: StickerValue[][] = [
-  ["C", "I", "F"], // infirmiere
-  ["L", "V", "G"], // blanche neige
-  ["M", "J", "B"], // sangoku
-  ["R", "D", "E"], // link
-  ["W", "K", "P"], // facteur
-  ["U", "S", "H"], // clover
-  ["T", "X", "O"], // tortue ninja
-  ["A", "Q", "N"], // buffer
+  ["C", "I", "F"],
+  ["L", "V", "G"],
+  ["M", "J", "B"],
+  ["R", "D", "E"],
+  ["W", "K", "P"],
+  ["U", "S", "H"],
+  ["T", "X", "O"],
+  ["A", "Q", "N"],
+  // [
+  //   computedLetterScheme.value.UBR.letter,
+  //   computedLetterScheme.value.BRU.letter,
+  //   computedLetterScheme.value.RUB.letter,
+  // ],
+  // [
+  //   computedLetterScheme.value.BDR.letter,
+  //   computedLetterScheme.value.DRB.letter,
+  //   computedLetterScheme.value.RBD.letter,
+  // ],
+  // [
+  //   computedLetterScheme.value.LBU.letter,
+  //   computedLetterScheme.value.BUL.letter,
+  //   computedLetterScheme.value.ULB.letter,
+  // ],
+  // [
+  //   computedLetterScheme.value.FUR.letter,
+  //   computedLetterScheme.value.URF.letter,
+  //   computedLetterScheme.value.RFU.letter,
+  // ],
+  // [
+  //   computedLetterScheme.value.DBL.letter,
+  //   computedLetterScheme.value.BLD.letter,
+  //   computedLetterScheme.value.LDB.letter,
+  // ],
+  // [
+  //   computedLetterScheme.value.DFR.letter,
+  //   computedLetterScheme.value.FRD.letter,
+  //   computedLetterScheme.value.RDF.letter,
+  // ],
+  // [
+  //   computedLetterScheme.value.FDL.letter,
+  //   computedLetterScheme.value.DLF.letter,
+  //   computedLetterScheme.value.LFD.letter,
+  // ],
+  // [
+  //   computedLetterScheme.value.UFL.letter,
+  //   computedLetterScheme.value.FLU.letter,
+  //   computedLetterScheme.value.LUF.letter,
+  // ],
 ];
 
 const edges: StickerValue[][] = [

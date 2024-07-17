@@ -1,26 +1,21 @@
+import type { StickerValue } from "@/composables/scramble/types";
+import type {
+  CenterPosition,
+  CornerPosition,
+  EdgePosition,
+} from "@/composables/training/types";
 import constants from "@/constants";
 import type { Ref } from "vue";
 import { computed, ref } from "vue";
 import type { Settings, Theme } from "./types";
-const { pllCases, threeBldCornerPairs } = constants;
+const {
+  defaultSettings,
+  cornerPositionIndexes,
+  edgePositionIndexes,
+  centerPositionIndexes,
+} = constants;
 
 const themes: Theme[] = ["bi", "sexy", "nb"];
-
-// Define default settings
-const defaultSettings: Settings = {
-  theme: "bi",
-  blindfoldedMode: false,
-  timerFormat: "3decimals",
-  blindfoldedTraining: {
-    mode: "alternate",
-    maximumRecognitionTime: 5,
-    resultsViewMode: "key",
-    threeBldCornerPairs,
-  },
-  pllRecognition: {
-    pllPool: pllCases.map((pll) => pll.name),
-  },
-};
 
 // Retrieve stored settings and merge with default settings
 const storedSettingsString = localStorage.getItem("settings");
@@ -134,6 +129,39 @@ function import3bldCornerPairs() {
   fileInput.click();
 }
 
+const computedLetterScheme = computed(() => {
+  const letterScheme = {
+    ...settings.value.letterScheme.corners,
+    ...settings.value.letterScheme.edges,
+    ...settings.value.letterScheme.centers,
+  } as Record<CornerPosition | EdgePosition | CenterPosition, StickerValue>;
+  const piecesPositionIndexes = {
+    ...cornerPositionIndexes,
+    ...edgePositionIndexes,
+    ...centerPositionIndexes,
+  };
+  return (
+    Object.entries(letterScheme) as [
+      CornerPosition | EdgePosition | CenterPosition,
+      StickerValue
+    ][]
+  ).reduce((acc, [key, value]) => {
+    let type: "center" | "corner" | "edge" = "center";
+    if (key in cornerPositionIndexes) {
+      type = "corner";
+    } else if (key in edgePositionIndexes) {
+      type = "edge";
+    }
+    acc[key] = {
+      letter: value,
+      position: piecesPositionIndexes[key],
+      type,
+    };
+    return acc;
+  }, {} as Record<CornerPosition | EdgePosition | CenterPosition, { letter: StickerValue; position: [number, number, number]; type: "center" | "corner" | "edge" }>);
+});
+console.log(computedLetterScheme.value);
+
 export function useSettings() {
   return {
     themes,
@@ -145,5 +173,6 @@ export function useSettings() {
     hasMaximumRecognitionTime,
     import3bldCornerPairs,
     setPllRecognition,
+    computedLetterScheme,
   };
 }

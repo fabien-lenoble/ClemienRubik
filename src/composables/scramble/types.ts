@@ -24,6 +24,8 @@ export type StickerValue =
   | "V"
   | "W"
   | "X"
+  | "Y"
+  | "Z"
   | "z";
 
 export type Move =

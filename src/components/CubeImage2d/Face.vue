@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useScramble } from "@/composables/scramble";
 import type { CubeFace } from "@/composables/scramble/types";
 import Sticker from "./Sticker.vue";
 
@@ -9,6 +10,7 @@ const props = defineProps<{
   revealedStickerValues?: [number, number, number];
   hintStickerValues?: [number, number, number];
 }>();
+const { getStickerTypeFromIndexes } = useScramble();
 
 function shouldShowContent(lineIndex: number, stickerIndex: number): boolean {
   if (!props.revealedStickerValues) {
@@ -41,6 +43,7 @@ function isHint(lineIndex: number, stickerIndex: number): boolean {
         v-for="(sticker, stickerIndex) in line"
         :key="stickerIndex"
         :sticker="sticker"
+        :sticker-type="getStickerTypeFromIndexes(lineIndex, stickerIndex)"
         :class="stickerClass"
         :show-content="shouldShowContent(lineIndex, stickerIndex)"
         :is-hint="isHint(lineIndex, stickerIndex)"

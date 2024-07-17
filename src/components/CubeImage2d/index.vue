@@ -7,6 +7,7 @@ import type { Scramble } from "@/composables/scramble/types";
 
 const props = defineProps<{
   scramble: Scramble;
+  revealedStickerValues?: [number, number, number];
 }>();
 
 const { getScrambledImage } = useScramble();
@@ -14,29 +15,31 @@ const cube = computed(() => getScrambledImage(props.scramble));
 </script>
 
 <template>
-  <div id="cube-image">
-    <div id="line1" class="flex">
-      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
-      <div class="basis-1/4">
-        <face :face="cube[0]" :face-index="0" />
+  <div id="cube-image" class="flex">
+    <div class="shrink">
+      <div id="line1" class="flex">
+        <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
+        <div class="basis-1/4">
+          <face :face="cube[0]" :face-index="0" />
+        </div>
+        <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
+        <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
       </div>
-      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
-      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
-    </div>
 
-    <div id="line2" class="flex">
-      <div v-for="n in 4" :key="n" class="basis-1/4">
-        <face :face="cube[n]" :face-index="n" />
+      <div id="line2" class="flex">
+        <div v-for="n in 4" :key="n" class="basis-1/4">
+          <face :face="cube[n]" :face-index="n" />
+        </div>
       </div>
-    </div>
 
-    <div id="line3" class="flex">
-      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
-      <div class="basis-1/4">
-        <face :face="cube[5]" :face-index="5" />
+      <div id="line3" class="flex">
+        <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
+        <div class="basis-1/4">
+          <face :face="cube[5]" :face-index="5" />
+        </div>
+        <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
+        <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
       </div>
-      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
-      <div class="basis-1/4 m-px md:m-0.5 lg:m-1"></div>
     </div>
   </div>
 </template>

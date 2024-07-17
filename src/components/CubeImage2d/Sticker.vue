@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type { StickerValue } from "@/composables/scramble/types";
+import { useSettings } from "@/composables/settings";
 import { computed } from "vue";
+const { computedLetterScheme } = useSettings();
 
 const props = defineProps<{
   sticker: StickerValue;
+  stickerType: "edge" | "corner" | "center";
   stickerClass?: string;
   showContent?: boolean;
   isHint?: boolean;
@@ -15,60 +18,70 @@ const stickerContent = computed(() => {
   }
   return "";
 });
+
+const color = computed(() => {
+  const piece = Object.entries(computedLetterScheme.value).find(
+    ([_, value]) =>
+      value.letter === props.sticker && value.type === props.stickerType
+  );
+  switch (piece?.[0][0]) {
+    case "U":
+      return "white";
+    case "F":
+      return "green";
+    case "L":
+      return "orange";
+    case "B":
+      return "blue";
+    case "D":
+      return "yellow";
+    case "R":
+      return "red";
+    default:
+      return "grey";
+  }
+});
+
+const computedClass = computed(() => {
+  return (props.stickerClass ?? "") + color.value;
+});
 </script>
 
 <template>
   <div
-    :class="sticker + ' ' + stickerClass"
-    class="sticker border border-black text-white text-center font-semibold content-center w-3 h-3"
+    :class="computedClass"
+    class="sticker border border-black text-white text-center font-semibold content-center w-5 h-5"
   >
-    {{ stickerContent }}
+    {{ sticker }}
+    <!-- {{ stickerContent }} -->
   </div>
 </template>
 
 <style lang="scss">
 .sticker {
-  &.A,
-  &.B,
-  &.C,
-  &.D {
+  &.white {
     color: black;
     background-color: #ffffff;
   }
-  &.E,
-  &.F,
-  &.G,
-  &.H {
+  &.red {
     background-color: #ef0000;
   }
-  &.Q,
-  &.R,
-  &.S,
-  &.T {
+  &.green {
     color: black;
     background-color: #00d900;
   }
-  &.M,
-  &.N,
-  &.O,
-  &.P {
+  &.orange {
     color: black;
     background-color: #ffa200;
   }
-  &.I,
-  &.J,
-  &.K,
-  &.L {
+  &.blue {
     background-color: #0000f2;
   }
-  &.U,
-  &.V,
-  &.W,
-  &.X {
+  &.yellow {
     color: black;
     background-color: #fefe00;
   }
-  &.z {
+  &.grey {
     background-color: #222222;
   }
 }

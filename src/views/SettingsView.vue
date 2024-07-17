@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Settings3bldLetterScheme from "@/components/Settings/3bldTraining/LetterScheme.vue";
 import Settings3bldTrainingMemoFileUploader from "@/components/Settings/3bldTraining/MemoFileUploader.vue";
 import Settings3bldTrainingSelect from "@/components/Settings/3bldTraining/Select.vue";
 import SettingsFooter from "@/components/Settings/Footer.vue";
@@ -30,6 +31,7 @@ function test() {
       <p class="text">Blindfolded</p>
       <settings-3bld-training-select />
       <settings-3bld-training-memo-file-uploader />
+      <settings-3bld-letter-scheme />
     </div>
     <div class="grow"></div>
     <div class="pb-12 text-xs">

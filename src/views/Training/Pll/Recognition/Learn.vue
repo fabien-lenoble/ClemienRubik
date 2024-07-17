@@ -31,21 +31,25 @@
     >
       <sticker
         sticker="L"
+        sticker-type="center"
         class="w-8 h-8"
         @click="currentYTurnIndex = 0"
       ></sticker>
       <sticker
         sticker="P"
+        sticker-type="center"
         class="w-8 h-8"
         @click="currentYTurnIndex = 1"
       ></sticker>
       <sticker
         sticker="T"
+        sticker-type="center"
         class="w-8 h-8"
         @click="currentYTurnIndex = 2"
       ></sticker>
       <sticker
         sticker="H"
+        sticker-type="center"
         class="w-8 h-8"
         @click="currentYTurnIndex = 3"
       ></sticker>

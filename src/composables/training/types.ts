@@ -53,6 +53,8 @@ export type CornerColor =
   | "RBW"
   | "RWG";
 
+export type CenterPosition = "U" | "F" | "R" | "B" | "L" | "D";
+
 export type CornerPosition =
   | "ULB"
   | "UBR"

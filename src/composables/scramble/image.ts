@@ -1,39 +1,33 @@
 import { copyObj } from "@/helpers";
 import type { CubeFace, CubeImage, FaceInitial, Scramble } from "./types";
 
+import { useSettings } from "@/composables/settings";
+const { computedLetterScheme } = useSettings();
+
 const solvedImageArray = () => {
-  return [
-    [
-      ["B", "B", "C"],
-      ["A", "A", "C"],
-      ["A", "D", "D"],
-    ],
-    [
-      ["M", "M", "N"],
-      ["P", "M", "N"],
-      ["P", "O", "O"],
-    ],
-    [
-      ["Q", "Q", "R"],
-      ["T", "Q", "R"],
-      ["T", "S", "S"],
-    ],
-    [
-      ["E", "E", "F"],
-      ["H", "E", "F"],
-      ["H", "G", "G"],
-    ],
-    [
-      ["I", "I", "J"],
-      ["L", "I", "J"],
-      ["L", "K", "K"],
-    ],
-    [
-      ["X", "X", "U"],
-      ["W", "U", "U"],
-      ["W", "V", "V"],
-    ],
-  ] as CubeImage;
+  const cube = Array.from({ length: 6 }, () =>
+    Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => ""))
+  );
+
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 3; j++) {
+      for (let k = 0; k < 3; k++) {
+        const piece = Object.values(computedLetterScheme.value).find(
+          (_piece) => {
+            return (
+              _piece.position[0] === i &&
+              _piece.position[1] === j &&
+              _piece.position[2] === k
+            );
+          }
+        );
+
+        cube[i][j][k] = piece!.letter;
+      }
+    }
+  }
+
+  return cube as CubeImage;
 };
 
 function getScrambledImage(scramble: Scramble): CubeImage {
@@ -434,4 +428,19 @@ function setFaceRightColumn(
   return faceCopy;
 }
 
-export default { getScrambledImage, getSimplifiedScramble, solvedImageArray };
+function getStickerTypeFromIndexes(lineIndex: number, stickerIndex: number) {
+  if (lineIndex === 1 && stickerIndex === 1) {
+    return "center";
+  } else if (stickerIndex % 2 === 0) {
+    return "corner";
+  } else {
+    return "edge";
+  }
+}
+
+export default {
+  getScrambledImage,
+  getSimplifiedScramble,
+  solvedImageArray,
+  getStickerTypeFromIndexes,
+};
