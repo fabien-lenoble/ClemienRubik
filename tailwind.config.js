@@ -32,6 +32,9 @@ module.exports = {
     {
       pattern: /bg-(red|green|blue|yellow|gray)-(100|200|300|400|500)/,
     },
+    {
+      pattern: /-order-(1|2|3)/,
+    },
     "border-[2px]",
     "border-[3px]",
     "border-[4px]",
