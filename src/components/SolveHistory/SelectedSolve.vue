@@ -18,7 +18,7 @@ const blindMemo = computed(() =>
 </script>
 
 <template>
-  <div>
+  <div class="min-h-[48px]">
     {{ solve.displayScramble }}
   </div>
   <div

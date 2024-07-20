@@ -35,19 +35,23 @@ const settings: Ref<Settings> = ref({
   },
 });
 
+function saveSettings() {
+  localStorage.setItem("settings", JSON.stringify(settings.value));
+}
+
 function setTheme(theme: Settings["theme"]) {
   settings.value["theme"] = theme;
-  localStorage.setItem("settings", JSON.stringify(settings.value));
+  saveSettings();
 }
 
 function setBlindfoldedMode(blindfoldedMode: Settings["blindfoldedMode"]) {
   settings.value["blindfoldedMode"] = blindfoldedMode;
-  localStorage.setItem("settings", JSON.stringify(settings.value));
+  saveSettings();
 }
 
 function setTimerFormat(timerFormat: Settings["timerFormat"]) {
   settings.value["timerFormat"] = timerFormat;
-  localStorage.setItem("settings", JSON.stringify(settings.value));
+  saveSettings();
 }
 
 function setBlindfoldedTraining(
@@ -65,7 +69,12 @@ function setBlindfoldedTraining(
     ...settings.value["blindfoldedTraining"],
     ...blindfoldedTraining,
   };
-  localStorage.setItem("settings", JSON.stringify(settings.value));
+  saveSettings();
+}
+
+function setLetterScheme(letterScheme: Settings["letterScheme"]) {
+  settings.value["letterScheme"] = letterScheme;
+  // don't save settings to local storage yet; we will want to verify it is valid first
 }
 
 function setPllRecognition(
@@ -75,7 +84,7 @@ function setPllRecognition(
     ...settings.value["pllRecognition"],
     ...pllRecognition,
   };
-  localStorage.setItem("settings", JSON.stringify(settings.value));
+  saveSettings();
 }
 
 const hasMaximumRecognitionTime = computed(() => {
@@ -160,7 +169,6 @@ const computedLetterScheme = computed(() => {
     return acc;
   }, {} as Record<CornerPosition | EdgePosition | CenterPosition, { letter: StickerValue; position: [number, number, number]; type: "center" | "corner" | "edge" }>);
 });
-console.log(computedLetterScheme.value);
 
 export function useSettings() {
   return {
@@ -170,6 +178,7 @@ export function useSettings() {
     setBlindfoldedMode,
     setTimerFormat,
     setBlindfoldedTraining,
+    setLetterScheme,
     hasMaximumRecognitionTime,
     import3bldCornerPairs,
     setPllRecognition,

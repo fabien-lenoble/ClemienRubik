@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Settings3bldLetterScheme from "@/components/Settings/3bldTraining/LetterScheme.vue";
+import Settings3bldLetterScheme from "@/components/Settings/3bldTraining/LetterScheme/index.vue";
 import Settings3bldTrainingMemoFileUploader from "@/components/Settings/3bldTraining/MemoFileUploader.vue";
 import Settings3bldTrainingSelect from "@/components/Settings/3bldTraining/Select.vue";
 import SettingsFooter from "@/components/Settings/Footer.vue";

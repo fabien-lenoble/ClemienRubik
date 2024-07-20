@@ -7,8 +7,8 @@
         :sticker-class="stickerClass"
         :face="cube[0]"
         :face-index="0"
-        :revealed-sticker-values="revealedStickerValues"
-        :hint-sticker-values="hintStickerValues"
+        :revealed-stickers-values="revealedStickersValues"
+        :hint-stickers-values="hintStickersValues"
       />
       <face
         class="left"
@@ -16,8 +16,8 @@
         :sticker-class="stickerClass"
         :face="cube[1]"
         :face-index="1"
-        :revealed-sticker-values="revealedStickerValues"
-        :hint-sticker-values="hintStickerValues"
+        :revealed-stickers-values="revealedStickersValues"
+        :hint-stickers-values="hintStickersValues"
       />
       <face
         class="front"
@@ -25,8 +25,8 @@
         :sticker-class="stickerClass"
         :face="cube[2]"
         :face-index="2"
-        :revealed-sticker-values="revealedStickerValues"
-        :hint-sticker-values="hintStickerValues"
+        :revealed-stickers-values="revealedStickersValues"
+        :hint-stickers-values="hintStickersValues"
       />
       <face
         class="right"
@@ -34,8 +34,8 @@
         :sticker-class="stickerClass"
         :face="cube[3]"
         :face-index="3"
-        :revealed-sticker-values="revealedStickerValues"
-        :hint-sticker-values="hintStickerValues"
+        :revealed-stickers-values="revealedStickersValues"
+        :hint-stickers-values="hintStickersValues"
       />
       <face
         class="back"
@@ -43,8 +43,8 @@
         :sticker-class="stickerClass"
         :face="cube[4]"
         :face-index="4"
-        :revealed-sticker-values="revealedStickerValues"
-        :hint-sticker-values="hintStickerValues"
+        :revealed-stickers-values="revealedStickersValues"
+        :hint-stickers-values="hintStickersValues"
       />
       <face
         class="bottom"
@@ -52,8 +52,8 @@
         :sticker-class="stickerClass"
         :face="cube[5]"
         :face-index="5"
-        :revealed-sticker-values="revealedStickerValues"
-        :hint-sticker-values="hintStickerValues"
+        :revealed-stickers-values="revealedStickersValues"
+        :hint-stickers-values="hintStickersValues"
       />
     </div>
   </div>
@@ -76,8 +76,8 @@ const props = defineProps<{
   algorithm?: string;
   stickerSize: number;
   revealedStickerColors?: [number, number, number][];
-  revealedStickerValues?: [number, number, number];
-  hintStickerValues?: [number, number, number];
+  revealedStickersValues?: [number, number, number][];
+  hintStickersValues?: [number, number, number][];
 }>();
 
 const isSmall = computed(() => props.stickerSize < 30);

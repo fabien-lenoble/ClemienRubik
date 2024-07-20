@@ -7,31 +7,33 @@ const props = defineProps<{
   face: CubeFace;
   faceIndex: number;
   stickerClass?: string;
-  revealedStickerValues?: [number, number, number];
-  hintStickerValues?: [number, number, number];
+  revealedStickersValues?: [number, number, number][];
+  hintStickersValues?: [number, number, number][];
 }>();
 const { getStickerTypeFromIndexes } = useScramble();
 
 function shouldShowContent(lineIndex: number, stickerIndex: number): boolean {
-  if (!props.revealedStickerValues) {
+  if (!props.revealedStickersValues) {
     return false;
   }
 
-  return (
-    props.faceIndex === props.revealedStickerValues[0] &&
-    lineIndex === props.revealedStickerValues[1] &&
-    stickerIndex === props.revealedStickerValues[2]
+  return props.revealedStickersValues.some(
+    (revealedStickerValue) =>
+      props.faceIndex === revealedStickerValue[0] &&
+      lineIndex === revealedStickerValue[1] &&
+      stickerIndex === revealedStickerValue[2]
   );
 }
 function isHint(lineIndex: number, stickerIndex: number): boolean {
-  if (!props.hintStickerValues) {
+  if (!props.hintStickersValues) {
     return false;
   }
 
-  return (
-    props.faceIndex === props.hintStickerValues[0] &&
-    lineIndex === props.hintStickerValues[1] &&
-    stickerIndex === props.hintStickerValues[2]
+  return props.hintStickersValues.some(
+    (hintStickerValue) =>
+      props.faceIndex === hintStickerValue[0] &&
+      lineIndex === hintStickerValue[1] &&
+      stickerIndex === hintStickerValue[2]
   );
 }
 </script>

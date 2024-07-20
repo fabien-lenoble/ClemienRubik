@@ -6,8 +6,8 @@
         :ufr-colors="currentUfrColors"
         class="w-[250px] min-h-[250px] m-auto"
         :revealed-sticker-colors="currentSelectedPiece"
-        :revealed-sticker-values="currentSelectedStickerIndex"
-        :hint-sticker-values="currentSelectedStickerIndex"
+        :revealed-stickers-values="[currentSelectedStickerIndex]"
+        :hint-stickers-values="[currentSelectedStickerIndex]"
       />
     </div>
     <div>

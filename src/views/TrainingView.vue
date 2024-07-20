@@ -14,8 +14,8 @@
           [0, 2, 1],
           [2, 0, 1],
         ]"
-        :hint-sticker-values="[2, 0, 1]"
-        :revealed-sticker-values="[2, 0, 1]"
+        :hint-stickers-values="[[2, 0, 1]]"
+        :revealed-stickers-values="[[2, 0, 1]]"
       />
       <div>3bld edges recognition</div> </router-link
     ><router-link
@@ -31,8 +31,8 @@
           [2, 0, 2],
           [3, 0, 0],
         ]"
-        :hint-sticker-values="[2, 0, 2]"
-        :revealed-sticker-values="[2, 0, 2]"
+        :hint-stickers-values="[[2, 0, 2]]"
+        :revealed-stickers-values="[[2, 0, 2]]"
       />
       <div>3bld corners recognition</div>
     </router-link>

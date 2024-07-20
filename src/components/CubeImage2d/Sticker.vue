@@ -24,6 +24,7 @@ const color = computed(() => {
     ([_, value]) =>
       value.letter === props.sticker && value.type === props.stickerType
   );
+
   switch (piece?.[0][0]) {
     case "U":
       return "white";
@@ -50,10 +51,9 @@ const computedClass = computed(() => {
 <template>
   <div
     :class="computedClass"
-    class="sticker border border-black text-white text-center font-semibold content-center w-5 h-5"
+    class="sticker border border-black text-white text-center font-semibold content-center w-3 h-3"
   >
-    {{ sticker }}
-    <!-- {{ stickerContent }} -->
+    {{ stickerContent }}
   </div>
 </template>
 

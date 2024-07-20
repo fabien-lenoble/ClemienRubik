@@ -3,6 +3,7 @@ import { useSeed } from "@/composables/seed";
 import type { Seed } from "@/composables/seed/types";
 import { useSession } from "@/composables/session";
 import ScrambleView from "@/views/ScrambleView.vue";
+import SettingsLetterSchemeView from "@/views/Settings/LetterScheme.vue";
 import SettingsView from "@/views/SettingsView.vue";
 import SolveHistoryView from "@/views/SolveHistoryView.vue";
 import Training3bldMemoCornersView from "@/views/Training/3bld/Memo/Corners.vue";
@@ -39,6 +40,11 @@ const router = createRouter({
       path: "/settings",
       name: "settings",
       component: SettingsView,
+    },
+    {
+      path: "/settings/letter-scheme",
+      name: "settings-letter-scheme",
+      component: SettingsLetterSchemeView,
     },
     {
       path: "/training",

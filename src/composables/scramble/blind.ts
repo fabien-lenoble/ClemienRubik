@@ -40,7 +40,7 @@ function generateEdgesMemo(cube: CubeImage) {
     .map((sticker, index) => sticker + (index % 2 ? " " : ""))
     .join("");
 
-  const memo = [edgeMemo, ...edgeFlipMemo].join(". ");
+  const memo = [edgeMemo, ...edgeFlipMemo].join(" / ");
   return memo;
 }
 
@@ -74,13 +74,8 @@ function generateCornerMemo(cube: CubeImage) {
   cornerMemo = cornerPositionMemo
     .map((sticker, index) => sticker + (index % 2 ? " " : ""))
     .join("");
-  // .map(
-  //   (sticker, index) =>
-  //     cornerMemoMapping[sticker][index % 4] + (index % 4 === 3 ? ". " : " ")
-  // )
-  // .join("");
 
-  const memo = [cornerMemo, ...cornerFlipMemo].join(" ");
+  const memo = [cornerMemo, ...cornerFlipMemo].join(" / ");
   return memo;
 }
 
@@ -148,7 +143,7 @@ function generateEdgeFlip(
     );
 
     if (letterFlippingIndex === 1) {
-      edgeFlipMemo.push(`${currentBufferValue} flip`);
+      edgeFlipMemo.push(`${currentBufferValue}-flip`);
     }
     edgePositionsMemoed = edgePositionsMemoed.concat(cycleEdgePositionsMemoed);
   }
@@ -214,6 +209,7 @@ function generateCornerCycle(
     return {
       cornerPositionMemo,
       ...generateCornerFlip(
+        currentBufferValue,
         currentBufferValuePosition,
         cornerFlipMemo,
         cornerPositionsMemoed,
@@ -238,16 +234,32 @@ function generateCornerCycle(
 }
 
 function generateCornerFlip(
+  currentBufferValue: StickerValue,
   currentBufferValuePosition: number,
   cornerFlipMemo: string[],
   cornerPositionsMemoed: number[],
   cycleCornerPositionsMemoed: number[]
 ) {
   if (currentBufferValuePosition !== corners.length - 1) {
+    const letterFlippingIndex = corners[currentBufferValuePosition].findIndex(
+      (cornerValue) => cornerValue === currentBufferValue
+    );
+
+    switch (letterFlippingIndex) {
+      case 0:
+        break;
+      case 1:
+        cornerFlipMemo.push(`${currentBufferValue}-flip`);
+        break;
+      case 2:
+        cornerFlipMemo.push(`${currentBufferValue}-planche`);
+        break;
+    }
     cornerPositionsMemoed = cornerPositionsMemoed.concat(
       cycleCornerPositionsMemoed
     );
   }
+
   return {
     cornerFlipMemo,
     cornerPositionsMemoed,
@@ -321,7 +333,7 @@ const cornerLetters = computed(() => {
   ) as Record<StickerValue, [number, number, number]>;
 });
 
-const edgeBuffer = computed(() => computedLetterScheme.value.UR);
+const edgeBuffer = computed(() => computedLetterScheme.value.UB);
 const cornerBuffer = computed(() => computedLetterScheme.value.UFL);
 
 const edgeBufferPosition = computed(
@@ -332,69 +344,61 @@ const cornerBufferPosition = computed(
 );
 
 const corners: StickerValue[][] = [
-  ["C", "I", "F"],
-  ["L", "V", "G"],
-  ["M", "J", "B"],
-  ["R", "D", "E"],
-  ["W", "K", "P"],
-  ["U", "S", "H"],
-  ["T", "X", "O"],
-  ["A", "Q", "N"],
-  // [
-  //   computedLetterScheme.value.UBR.letter,
-  //   computedLetterScheme.value.BRU.letter,
-  //   computedLetterScheme.value.RUB.letter,
-  // ],
-  // [
-  //   computedLetterScheme.value.BDR.letter,
-  //   computedLetterScheme.value.DRB.letter,
-  //   computedLetterScheme.value.RBD.letter,
-  // ],
-  // [
-  //   computedLetterScheme.value.LBU.letter,
-  //   computedLetterScheme.value.BUL.letter,
-  //   computedLetterScheme.value.ULB.letter,
-  // ],
-  // [
-  //   computedLetterScheme.value.FUR.letter,
-  //   computedLetterScheme.value.URF.letter,
-  //   computedLetterScheme.value.RFU.letter,
-  // ],
-  // [
-  //   computedLetterScheme.value.DBL.letter,
-  //   computedLetterScheme.value.BLD.letter,
-  //   computedLetterScheme.value.LDB.letter,
-  // ],
-  // [
-  //   computedLetterScheme.value.DFR.letter,
-  //   computedLetterScheme.value.FRD.letter,
-  //   computedLetterScheme.value.RDF.letter,
-  // ],
-  // [
-  //   computedLetterScheme.value.FDL.letter,
-  //   computedLetterScheme.value.DLF.letter,
-  //   computedLetterScheme.value.LFD.letter,
-  // ],
-  // [
-  //   computedLetterScheme.value.UFL.letter,
-  //   computedLetterScheme.value.FLU.letter,
-  //   computedLetterScheme.value.LUF.letter,
-  // ],
+  [
+    computedLetterScheme.value.UBR.letter,
+    computedLetterScheme.value.BRU.letter,
+    computedLetterScheme.value.RUB.letter,
+  ],
+  [
+    computedLetterScheme.value.BDR.letter,
+    computedLetterScheme.value.DRB.letter,
+    computedLetterScheme.value.RBD.letter,
+  ],
+  [
+    computedLetterScheme.value.LBU.letter,
+    computedLetterScheme.value.BUL.letter,
+    computedLetterScheme.value.ULB.letter,
+  ],
+  [
+    computedLetterScheme.value.FUR.letter,
+    computedLetterScheme.value.URF.letter,
+    computedLetterScheme.value.RFU.letter,
+  ],
+  [
+    computedLetterScheme.value.DBL.letter,
+    computedLetterScheme.value.BLD.letter,
+    computedLetterScheme.value.LDB.letter,
+  ],
+  [
+    computedLetterScheme.value.DFR.letter,
+    computedLetterScheme.value.FRD.letter,
+    computedLetterScheme.value.RDF.letter,
+  ],
+  [
+    computedLetterScheme.value.FDL.letter,
+    computedLetterScheme.value.DLF.letter,
+    computedLetterScheme.value.LFD.letter,
+  ],
+  [
+    computedLetterScheme.value.UFL.letter,
+    computedLetterScheme.value.FLU.letter,
+    computedLetterScheme.value.LUF.letter,
+  ],
 ];
 
 const edges: StickerValue[][] = [
-  ["D", "Q"],
-  ["C", "E"],
-  ["A", "M"],
-  ["H", "R"],
-  ["N", "T"],
-  ["X", "S"],
-  ["G", "U"],
-  ["W", "O"],
-  ["F", "L"],
-  ["K", "V"],
-  ["J", "P"],
-  ["B", "I"],
+  [computedLetterScheme.value.UF.letter, computedLetterScheme.value.FU.letter], //D,Q],
+  [computedLetterScheme.value.UR.letter, computedLetterScheme.value.RU.letter], //C,E],
+  [computedLetterScheme.value.UL.letter, computedLetterScheme.value.LU.letter], //A,M],
+  [computedLetterScheme.value.RF.letter, computedLetterScheme.value.FR.letter], //H,R],
+  [computedLetterScheme.value.LF.letter, computedLetterScheme.value.FL.letter], //N,T],
+  [computedLetterScheme.value.DF.letter, computedLetterScheme.value.FD.letter], //X,S],
+  [computedLetterScheme.value.RD.letter, computedLetterScheme.value.DR.letter], //G,U],
+  [computedLetterScheme.value.DL.letter, computedLetterScheme.value.LD.letter], //W,O],
+  [computedLetterScheme.value.RB.letter, computedLetterScheme.value.BR.letter], //F,L],
+  [computedLetterScheme.value.BD.letter, computedLetterScheme.value.DB.letter], //K,V],
+  [computedLetterScheme.value.BL.letter, computedLetterScheme.value.LB.letter], //J,P],
+  [computedLetterScheme.value.UB.letter, computedLetterScheme.value.BU.letter], //B,I],
 ];
 
 export default {

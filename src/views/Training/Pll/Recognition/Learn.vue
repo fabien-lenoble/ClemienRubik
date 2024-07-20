@@ -30,28 +30,13 @@
       class="flex flex-wrap grow content-center min-w-[100px] m-auto justify-center gap-2"
     >
       <sticker
-        sticker="L"
-        sticker-type="center"
-        class="w-8 h-8"
-        @click="currentYTurnIndex = 0"
-      ></sticker>
-      <sticker
-        sticker="P"
-        sticker-type="center"
-        class="w-8 h-8"
-        @click="currentYTurnIndex = 1"
-      ></sticker>
-      <sticker
-        sticker="T"
-        sticker-type="center"
-        class="w-8 h-8"
-        @click="currentYTurnIndex = 2"
-      ></sticker>
-      <sticker
-        sticker="H"
-        sticker-type="center"
-        class="w-8 h-8"
-        @click="currentYTurnIndex = 3"
+        v-for="(cornerPosition, index) in stickers"
+        :key="cornerPosition"
+        :sticker-position="cornerPosition"
+        sticker-type="corner"
+        class="opacity-20"
+        :class="{ 'opacity-100': index === currentYTurnIndex }"
+        @click="currentYTurnIndex = index"
       ></sticker>
     </div>
     <div>
@@ -74,14 +59,16 @@
 </template>
 
 <script setup lang="ts">
-import Sticker from "@/components/CubeImage2d/Sticker.vue";
 import CubeImage3d from "@/components/CubeImage3d.vue";
+import Sticker from "@/components/PickerSticker.vue";
 import PllRecognitionLearnPllPicker from "@/components/Training/PllRecognition/Learn/PllPicker.vue";
+import type { CornerPosition } from "@/composables/training/types";
 import constants from "@/constants";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 const { clockWiseUTurns, antiClockWiseUTurns, antiClockWiseYTurns, pllCases } =
   constants;
+const stickers: CornerPosition[] = ["BRU", "LBU", "FLU", "RFU"];
 
 const currentUTurnIndex = ref<number>(0);
 const currentUTurn = computed(
