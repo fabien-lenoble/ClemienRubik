@@ -63,7 +63,7 @@
 import Face from "@/components/CubeImage2d/Face.vue";
 import { useScramble } from "@/composables/scramble";
 import type { Move, Scramble } from "@/composables/scramble/types";
-import type { CornerColor } from "@/composables/training/types";
+import type { CornerColor, PiecePosition } from "@/composables/training/types";
 import { computed } from "vue";
 
 const { getScrambledImage, getInitialRotation } = useScramble();
@@ -161,7 +161,7 @@ const cube = computed(() => {
                 sticker[0] === i && sticker[1] === j && sticker[2] === k
             )
           ) {
-            computedCube[i][j][k] = "z";
+            computedCube[i][j][k] = "" as PiecePosition;
           }
         }
       }

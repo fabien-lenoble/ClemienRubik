@@ -1,31 +1,32 @@
 <script setup lang="ts">
-import type { StickerValue } from "@/composables/scramble/types";
 import { useSettings } from "@/composables/settings";
+import type { PiecePosition } from "@/composables/training/types";
 import { computed } from "vue";
 const { computedLetterScheme } = useSettings();
 
 const props = defineProps<{
-  sticker: StickerValue;
+  stickerPosition: PiecePosition;
   stickerType: "edge" | "corner" | "center";
   stickerClass?: string;
   showContent?: boolean;
   isHint?: boolean;
 }>();
 
+const piece = computed(() =>
+  Object.entries(computedLetterScheme.value).find(([piecePosition]) => {
+    return props.stickerPosition === piecePosition;
+  })
+);
+
 const stickerContent = computed(() => {
   if (props.showContent) {
-    return props.isHint ? "?" : props.sticker;
+    return props.isHint ? "?" : piece.value?.[1].letter;
   }
   return "";
 });
 
 const color = computed(() => {
-  const piece = Object.entries(computedLetterScheme.value).find(
-    ([_, value]) =>
-      value.letter === props.sticker && value.type === props.stickerType
-  );
-
-  switch (piece?.[0][0]) {
+  switch (piece.value?.[0][0]) {
     case "U":
       return "white";
     case "F":

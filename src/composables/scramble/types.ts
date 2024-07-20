@@ -1,3 +1,5 @@
+import type { PiecePosition } from "@/composables/training/types";
+
 export type FaceInitial = "U" | "L" | "F" | "R" | "B" | "D";
 export type StickerValue =
   | "A"
@@ -93,4 +95,4 @@ export type Scramble = Move[];
 export type DisplayScramble = string;
 
 export type CubeImage = CubeFace[];
-export type CubeFace = StickerValue[][];
+export type CubeFace = PiecePosition[][];

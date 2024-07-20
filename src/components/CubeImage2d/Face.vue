@@ -44,7 +44,7 @@ function isHint(lineIndex: number, stickerIndex: number): boolean {
       <sticker
         v-for="(sticker, stickerIndex) in line"
         :key="stickerIndex"
-        :sticker="sticker"
+        :sticker-position="sticker"
         :sticker-type="getStickerTypeFromIndexes(lineIndex, stickerIndex)"
         :class="stickerClass"
         :show-content="shouldShowContent(lineIndex, stickerIndex)"

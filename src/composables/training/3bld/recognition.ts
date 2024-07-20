@@ -1,12 +1,19 @@
 import { useScramble } from "@/composables/scramble";
 import type { StickerValue } from "@/composables/scramble/types";
+import { useSettings } from "@/composables/settings";
 import type { CornerColor } from "@/composables/training/types";
 import constants from "@/constants";
 import { computed, ref, type Ref } from "vue";
 const { cornerColors } = constants;
 
-const { edges, corners, getInitialRotation, getScrambledImage } = useScramble();
-
+const {
+  edges,
+  corners,
+  getInitialRotation,
+  getScrambledImage,
+  getLetterFromPiecePosition,
+} = useScramble();
+const { computedLetterScheme } = useSettings();
 const edgePiecesPool: [number, number, number][][] = [
   [
     // UF
@@ -53,9 +60,11 @@ const currentSelectedStickerIndex = ref(piecesPool.value[0][0]);
 
 const currentSelectedStickerValue: Ref<StickerValue> = computed(() => {
   const stickerIndex = currentSelectedStickerIndex.value;
-  return currentScrambledImage.value[stickerIndex[0]][stickerIndex[1]][
-    stickerIndex[2]
-  ];
+  const piecePosition =
+    currentScrambledImage.value[stickerIndex[0]][stickerIndex[1]][
+      stickerIndex[2]
+    ];
+  return computedLetterScheme.value[piecePosition].letter;
 });
 const lastSelectedStickerValue = ref("");
 const currentUfrColors: Ref<CornerColor> = ref("WGR");
@@ -87,6 +96,7 @@ const noBufferStickersPool = computed(() =>
   stickerValuesPool.value
     .flat()
     .filter((sticker) => !bufferStickerValues.value.includes(sticker))
+    .map((sticker) => getLetterFromPiecePosition(sticker))
     .sort()
 );
 
@@ -105,7 +115,9 @@ function pickNewRandomSticker() {
     ];
   } while (
     lastSelectedStickerValue.value == currentSelectedStickerValue.value ||
-    bufferStickerValues.value.includes(currentSelectedStickerValue.value)
+    bufferStickerValues.value
+      .map((sticker) => getLetterFromPiecePosition(sticker))
+      .includes(currentSelectedStickerValue.value)
   );
 
   lastSelectedStickerValue.value = currentSelectedStickerValue.value;

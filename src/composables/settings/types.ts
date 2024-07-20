@@ -8,10 +8,14 @@ import type {
 export type Settings = {
   theme: Theme;
   blindfoldedMode: boolean;
-  letterScheme: {
-    corners: Record<CornerPosition, StickerValue>;
-    edges: Record<EdgePosition, StickerValue>;
-    centers: Record<CenterPosition, StickerValue>;
+  blindfolded: {
+    edgeBuffer: StickerValue;
+    cornerBuffer: StickerValue;
+    letterScheme: {
+      corners: Record<CornerPosition, StickerValue>;
+      edges: Record<EdgePosition, StickerValue>;
+      centers: Record<CenterPosition, StickerValue>;
+    };
   };
   blindfoldedTraining: {
     mode: "key" | "value" | "alternate";

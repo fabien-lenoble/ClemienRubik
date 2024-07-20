@@ -1,9 +1,5 @@
 import type { StickerValue } from "@/composables/scramble/types";
-import type {
-  CenterPosition,
-  CornerPosition,
-  EdgePosition,
-} from "@/composables/training/types";
+import type { PiecePosition } from "@/composables/training/types";
 import constants from "@/constants";
 import type { Ref } from "vue";
 import { computed, ref } from "vue";
@@ -29,6 +25,10 @@ const settings: Ref<Settings> = ref({
     ...defaultSettings.blindfoldedTraining,
     ...storedSettings.blindfoldedTraining,
   },
+  blindfolded: {
+    ...defaultSettings.blindfolded,
+    ...storedSettings.blindfolded,
+  },
   pllRecognition: {
     ...defaultSettings.pllRecognition,
     ...storedSettings.pllRecognition,
@@ -40,17 +40,17 @@ function saveSettings() {
 }
 
 function setTheme(theme: Settings["theme"]) {
-  settings.value["theme"] = theme;
+  settings.value.theme = theme;
   saveSettings();
 }
 
 function setBlindfoldedMode(blindfoldedMode: Settings["blindfoldedMode"]) {
-  settings.value["blindfoldedMode"] = blindfoldedMode;
+  settings.value.blindfoldedMode = blindfoldedMode;
   saveSettings();
 }
 
 function setTimerFormat(timerFormat: Settings["timerFormat"]) {
-  settings.value["timerFormat"] = timerFormat;
+  settings.value.timerFormat = timerFormat;
   saveSettings();
 }
 
@@ -65,23 +65,25 @@ function setBlindfoldedTraining(
     blindfoldedTraining.resultsViewMode = blindfoldedTraining.mode;
   }
 
-  settings.value["blindfoldedTraining"] = {
-    ...settings.value["blindfoldedTraining"],
+  settings.value.blindfoldedTraining = {
+    ...settings.value.blindfoldedTraining,
     ...blindfoldedTraining,
   };
   saveSettings();
 }
 
-function setLetterScheme(letterScheme: Settings["letterScheme"]) {
-  settings.value["letterScheme"] = letterScheme;
+function setLetterScheme(
+  letterScheme: Settings["blindfolded"]["letterScheme"]
+) {
+  settings.value.blindfolded.letterScheme = letterScheme;
   // don't save settings to local storage yet; we will want to verify it is valid first
 }
 
 function setPllRecognition(
   pllRecognition: Partial<Settings["pllRecognition"]>
 ) {
-  settings.value["pllRecognition"] = {
-    ...settings.value["pllRecognition"],
+  settings.value.pllRecognition = {
+    ...settings.value.pllRecognition,
     ...pllRecognition,
   };
   saveSettings();
@@ -140,20 +142,17 @@ function import3bldCornerPairs() {
 
 const computedLetterScheme = computed(() => {
   const letterScheme = {
-    ...settings.value.letterScheme.corners,
-    ...settings.value.letterScheme.edges,
-    ...settings.value.letterScheme.centers,
-  } as Record<CornerPosition | EdgePosition | CenterPosition, StickerValue>;
+    ...settings.value.blindfolded.letterScheme.corners,
+    ...settings.value.blindfolded.letterScheme.edges,
+    ...settings.value.blindfolded.letterScheme.centers,
+  } as Record<PiecePosition, StickerValue>;
   const piecesPositionIndexes = {
     ...cornerPositionIndexes,
     ...edgePositionIndexes,
     ...centerPositionIndexes,
   };
   return (
-    Object.entries(letterScheme) as [
-      CornerPosition | EdgePosition | CenterPosition,
-      StickerValue
-    ][]
+    Object.entries(letterScheme) as [PiecePosition, StickerValue][]
   ).reduce((acc, [key, value]) => {
     let type: "center" | "corner" | "edge" = "center";
     if (key in cornerPositionIndexes) {
@@ -163,11 +162,11 @@ const computedLetterScheme = computed(() => {
     }
     acc[key] = {
       letter: value,
-      position: piecesPositionIndexes[key],
+      positionIndexes: piecesPositionIndexes[key],
       type,
     };
     return acc;
-  }, {} as Record<CornerPosition | EdgePosition | CenterPosition, { letter: StickerValue; position: [number, number, number]; type: "center" | "corner" | "edge" }>);
+  }, {} as Record<PiecePosition, { letter: StickerValue; positionIndexes: [number, number, number]; type: "center" | "corner" | "edge" }>);
 });
 
 export function useSettings() {

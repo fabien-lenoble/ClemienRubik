@@ -1,9 +1,10 @@
 // import { EdgePosition, CornerPosition } from "@/composables/training/types";
 import { computed } from "vue";
-import type { CubeImage, StickerValue } from "./types";
+import type { CubeImage } from "./types";
 
 import { useSettings } from "@/composables/settings";
-const { computedLetterScheme } = useSettings();
+import type { PiecePosition } from "@/composables/training/types";
+const { settings, computedLetterScheme } = useSettings();
 
 function generateMemo(cube: CubeImage) {
   const edgesMemo = generateEdgesMemo(cube);
@@ -13,7 +14,7 @@ function generateMemo(cube: CubeImage) {
 
 function generateEdgesMemo(cube: CubeImage) {
   let edgeMemo: string = "";
-  let edgePositionMemo: StickerValue[] = [];
+  let edgePositionMemo: PiecePosition[] = [];
   let edgeFlipMemo: string[] = [];
   let edgePositionsMemoed: number[] = [];
   let edgeBufferValue =
@@ -37,7 +38,10 @@ function generateEdgesMemo(cube: CubeImage) {
   }
 
   edgeMemo = edgePositionMemo
-    .map((sticker, index) => sticker + (index % 2 ? " " : ""))
+    .map(
+      (piecePosition, index) =>
+        getLetterFromPiecePosition(piecePosition) + (index % 2 ? " " : "")
+    )
     .join("");
 
   const memo = [edgeMemo, ...edgeFlipMemo].join(" / ");
@@ -46,7 +50,7 @@ function generateEdgesMemo(cube: CubeImage) {
 
 function generateCornerMemo(cube: CubeImage) {
   let cornerMemo: string = "";
-  let cornerPositionMemo: StickerValue[] = [];
+  let cornerPositionMemo: PiecePosition[] = [];
   let cornerFlipMemo: string[] = [];
   let cornerPositionsMemoed: number[] = [];
   let cornerBufferValue =
@@ -72,7 +76,10 @@ function generateCornerMemo(cube: CubeImage) {
 
   // join by pairs
   cornerMemo = cornerPositionMemo
-    .map((sticker, index) => sticker + (index % 2 ? " " : ""))
+    .map(
+      (piecePosition, index) =>
+        getLetterFromPiecePosition(piecePosition) + (index % 2 ? " " : "")
+    )
     .join("");
 
   const memo = [cornerMemo, ...cornerFlipMemo].join(" / ");
@@ -81,33 +88,34 @@ function generateCornerMemo(cube: CubeImage) {
 
 function generateEdgeCycle(
   cube: CubeImage,
-  currentBufferValue: StickerValue,
-  edgePositionMemo: StickerValue[],
+  currentPiecePosition: PiecePosition,
+  edgePositionMemo: PiecePosition[],
   edgeFlipMemo: string[],
   edgePositionsMemoed: number[]
 ) {
-  const cycleStartBufferValue = currentBufferValue;
+  const cycleStartBufferValue = currentPiecePosition;
 
   const cycleStartBufferEdgePosition = edges.findIndex((edge) =>
     edge.includes(cycleStartBufferValue)
   );
 
-  const cycleMemo: StickerValue[] = [cycleStartBufferValue];
+  const cycleMemo: PiecePosition[] = [cycleStartBufferValue];
   const cycleEdgePositionsMemoed: number[] = [cycleStartBufferEdgePosition];
 
-  currentBufferValue = getNextEdgeBufferValue(cube, currentBufferValue);
-  const currentBufferValuePosition = edges.findIndex((edge) =>
-    edge.includes(currentBufferValue)
+  currentPiecePosition = getNextPiecePosition(cube, currentPiecePosition);
+
+  const currentPiecePositionIndex = edges.findIndex((edge) =>
+    edge.includes(currentPiecePosition)
   );
 
   const isPieceInItsPosition =
-    cycleStartBufferEdgePosition === currentBufferValuePosition;
+    cycleStartBufferEdgePosition === currentPiecePositionIndex;
   if (isPieceInItsPosition) {
     return {
       edgePositionMemo,
       ...generateEdgeFlip(
-        currentBufferValue,
-        currentBufferValuePosition,
+        currentPiecePosition,
+        currentPiecePositionIndex,
         edgeFlipMemo,
         edgePositionsMemoed,
         cycleEdgePositionsMemoed
@@ -118,9 +126,9 @@ function generateEdgeCycle(
       edgeFlipMemo,
       ...generateEdgePositionCycle(
         cube,
-        currentBufferValue,
+        currentPiecePosition,
         cycleStartBufferEdgePosition,
-        currentBufferValuePosition,
+        currentPiecePositionIndex,
         cycleMemo,
         edgePositionMemo,
         edgePositionsMemoed,
@@ -131,19 +139,19 @@ function generateEdgeCycle(
 }
 
 function generateEdgeFlip(
-  currentBufferValue: StickerValue,
-  currentBufferValuePosition: number,
+  currentPiecePosition: PiecePosition,
+  currentPiecePositionIndex: number,
   edgeFlipMemo: string[],
   edgePositionsMemoed: number[],
   cycleEdgePositionsMemoed: number[]
 ) {
-  if (currentBufferValuePosition !== edges.length - 1) {
-    const letterFlippingIndex = edges[currentBufferValuePosition].findIndex(
-      (edgeValue) => edgeValue === currentBufferValue
+  if (currentPiecePositionIndex !== edges.length - 1) {
+    const letterFlippingIndex = edges[currentPiecePositionIndex].findIndex(
+      (edgeValue) => edgeValue === currentPiecePosition
     );
 
     if (letterFlippingIndex === 1) {
-      edgeFlipMemo.push(`${currentBufferValue}-flip`);
+      edgeFlipMemo.push(`${currentPiecePosition}-flip`);
     }
     edgePositionsMemoed = edgePositionsMemoed.concat(cycleEdgePositionsMemoed);
   }
@@ -156,23 +164,23 @@ function generateEdgeFlip(
 
 function generateEdgePositionCycle(
   cube: CubeImage,
-  currentBufferValue: StickerValue,
+  currentPiecePosition: PiecePosition,
   cycleStartBufferEdgePosition: number,
-  currentBufferValuePosition: number,
-  cycleMemo: StickerValue[],
-  edgePositionMemo: StickerValue[],
+  currentPiecePositionIndex: number,
+  cycleMemo: PiecePosition[],
+  edgePositionMemo: PiecePosition[],
   edgePositionsMemoed: number[],
   cycleEdgePositionsMemoed: number[]
 ) {
   while (
-    currentBufferValuePosition !== edges.length - 1 &&
+    currentPiecePositionIndex !== edges.length - 1 &&
     !cycleEdgePositionsMemoed.slice(1).includes(cycleStartBufferEdgePosition)
   ) {
-    cycleMemo.push(currentBufferValue);
-    cycleEdgePositionsMemoed.push(currentBufferValuePosition);
-    currentBufferValue = getNextEdgeBufferValue(cube, currentBufferValue);
-    currentBufferValuePosition = edges.findIndex((edge) =>
-      edge.includes(currentBufferValue)
+    cycleMemo.push(currentPiecePosition);
+    cycleEdgePositionsMemoed.push(currentPiecePositionIndex);
+    currentPiecePosition = getNextPiecePosition(cube, currentPiecePosition);
+    currentPiecePositionIndex = edges.findIndex((edge) =>
+      edge.includes(currentPiecePosition)
     );
   }
 
@@ -184,33 +192,33 @@ function generateEdgePositionCycle(
 
 function generateCornerCycle(
   cube: CubeImage,
-  currentBufferValue: StickerValue,
-  cornerPositionMemo: StickerValue[],
+  currentPiecePosition: PiecePosition,
+  cornerPositionMemo: PiecePosition[],
   cornerFlipMemo: string[],
   cornerPositionsMemoed: number[]
 ) {
-  const cycleStartBufferValue = currentBufferValue;
+  const cycleStartBufferValue = currentPiecePosition;
   const cycleStartBufferCornerPosition = corners.findIndex((corner) =>
     corner.includes(cycleStartBufferValue)
   );
 
-  const cycleMemo: StickerValue[] = [cycleStartBufferValue];
+  const cycleMemo: PiecePosition[] = [cycleStartBufferValue];
   const cycleCornerPositionsMemoed: number[] = [cycleStartBufferCornerPosition];
 
-  currentBufferValue = getNextCornerBufferValue(cube, currentBufferValue);
-  const currentBufferValuePosition = corners.findIndex((corner) =>
-    corner.includes(currentBufferValue)
+  currentPiecePosition = getNextPiecePosition(cube, currentPiecePosition);
+  const currentPiecePositionIndex = corners.findIndex((corner) =>
+    corner.includes(currentPiecePosition)
   );
 
   const isPieceInItsPosition =
-    cycleStartBufferCornerPosition === currentBufferValuePosition;
+    cycleStartBufferCornerPosition === currentPiecePositionIndex;
 
   if (isPieceInItsPosition) {
     return {
       cornerPositionMemo,
       ...generateCornerFlip(
-        currentBufferValue,
-        currentBufferValuePosition,
+        currentPiecePosition,
+        currentPiecePositionIndex,
         cornerFlipMemo,
         cornerPositionsMemoed,
         cycleCornerPositionsMemoed
@@ -221,9 +229,9 @@ function generateCornerCycle(
       cornerFlipMemo,
       ...generateCornerPositionCycle(
         cube,
-        currentBufferValue,
+        currentPiecePosition,
         cycleStartBufferCornerPosition,
-        currentBufferValuePosition,
+        currentPiecePositionIndex,
         cycleMemo,
         cornerPositionMemo,
         cornerPositionsMemoed,
@@ -234,25 +242,25 @@ function generateCornerCycle(
 }
 
 function generateCornerFlip(
-  currentBufferValue: StickerValue,
-  currentBufferValuePosition: number,
+  currentPiecePosition: PiecePosition,
+  currentPiecePositionIndex: number,
   cornerFlipMemo: string[],
   cornerPositionsMemoed: number[],
   cycleCornerPositionsMemoed: number[]
 ) {
-  if (currentBufferValuePosition !== corners.length - 1) {
-    const letterFlippingIndex = corners[currentBufferValuePosition].findIndex(
-      (cornerValue) => cornerValue === currentBufferValue
+  if (currentPiecePositionIndex !== corners.length - 1) {
+    const letterFlippingIndex = corners[currentPiecePositionIndex].findIndex(
+      (cornerValue) => cornerValue === currentPiecePosition
     );
-
+    const letter = getLetterFromPiecePosition(currentPiecePosition);
     switch (letterFlippingIndex) {
       case 0:
         break;
       case 1:
-        cornerFlipMemo.push(`${currentBufferValue}-flip`);
+        cornerFlipMemo.push(`${letter}-flip`);
         break;
       case 2:
-        cornerFlipMemo.push(`${currentBufferValue}-planche`);
+        cornerFlipMemo.push(`${letter}-planche`);
         break;
     }
     cornerPositionsMemoed = cornerPositionsMemoed.concat(
@@ -268,25 +276,25 @@ function generateCornerFlip(
 
 function generateCornerPositionCycle(
   cube: CubeImage,
-  currentBufferValue: StickerValue,
+  currentPiecePosition: PiecePosition,
   cycleStartBufferCornerPosition: number,
-  currentBufferValuePosition: number,
-  cycleMemo: StickerValue[],
-  cornerPositionMemo: StickerValue[],
+  currentPiecePositionIndex: number,
+  cycleMemo: PiecePosition[],
+  cornerPositionMemo: PiecePosition[],
   cornerPositionsMemoed: number[],
   cycleCornerPositionsMemoed: number[]
 ) {
   while (
-    currentBufferValuePosition !== corners.length - 1 &&
+    currentPiecePositionIndex !== corners.length - 1 &&
     !cycleCornerPositionsMemoed
       .slice(1)
       .includes(cycleStartBufferCornerPosition)
   ) {
-    cycleMemo.push(currentBufferValue);
-    cycleCornerPositionsMemoed.push(currentBufferValuePosition);
-    currentBufferValue = getNextCornerBufferValue(cube, currentBufferValue);
-    currentBufferValuePosition = corners.findIndex((corner) =>
-      corner.includes(currentBufferValue)
+    cycleMemo.push(currentPiecePosition);
+    cycleCornerPositionsMemoed.push(currentPiecePositionIndex);
+    currentPiecePosition = getNextPiecePosition(cube, currentPiecePosition);
+    currentPiecePositionIndex = corners.findIndex((corner) =>
+      corner.includes(currentPiecePosition)
     );
   }
 
@@ -298,111 +306,68 @@ function generateCornerPositionCycle(
   return { cornerPositionMemo, cornerPositionsMemoed };
 }
 
-function getNextEdgeBufferValue(
+function getNextPiecePosition(
   cube: CubeImage,
-  currentBufferValue: StickerValue
+  currentPiecePosition: PiecePosition
 ) {
-  const newBuffer = edgeLetters.value[currentBufferValue];
+  const newBuffer =
+    computedLetterScheme.value[currentPiecePosition].positionIndexes;
   return cube[newBuffer[0]][newBuffer[1]][newBuffer[2]];
 }
 
-function getNextCornerBufferValue(
-  cube: CubeImage,
-  currentBufferValue: StickerValue
-) {
-  const newBuffer = cornerLetters.value[currentBufferValue];
-  return cube[newBuffer[0]][newBuffer[1]][newBuffer[2]];
-}
-const edgeLetters = computed(() => {
-  return Object.fromEntries(
-    Object.values(computedLetterScheme.value)
-      .filter((value) => value.type === "edge")
-      .map((value) => {
-        return [value.letter, value.position];
-      })
-  ) as Record<StickerValue, [number, number, number]>;
-});
-
-const cornerLetters = computed(() => {
-  return Object.fromEntries(
-    Object.values(computedLetterScheme.value)
-      .filter((value) => value.type === "corner")
-      .map((value) => {
-        return [value.letter, value.position];
-      })
-  ) as Record<StickerValue, [number, number, number]>;
-});
-
-const edgeBuffer = computed(() => computedLetterScheme.value.UB);
-const cornerBuffer = computed(() => computedLetterScheme.value.UFL);
-
-const edgeBufferPosition = computed(
-  () => edgeLetters.value[edgeBuffer.value.letter]
+const edgeBuffer = computed(() =>
+  Object.values(computedLetterScheme.value).find(
+    (piece) =>
+      piece.letter === settings.value.blindfolded.edgeBuffer &&
+      piece.type === "edge"
+  )
 );
+const cornerBuffer = computed(() =>
+  Object.values(computedLetterScheme.value).find(
+    (piece) =>
+      piece.letter === settings.value.blindfolded.cornerBuffer &&
+      piece.type === "corner"
+  )
+);
+
+const edgeBufferPosition = computed(() => edgeBuffer.value!.positionIndexes);
 const cornerBufferPosition = computed(
-  () => cornerLetters.value[cornerBuffer.value.letter]
+  () => cornerBuffer.value!.positionIndexes
 );
 
-const corners: StickerValue[][] = [
-  [
-    computedLetterScheme.value.UBR.letter,
-    computedLetterScheme.value.BRU.letter,
-    computedLetterScheme.value.RUB.letter,
-  ],
-  [
-    computedLetterScheme.value.BDR.letter,
-    computedLetterScheme.value.DRB.letter,
-    computedLetterScheme.value.RBD.letter,
-  ],
-  [
-    computedLetterScheme.value.LBU.letter,
-    computedLetterScheme.value.BUL.letter,
-    computedLetterScheme.value.ULB.letter,
-  ],
-  [
-    computedLetterScheme.value.FUR.letter,
-    computedLetterScheme.value.URF.letter,
-    computedLetterScheme.value.RFU.letter,
-  ],
-  [
-    computedLetterScheme.value.DBL.letter,
-    computedLetterScheme.value.BLD.letter,
-    computedLetterScheme.value.LDB.letter,
-  ],
-  [
-    computedLetterScheme.value.DFR.letter,
-    computedLetterScheme.value.FRD.letter,
-    computedLetterScheme.value.RDF.letter,
-  ],
-  [
-    computedLetterScheme.value.FDL.letter,
-    computedLetterScheme.value.DLF.letter,
-    computedLetterScheme.value.LFD.letter,
-  ],
-  [
-    computedLetterScheme.value.UFL.letter,
-    computedLetterScheme.value.FLU.letter,
-    computedLetterScheme.value.LUF.letter,
-  ],
+const corners: PiecePosition[][] = [
+  ["UBR", "BRU", "RUB"],
+  ["BDR", "DRB", "RBD"],
+  ["LBU", "BUL", "ULB"],
+  ["FUR", "URF", "RFU"],
+  ["DBL", "BLD", "LDB"],
+  ["DFR", "FRD", "RDF"],
+  ["FDL", "DLF", "LFD"],
+  ["UFL", "FLU", "LUF"],
 ];
 
-const edges: StickerValue[][] = [
-  [computedLetterScheme.value.UF.letter, computedLetterScheme.value.FU.letter], //D,Q],
-  [computedLetterScheme.value.UR.letter, computedLetterScheme.value.RU.letter], //C,E],
-  [computedLetterScheme.value.UL.letter, computedLetterScheme.value.LU.letter], //A,M],
-  [computedLetterScheme.value.RF.letter, computedLetterScheme.value.FR.letter], //H,R],
-  [computedLetterScheme.value.LF.letter, computedLetterScheme.value.FL.letter], //N,T],
-  [computedLetterScheme.value.DF.letter, computedLetterScheme.value.FD.letter], //X,S],
-  [computedLetterScheme.value.RD.letter, computedLetterScheme.value.DR.letter], //G,U],
-  [computedLetterScheme.value.DL.letter, computedLetterScheme.value.LD.letter], //W,O],
-  [computedLetterScheme.value.RB.letter, computedLetterScheme.value.BR.letter], //F,L],
-  [computedLetterScheme.value.BD.letter, computedLetterScheme.value.DB.letter], //K,V],
-  [computedLetterScheme.value.BL.letter, computedLetterScheme.value.LB.letter], //J,P],
-  [computedLetterScheme.value.UB.letter, computedLetterScheme.value.BU.letter], //B,I],
+const edges: PiecePosition[][] = [
+  ["UF", "FU"],
+  ["UR", "RU"],
+  ["UL", "LU"],
+  ["RF", "FR"],
+  ["LF", "FL"],
+  ["DF", "FD"],
+  ["RD", "DR"],
+  ["DL", "LD"],
+  ["RB", "BR"],
+  ["BD", "DB"],
+  ["BL", "LB"],
+  ["UB", "BU"],
 ];
+
+function getLetterFromPiecePosition(piecePosition: PiecePosition) {
+  return computedLetterScheme.value[piecePosition].letter;
+}
 
 export default {
   generateMemo,
   corners,
   edges,
+  getLetterFromPiecePosition,
 };

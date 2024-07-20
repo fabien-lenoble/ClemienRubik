@@ -106,3 +106,5 @@ export type EdgePosition =
   | "DR"
   | "DB"
   | "DL";
+
+export type PiecePosition = CornerPosition | EdgePosition | CenterPosition;

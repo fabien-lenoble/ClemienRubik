@@ -2,6 +2,7 @@ import { copyObj } from "@/helpers";
 import type { CubeFace, CubeImage, FaceInitial, Scramble } from "./types";
 
 import { useSettings } from "@/composables/settings";
+import type { PiecePosition } from "../training/types";
 const { computedLetterScheme } = useSettings();
 
 const solvedImageArray = () => {
@@ -12,21 +13,20 @@ const solvedImageArray = () => {
   for (let i = 0; i < 6; i++) {
     for (let j = 0; j < 3; j++) {
       for (let k = 0; k < 3; k++) {
-        const piece = Object.values(computedLetterScheme.value).find(
-          (_piece) => {
+        const piece = Object.entries(computedLetterScheme.value).find(
+          ([_, _piece]) => {
             return (
-              _piece.position[0] === i &&
-              _piece.position[1] === j &&
-              _piece.position[2] === k
+              _piece.positionIndexes[0] === i &&
+              _piece.positionIndexes[1] === j &&
+              _piece.positionIndexes[2] === k
             );
           }
         );
 
-        cube[i][j][k] = piece!.letter;
+        cube[i][j][k] = piece?.[0] as PiecePosition;
       }
     }
   }
-
   return cube as CubeImage;
 };
 

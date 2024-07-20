@@ -49,6 +49,7 @@ import CustomPicker from "@/components/Settings/3bldTraining/LetterScheme/Custom
 import LetterPresetsPicker from "@/components/Settings/3bldTraining/LetterScheme/LetterPresetsPicker.vue";
 import type { StickerValue } from "@/composables/scramble/types";
 import { useSettings } from "@/composables/settings";
+import type { Settings } from "@/composables/settings/types";
 import type {
   CornerPosition,
   EdgePosition,
@@ -65,57 +66,50 @@ const selectedFaceIndex = ref(0);
 const selectedType: Ref<"corner" | "edge"> = ref("corner");
 
 const currentSelectedStickerPositions = computed(() => {
-  return Object.entries(computedLetterScheme.value).filter(
-    ([stickerPosition, value]) => {
-      return (
-        value.position[0] === selectedFaceIndex.value &&
-        value.type === selectedType.value
-      );
-    }
-  );
+  return Object.entries(computedLetterScheme.value).filter(([_, value]) => {
+    return (
+      value.positionIndexes[0] === selectedFaceIndex.value &&
+      value.type === selectedType.value
+    );
+  });
 });
 
 const stickerClass = "w-4 h-4 text-[10px]";
 
 function selectPreset(preset: StickerValue[]) {
-  const letterSchemeCopy = copyObj(settings.value.letterScheme);
-  console.log(currentSelectedStickerPositions.value);
+  const letterSchemeCopy = copyObj(
+    settings.value.blindfolded.letterScheme
+  ) as Settings["blindfolded"]["letterScheme"];
   if (selectedType.value === "corner") {
     letterSchemeCopy.corners = Object.fromEntries(
       Object.entries(letterSchemeCopy.corners).map(
         ([stickerPosition, value]) => {
-          console.log(value);
-
           if (preset.includes(value)) {
-            value = "";
+            value = "" as StickerValue;
           }
           return [stickerPosition as CornerPosition, value];
         }
       )
-    );
+    ) as Settings["blindfolded"]["letterScheme"]["corners"];
   } else {
     letterSchemeCopy.edges = Object.fromEntries(
       Object.entries(letterSchemeCopy.edges).map(([stickerPosition, value]) => {
-        if (preset.includes(value.letter)) {
-          value.letter = "";
+        if (preset.includes(value)) {
+          value = "" as StickerValue;
         }
         return [stickerPosition as CornerPosition, value];
       })
-    );
+    ) as Settings["blindfolded"]["letterScheme"]["edges"];
   }
-  currentSelectedStickerPositions.value.forEach(
-    ([stickerPosition, value], index) => {
-      if (selectedType.value === "corner") {
-        letterSchemeCopy.corners[stickerPosition as CornerPosition] =
-          preset[index];
-      } else {
-        letterSchemeCopy.edges[stickerPosition as EdgePosition] = preset[index];
-      }
+  currentSelectedStickerPositions.value.forEach(([stickerPosition], index) => {
+    if (selectedType.value === "corner") {
+      letterSchemeCopy.corners[stickerPosition as CornerPosition] =
+        preset[index];
+    } else {
+      letterSchemeCopy.edges[stickerPosition as EdgePosition] = preset[index];
     }
-  );
+  });
 
   setLetterScheme(letterSchemeCopy);
-  console.log(letterSchemeCopy);
-  console.log(preset, computedLetterScheme.value);
 }
 </script>
