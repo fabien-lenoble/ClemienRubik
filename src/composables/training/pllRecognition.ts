@@ -32,11 +32,9 @@ const filteredPllCases = computed(() =>
 );
 
 function pickNewRandomPll() {
-  do {
-    currentPllIndex.value = Math.floor(
-      Math.random() * filteredPllCases.value.length
-    );
-  } while (lastPllIndex.value === currentPllIndex.value);
+  currentPllIndex.value = Math.floor(
+    Math.random() * filteredPllCases.value.length
+  );
 
   currentRandomAufUTurnIndex.value = Math.floor(
     Math.random() * antiClockWiseUTurns.length
