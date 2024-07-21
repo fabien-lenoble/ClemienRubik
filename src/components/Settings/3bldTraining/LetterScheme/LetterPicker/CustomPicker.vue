@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-rows-3 grid-cols-9 gap-2">
+  <div class="grid grid-rows-3 grid-cols-9 gap-x-2 gap-y-1">
     <div
       v-for="(letter, index) in alphabet"
       :key="index"

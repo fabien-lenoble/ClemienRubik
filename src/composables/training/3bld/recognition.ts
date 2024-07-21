@@ -81,10 +81,12 @@ const isStickerSelected = ref(false);
 const selectedSticker = ref("");
 
 const stickerValuesPool = computed(() => {
+  console.log("ici");
+
   if (poolType.value === "edges") {
-    return edges;
+    return edges.value;
   } else {
-    return corners;
+    return corners.value;
   }
 });
 
