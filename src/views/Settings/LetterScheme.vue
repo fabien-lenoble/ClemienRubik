@@ -26,7 +26,7 @@
       <div class="flex gap-3">
         <button
           @click="rotateQuarterTurn"
-          class="bg-blue-500 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center text-sm"
+          class="text-white font-bold border-2 px-2 h-8 rounded-lg flex items-center justify-center text-sm self-center"
         >
           <i class="fa-solid fa-rotate"></i>
         </button>
@@ -38,24 +38,22 @@
         />
       </div>
     </div>
-    <div class="basis-full">letter presets</div>
-    <div class="flex">
-      <letter-presets-picker @select-preset="selectPreset" />
-    </div>
-    <hr class="w-full" />
-    <div class="basis-full">custom letters</div>
-    <div class="flex">
-      <custom-picker />
+    <letter-picker
+      :selected-face-index="selectedFaceIndex"
+      :selected-type="selectedType"
+    />
+    <div class="flex basis-full">
+      <buffer-selector />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import CubeImage2d from "@/components/CubeImage2d/index.vue";
+import BufferSelector from "@/components/Settings/3bldTraining/LetterScheme/BufferSelector.vue";
 import CornersOrEdgesPicker from "@/components/Settings/3bldTraining/LetterScheme/CornersOrEdgesPicker.vue";
-import CustomPicker from "@/components/Settings/3bldTraining/LetterScheme/CustomPicker.vue";
 import FacePicker from "@/components/Settings/3bldTraining/LetterScheme/FacePicker.vue";
-import LetterPresetsPicker from "@/components/Settings/3bldTraining/LetterScheme/LetterPresetsPicker.vue";
+import LetterPicker from "@/components/Settings/3bldTraining/LetterScheme/LetterPicker/index.vue";
 import type { StickerValue } from "@/composables/scramble/types";
 import { useSettings } from "@/composables/settings";
 import type { Settings } from "@/composables/settings/types";
@@ -71,6 +69,7 @@ const { settings, computedLetterScheme, setLetterScheme, isLetterSchemeValid } =
   useSettings();
 
 const { cornerPositionIndexes, edgePositionIndexes } = constants;
+const stickerClass = "w-4 h-4 text-[10px]";
 
 const selectedFaceIndex = ref(0);
 const selectedType: Ref<"corner" | "edge"> = ref("corner");
@@ -83,50 +82,6 @@ const currentSelectedStickerPositions = computed(() => {
     );
   });
 });
-
-const stickerClass = "w-4 h-4 text-[10px]";
-
-function removeValuesFromLetterScheme(stickerValues: StickerValue[]) {
-  const letterSchemeCopy = copyObj(
-    settings.value.blindfolded.letterScheme
-  ) as Settings["blindfolded"]["letterScheme"];
-  if (selectedType.value === "corner") {
-    letterSchemeCopy.corners = Object.fromEntries(
-      Object.entries(letterSchemeCopy.corners).map(
-        ([stickerPosition, value]) => {
-          if (stickerValues.includes(value)) {
-            value = "" as StickerValue;
-          }
-          return [stickerPosition as CornerPosition, value];
-        }
-      )
-    ) as Settings["blindfolded"]["letterScheme"]["corners"];
-  } else {
-    letterSchemeCopy.edges = Object.fromEntries(
-      Object.entries(letterSchemeCopy.edges).map(([stickerPosition, value]) => {
-        if (stickerValues.includes(value)) {
-          value = "" as StickerValue;
-        }
-        return [stickerPosition as EdgePosition, value];
-      })
-    ) as Settings["blindfolded"]["letterScheme"]["edges"];
-  }
-  return letterSchemeCopy;
-}
-
-function selectPreset(preset: StickerValue[]) {
-  const letterSchemeCopy = removeValuesFromLetterScheme(preset);
-  currentSelectedStickerPositions.value.forEach(([stickerPosition], index) => {
-    if (selectedType.value === "corner") {
-      letterSchemeCopy.corners[stickerPosition as CornerPosition] =
-        preset[index];
-    } else {
-      letterSchemeCopy.edges[stickerPosition as EdgePosition] = preset[index];
-    }
-  });
-
-  setLetterScheme(letterSchemeCopy);
-}
 
 function rotateQuarterTurn() {
   const letterSchemeCopy = copyObj(

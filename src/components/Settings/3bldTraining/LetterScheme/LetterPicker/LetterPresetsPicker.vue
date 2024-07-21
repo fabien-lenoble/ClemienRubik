@@ -3,7 +3,7 @@
     <div
       v-for="(preset, index) in presets"
       :key="index"
-      class="flex border rounded-md"
+      class="flex border-2 rounded-md"
       @click="$emit('selectPreset', preset)"
     >
       <div class="w-6 text-center" v-for="letter in preset" :key="letter">
