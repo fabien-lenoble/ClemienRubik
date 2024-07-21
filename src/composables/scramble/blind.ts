@@ -1,5 +1,5 @@
 // import { EdgePosition, CornerPosition } from "@/composables/training/types";
-import { computed } from "vue";
+import { computed, type ComputedRef } from "vue";
 import type { CubeImage } from "./types";
 
 import { useSettings } from "@/composables/settings";
@@ -22,7 +22,7 @@ function generateEdgesMemo(cube: CubeImage) {
       edgeBufferPosition.value[2]
     ];
 
-  while ([...new Set(edgePositionsMemoed)].length < edges.length - 1) {
+  while ([...new Set(edgePositionsMemoed)].length < edges.value.length - 1) {
     ({ edgePositionMemo, edgeFlipMemo, edgePositionsMemoed } =
       generateEdgeCycle(
         cube,
@@ -32,7 +32,7 @@ function generateEdgesMemo(cube: CubeImage) {
         edgePositionsMemoed
       ));
 
-    edgeBufferValue = edges.filter(
+    edgeBufferValue = edges.value.filter(
       (_edge, index) => !edgePositionsMemoed.includes(index)
     )?.[0]?.[0];
   }
@@ -59,7 +59,10 @@ function generateCornerMemo(cube: CubeImage) {
     ];
 
   // get all corner positions memoed & filter duplicates. Check that we have all of them except the buffer one (so n-1) which we don't memo
-  while ([...new Set(cornerPositionsMemoed)].length < corners.length - 1) {
+  while (
+    [...new Set(cornerPositionsMemoed)].length <
+    corners.value.length - 1
+  ) {
     ({ cornerPositionMemo, cornerFlipMemo, cornerPositionsMemoed } =
       generateCornerCycle(
         cube,
@@ -69,7 +72,9 @@ function generateCornerMemo(cube: CubeImage) {
         cornerPositionsMemoed
       ));
 
-    cornerBufferValue = corners.filter(
+    console.log(cornerPositionsMemoed);
+
+    cornerBufferValue = corners.value.filter(
       (_corner, index) => !cornerPositionsMemoed.includes(index)
     )?.[0]?.[0];
   }
@@ -95,7 +100,7 @@ function generateEdgeCycle(
 ) {
   const cycleStartBufferValue = currentPiecePosition;
 
-  const cycleStartBufferEdgePosition = edges.findIndex((edge) =>
+  const cycleStartBufferEdgePosition = edges.value.findIndex((edge) =>
     edge.includes(cycleStartBufferValue)
   );
 
@@ -104,7 +109,7 @@ function generateEdgeCycle(
 
   currentPiecePosition = getNextPiecePosition(cube, currentPiecePosition);
 
-  const currentPiecePositionIndex = edges.findIndex((edge) =>
+  const currentPiecePositionIndex = edges.value.findIndex((edge) =>
     edge.includes(currentPiecePosition)
   );
 
@@ -145,10 +150,10 @@ function generateEdgeFlip(
   edgePositionsMemoed: number[],
   cycleEdgePositionsMemoed: number[]
 ) {
-  if (currentPiecePositionIndex !== edges.length - 1) {
-    const letterFlippingIndex = edges[currentPiecePositionIndex].findIndex(
-      (edgeValue) => edgeValue === currentPiecePosition
-    );
+  if (currentPiecePositionIndex !== edges.value.length - 1) {
+    const letterFlippingIndex = edges.value[
+      currentPiecePositionIndex
+    ].findIndex((edgeValue) => edgeValue === currentPiecePosition);
 
     if (letterFlippingIndex === 1) {
       edgeFlipMemo.push(`${currentPiecePosition}-flip`);
@@ -173,13 +178,13 @@ function generateEdgePositionCycle(
   cycleEdgePositionsMemoed: number[]
 ) {
   while (
-    currentPiecePositionIndex !== edges.length - 1 &&
+    currentPiecePositionIndex !== edges.value.length - 1 &&
     !cycleEdgePositionsMemoed.slice(1).includes(cycleStartBufferEdgePosition)
   ) {
     cycleMemo.push(currentPiecePosition);
     cycleEdgePositionsMemoed.push(currentPiecePositionIndex);
     currentPiecePosition = getNextPiecePosition(cube, currentPiecePosition);
-    currentPiecePositionIndex = edges.findIndex((edge) =>
+    currentPiecePositionIndex = edges.value.findIndex((edge) =>
       edge.includes(currentPiecePosition)
     );
   }
@@ -198,7 +203,7 @@ function generateCornerCycle(
   cornerPositionsMemoed: number[]
 ) {
   const cycleStartBufferValue = currentPiecePosition;
-  const cycleStartBufferCornerPosition = corners.findIndex((corner) =>
+  const cycleStartBufferCornerPosition = corners.value.findIndex((corner) =>
     corner.includes(cycleStartBufferValue)
   );
 
@@ -206,7 +211,7 @@ function generateCornerCycle(
   const cycleCornerPositionsMemoed: number[] = [cycleStartBufferCornerPosition];
 
   currentPiecePosition = getNextPiecePosition(cube, currentPiecePosition);
-  const currentPiecePositionIndex = corners.findIndex((corner) =>
+  const currentPiecePositionIndex = corners.value.findIndex((corner) =>
     corner.includes(currentPiecePosition)
   );
 
@@ -248,10 +253,10 @@ function generateCornerFlip(
   cornerPositionsMemoed: number[],
   cycleCornerPositionsMemoed: number[]
 ) {
-  if (currentPiecePositionIndex !== corners.length - 1) {
-    const letterFlippingIndex = corners[currentPiecePositionIndex].findIndex(
-      (cornerValue) => cornerValue === currentPiecePosition
-    );
+  if (currentPiecePositionIndex !== corners.value.length - 1) {
+    const letterFlippingIndex = corners.value[
+      currentPiecePositionIndex
+    ].findIndex((cornerValue) => cornerValue === currentPiecePosition);
     const letter = getLetterFromPiecePosition(currentPiecePosition);
     switch (letterFlippingIndex) {
       case 0:
@@ -285,7 +290,7 @@ function generateCornerPositionCycle(
   cycleCornerPositionsMemoed: number[]
 ) {
   while (
-    currentPiecePositionIndex !== corners.length - 1 &&
+    currentPiecePositionIndex !== corners.value.length - 1 &&
     !cycleCornerPositionsMemoed
       .slice(1)
       .includes(cycleStartBufferCornerPosition)
@@ -293,7 +298,7 @@ function generateCornerPositionCycle(
     cycleMemo.push(currentPiecePosition);
     cycleCornerPositionsMemoed.push(currentPiecePositionIndex);
     currentPiecePosition = getNextPiecePosition(cube, currentPiecePosition);
-    currentPiecePositionIndex = corners.findIndex((corner) =>
+    currentPiecePositionIndex = corners.value.findIndex((corner) =>
       corner.includes(currentPiecePosition)
     );
   }
@@ -315,52 +320,66 @@ function getNextPiecePosition(
   return cube[newBuffer[0]][newBuffer[1]][newBuffer[2]];
 }
 
-const edgeBuffer = computed(() =>
-  Object.values(computedLetterScheme.value).find(
-    (piece) =>
+const edgeBuffer = computed(() => {
+  const piece = Object.entries(computedLetterScheme.value).find(
+    ([piecePosition, piece]) =>
       piece.letter === settings.value.blindfolded.edgeBuffer &&
       piece.type === "edge"
-  )
-);
-const cornerBuffer = computed(() =>
-  Object.values(computedLetterScheme.value).find(
-    (piece) =>
+  );
+  return { ...piece![1], position: piece![0] };
+});
+
+const cornerBuffer = computed(() => {
+  const piece = Object.entries(computedLetterScheme.value).find(
+    ([piecePosition, piece]) =>
       piece.letter === settings.value.blindfolded.cornerBuffer &&
       piece.type === "corner"
-  )
-);
+  );
+  return { ...piece![1], position: piece![0] };
+});
 
 const edgeBufferPosition = computed(() => edgeBuffer.value!.positionIndexes);
 const cornerBufferPosition = computed(
   () => cornerBuffer.value!.positionIndexes
 );
 
-const corners: PiecePosition[][] = [
-  ["UBR", "BRU", "RUB"],
-  ["BDR", "DRB", "RBD"],
-  ["LBU", "BUL", "ULB"],
-  ["FUR", "URF", "RFU"],
-  ["DBL", "BLD", "LDB"],
-  ["DFR", "FRD", "RDF"],
-  ["FDL", "DLF", "LFD"],
-  ["UFL", "FLU", "LUF"],
-];
+const corners: ComputedRef<PiecePosition[][]> = computed(
+  () =>
+    [
+      ["UBR", "BRU", "RUB"],
+      ["BDR", "DRB", "RBD"],
+      ["LBU", "BUL", "ULB"],
+      ["FUR", "URF", "RFU"],
+      ["DBL", "BLD", "LDB"],
+      ["DFR", "FRD", "RDF"],
+      ["FDL", "DLF", "LFD"],
+      ["UFL", "FLU", "LUF"],
+    ].sort((a, b) =>
+      // send buffer to the end
+      a.some((corner) => corner === cornerBuffer.value!.position) ? 1 : -1
+    ) as PiecePosition[][]
+);
 
-const edges: PiecePosition[][] = [
-  ["UF", "FU"],
-  ["UR", "RU"],
-  ["UL", "LU"],
-  ["RF", "FR"],
-  ["LF", "FL"],
-  ["DF", "FD"],
-  ["RD", "DR"],
-  ["DL", "LD"],
-  ["RB", "BR"],
-  ["BD", "DB"],
-  ["BL", "LB"],
-  ["UB", "BU"],
-];
-
+const edges: ComputedRef<PiecePosition[][]> = computed(
+  () =>
+    [
+      ["UF", "FU"],
+      ["UR", "RU"],
+      ["UL", "LU"],
+      ["RF", "FR"],
+      ["LF", "FL"],
+      ["DF", "FD"],
+      ["RD", "DR"],
+      ["DL", "LD"],
+      ["RB", "BR"],
+      ["BD", "DB"],
+      ["BL", "LB"],
+      ["UB", "BU"],
+    ].sort((a, b) =>
+      // send buffer to the end
+      a.some((edge) => edge === edgeBuffer.value!.position) ? 1 : -1
+    ) as PiecePosition[][]
+);
 function getLetterFromPiecePosition(piecePosition: PiecePosition) {
   return computedLetterScheme.value[piecePosition].letter;
 }

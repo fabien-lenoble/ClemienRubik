@@ -12,7 +12,6 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
 import type { StickerValue } from "@/composables/scramble/types";
 

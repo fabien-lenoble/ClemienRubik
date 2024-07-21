@@ -24,6 +24,20 @@ const settings: Ref<Settings> = ref({
   blindfoldedTraining: {
     ...defaultSettings.blindfoldedTraining,
     ...storedSettings.blindfoldedTraining,
+    letterScheme: {
+      corners: {
+        ...defaultSettings.blindfolded?.letterScheme.corners,
+        ...storedSettings.blindfolded?.letterScheme.corners,
+      },
+      edges: {
+        ...defaultSettings.blindfolded?.letterScheme.edges,
+        ...storedSettings.blindfolded?.letterScheme.edges,
+      },
+      centers: {
+        ...defaultSettings.blindfolded?.letterScheme.centers,
+        ...storedSettings.blindfolded?.letterScheme.centers,
+      },
+    },
   },
   blindfolded: {
     ...defaultSettings.blindfolded,
@@ -76,7 +90,23 @@ function setLetterScheme(
   letterScheme: Settings["blindfolded"]["letterScheme"]
 ) {
   settings.value.blindfolded.letterScheme = letterScheme;
-  // don't save settings to local storage yet; we will want to verify it is valid first
+  if (!isLetterSchemeValid(letterScheme)) {
+    console.log("Invalid letter scheme");
+    return;
+  } else {
+    saveSettings();
+  }
+}
+
+function isLetterSchemeValid(
+  letterScheme: Settings["blindfolded"]["letterScheme"]
+) {
+  const values = Object.values({
+    ...letterScheme.corners,
+    ...letterScheme.edges,
+    ...letterScheme.centers,
+  });
+  return values.every((value) => !!value);
 }
 
 function setPllRecognition(
@@ -182,5 +212,6 @@ export function useSettings() {
     import3bldCornerPairs,
     setPllRecognition,
     computedLetterScheme,
+    isLetterSchemeValid,
   };
 }
