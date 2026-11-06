@@ -6,6 +6,8 @@ import { computed } from "vue";
 import { RouterView, useRoute } from "vue-router";
 const { settings } = useSettings();
 const { isTimerStarted, isTimerOnHold, isSpaceHeldLongEnough } = useTimer();
+const route = useRoute();
+const isPhotosPage = computed(() => route.name === "photos");
 
 const timerClass = computed(() => {
   if (isTimerStarted.value) {
@@ -24,7 +26,7 @@ const timerClass = computed(() => {
 });
 
 const isBackgroundImageShown = computed(() => {
-  return !isTimerStarted.value && useRoute().name === "scramble";
+  return !isTimerStarted.value && route.name === "scramble";
 });
 
 // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
@@ -41,7 +43,15 @@ window.addEventListener("resize", () => {
 </script>
 
 <template>
-  <div class="app" :data-theme="settings.theme" :class="`timer-${timerClass}`">
+  <main v-if="isPhotosPage" class="photos-page">
+    <RouterView />
+  </main>
+  <div
+    v-else
+    class="app"
+    :data-theme="settings.theme"
+    :class="`timer-${timerClass}`"
+  >
     <main
       class="h-full text-my-text-primary"
       :class="{
@@ -72,6 +82,13 @@ html {
 }
 .app {
   height: 100%;
+}
+
+.photos-page {
+  height: 100%;
+  overflow-y: auto;
+  background: #fff;
+  color: #111;
 }
 
 .background-shown {

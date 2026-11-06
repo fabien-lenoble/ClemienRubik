@@ -2,6 +2,7 @@ import { useScramble } from "@/composables/scramble";
 import { useSeed } from "@/composables/seed";
 import type { Seed } from "@/composables/seed/types";
 import { useSession } from "@/composables/session";
+import PhotosView from "@/views/PhotosView.vue";
 import ScrambleView from "@/views/ScrambleView.vue";
 import SettingsView from "@/views/SettingsView.vue";
 import SolveHistoryView from "@/views/SolveHistoryView.vue";
@@ -34,6 +35,11 @@ const router = createRouter({
       path: "/solves",
       name: "solves",
       component: SolveHistoryView,
+    },
+    {
+      path: "/photos",
+      name: "photos",
+      component: PhotosView,
     },
     {
       path: "/settings",
